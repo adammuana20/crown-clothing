@@ -3,7 +3,7 @@ import categoriesData from './components/categoriesData'
 
 const App = () => {
   return (
-    <Directory categories={ categoriesData } />
+    <Directory categories={ categoriesData }  />
   );
 }
 
