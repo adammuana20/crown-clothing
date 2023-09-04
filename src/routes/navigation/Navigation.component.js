@@ -27,7 +27,7 @@ const Navigation = () => {
                     Contact
                     </NavLink>
                     <NavLink 
-                        to='sign-in' 
+                        to='auth' 
                         className='nav-link' 
                     >
                         Sign In
