@@ -1,9 +1,16 @@
+import { useContext } from "react"
 import { NavLink, Outlet } from "react-router-dom"
 
 import { ReactComponent as CrownLogo } from '../../assets/crown.svg'
+import { UserContext } from "../../contexts/User.context"
+
+import { signOutUser } from "../../utils/firebase/Firebase.utils"
+
 import './Navigation.styles.scss'
 
 const Navigation = () => {
+    const { currentUser } = useContext(UserContext)
+
     return (
         <>
             <nav className='navigation'>
@@ -26,12 +33,24 @@ const Navigation = () => {
                     >
                     Contact
                     </NavLink>
-                    <NavLink 
-                        to='auth' 
-                        className='nav-link' 
-                    >
-                        Sign In
-                    </NavLink>
+                    {
+                        currentUser ? (
+                            <span 
+                                className='nav-link' 
+                                onClick={signOutUser}
+                            >
+                                SIGN OUT
+                            </span>
+                        ) : (
+                            <NavLink 
+                            to='auth' 
+                            className='nav-link' 
+                            >
+                                Sign In
+                            </NavLink>
+                        )
+                    }
+
                 </div>
             </nav>
             <Outlet />

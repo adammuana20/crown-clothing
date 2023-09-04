@@ -7,6 +7,7 @@ import {
 
 import FormInput from '../form-input/FormInput.component'
 import Button from '../button/Button.component'
+
 import './SignUpForm.styles.scss'
 
 const defaultFormFields = {
@@ -28,6 +29,7 @@ const SignUpForm = () => {
         const { name, value } = e.target
 
         setFormFields({ ...formFields, [name]: value })
+
     }
 
     const handleSubmit = async (e) => {
@@ -40,6 +42,7 @@ const SignUpForm = () => {
         try {
             const { user } = await createAuthUserWithEmailAndPassword(email, password)
             await createUserDocumentFromAuth(user, { displayName })
+            
             resetFormFields()
         } catch (err) {
             if(err.code === 'auth/email-already-in-use') {

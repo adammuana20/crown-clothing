@@ -1,13 +1,13 @@
 import { useState } from 'react'
 
+import Button from '../button/Button.component'
+import FormInput from '../form-input/FormInput.component'
+
 import { 
     signInWithGooglePopup, 
-    createUserDocumentFromAuth,
     signInAuthUserWithEmailAndPassword
 } from '../../utils/firebase/Firebase.utils'
 
-import Button from '../button/Button.component'
-import FormInput from '../form-input/FormInput.component'
 import './SignInForm.styles.scss'
 
 
@@ -16,12 +16,17 @@ const defaultFormFields = {
     password: ''
 }
 
-const SignIn = () => {
-    const signInWithGoogle = async () => {
+const SignInForm = () => {
+    const [signInForm, setSignInForm] = useState(defaultFormFields)
+    const { email, password } = signInForm
 
+    const resetFormFields = () => {
+        setSignInForm(defaultFormFields)
+    }
+
+    const signInWithGoogle = async () => {
         try {
-            const { user } = await signInWithGooglePopup()
-            await createUserDocumentFromAuth(user);
+            await signInWithGooglePopup()
         } catch(err) {
             switch(err.code) {
                 case 'auth/popup-closed-by-user':
@@ -31,13 +36,6 @@ const SignIn = () => {
                     console.log(err);
             }
         }
-    }
-
-    const [signInForm, setSignInForm] = useState(defaultFormFields)
-    const { email, password } = signInForm
-
-    const resetFormFields = () => {
-        setSignInForm(defaultFormFields)
     }
 
     const handleChange = (e) => {
@@ -50,7 +48,8 @@ const SignIn = () => {
         e.preventDefault()
 
         try {
-            await signInAuthUserWithEmailAndPassword(email, password)
+            const { user } = await signInAuthUserWithEmailAndPassword(email, password)
+
             resetFormFields()
         } catch (err) {
             switch(err.code) {
@@ -102,4 +101,4 @@ const SignIn = () => {
     )
 }
 
-export default SignIn
+export default SignInForm
