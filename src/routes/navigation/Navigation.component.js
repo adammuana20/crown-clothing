@@ -57,7 +57,7 @@ const Navigation = () => {
                     }
                     <CartIcon />
                 </div>
-                { isCartOpen && <CartDropdown /> }
+                { isCartOpen && <CartDropdown />}
             </nav>
             <Outlet />
         </>
