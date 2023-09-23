@@ -1,4 +1,5 @@
 import { FormInputLabel, Input, Group } from './FormInput.styles'
+import { StyleSheetManager } from 'styled-components'
 
 const FormInput = ({ label, inputOptions }) => {
     return (
@@ -6,7 +7,9 @@ const FormInput = ({ label, inputOptions }) => {
         <Input {...inputOptions} />
         {
             label && (
-                <FormInputLabel shrink={inputOptions.value.length}>{ label }</FormInputLabel>
+                <StyleSheetManager shrink={inputOptions.value.length}>
+                    <FormInputLabel>{ label }</FormInputLabel>
+                </StyleSheetManager>
             )
         }
         </Group>

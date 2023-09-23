@@ -2,8 +2,6 @@ import { createContext, useState, useEffect } from 'react';
 
 import { getCategoriesAndDocuments } from '../utils/firebase/Firebase.utils';
 
-import SHOP_DATA from '../shopData.js'
-
 export const CategoriesContext = createContext({
     categoriesMap: {},
     setProducts: () => []
