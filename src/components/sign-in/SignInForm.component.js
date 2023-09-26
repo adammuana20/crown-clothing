@@ -1,12 +1,10 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 import Button, { BUTTON_TYPE_CLASSES } from '../button/Button.component'
 import FormInput from '../form-input/FormInput.component'
 
-import { 
-    signInWithGooglePopup, 
-    signInAuthUserWithEmailAndPassword
-} from '../../utils/firebase/Firebase.utils'
+import { googleSignInStart, emailSignInStart } from '../../store/user/User.action'
 
 import { SignInContainer, ButtonsContainer } from './SignInForm.styles.js'
 
@@ -20,22 +18,14 @@ const SignInForm = () => {
     const [signInForm, setSignInForm] = useState(defaultFormFields)
     const { email, password } = signInForm
 
+    const dispatch = useDispatch()
+
     const resetFormFields = () => {
         setSignInForm(defaultFormFields)
     }
 
     const signInWithGoogle = async () => {
-        try {
-            await signInWithGooglePopup()
-        } catch(err) {
-            switch(err.code) {
-                case 'auth/popup-closed-by-user':
-                    console.log('Google Signin Pop-up Closed');
-                    break
-                default:
-                    console.log(err);
-            }
-        }
+        dispatch(googleSignInStart())
     }
 
     const handleChange = (e) => {
@@ -46,23 +36,9 @@ const SignInForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        dispatch(emailSignInStart(email, password))
 
-        try {
-            const { user } = await signInAuthUserWithEmailAndPassword(email, password)
-
-            resetFormFields()
-        } catch (err) {
-            switch(err.code) {
-                case 'auth/user-not-found':
-                    alert('Email does not exist')
-                    break
-                case 'auth/wrong-password':
-                    alert('Incorrect Password for Email')
-                    break
-                default:
-                    console.log(err)
-            }
-        }
+        resetFormFields()
     }
 
     return (
