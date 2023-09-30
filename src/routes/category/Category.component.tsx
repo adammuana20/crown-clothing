@@ -6,7 +6,7 @@ import ProductCard from '../../components/product-card/ProductCard.component'
 import { selectCategoriesMap, selectCategoriesIsLoading } from '../../store/categories/Category.selector'
 import Spinner from '../../components/spinner/Spinner.component'
 
-import { CategoryContainer, CategoryTitle } from './Category.styles.js'
+import { CategoryContainer, CategoryTitle } from './Category.styles'
 
 type CategoryRouteParams = {
     category: string;
