@@ -8,7 +8,6 @@ import { CheckoutContainer, CheckOutHeader, HeaderBlock, Total } from './Checkou
 
 
 const Checkout = () => {
-    // const { cartItems, cartTotalPrice } = useContext(CartContext)
     const cartItems = useSelector(selectCartItems)
     const cartTotalPrice = useSelector(selectCartTotalPrice)
 
