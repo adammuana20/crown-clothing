@@ -1,7 +1,7 @@
 import { FC, Key } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { DirectoryItemContainer, BackgroundImage, Body } from './DirectoryItem.styles.js'
+import { DirectoryItemContainer, BackgroundImage, Body } from './DirectoryItem.styles'
 
 type DirectoryCategory = {
   id: Key;

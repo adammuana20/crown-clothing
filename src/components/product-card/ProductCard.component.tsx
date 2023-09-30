@@ -6,7 +6,7 @@ import { selectCartItems } from '../../store/cart/Cart.selector'
 import Button, { BUTTON_TYPE_CLASSES } from '../button/Button.component'
 import { CategoryItem } from '../../store/categories/Category.types'
 
-import { ProductCardContainer, Footer, Name, Price } from './ProductCard.styles.js'
+import { ProductCardContainer, Footer, Name, Price } from './ProductCard.styles'
 
 type ProductCardProps = {
     product: CategoryItem;

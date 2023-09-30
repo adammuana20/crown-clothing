@@ -6,7 +6,7 @@ import FormInput from '../form-input/FormInput.component'
 
 import { googleSignInStart, emailSignInStart } from '../../store/user/User.action'
 
-import { SignInContainer, ButtonsContainer } from './SignInForm.styles.js'
+import { SignInContainer, ButtonsContainer } from './SignInForm.styles'
 
 
 const defaultFormFields = {

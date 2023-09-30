@@ -4,11 +4,10 @@ import { selectCartItems, selectCartTotalPrice } from '../../store/cart/Cart.sel
 
 import CheckoutItem from '../../components/checkout-item/CheckoutItem.component'
 import PaymentForm from '../../components/payment-form/PaymentForm.component'
-import { CheckoutContainer, CheckOutHeader, HeaderBlock, Total } from './Checkout.styles.js'
+import { CheckoutContainer, CheckOutHeader, HeaderBlock, Total } from './Checkout.styles'
 
 
 const Checkout = () => {
-    // const { cartItems, cartTotalPrice } = useContext(CartContext)
     const cartItems = useSelector(selectCartItems)
     const cartTotalPrice = useSelector(selectCartTotalPrice)
 
