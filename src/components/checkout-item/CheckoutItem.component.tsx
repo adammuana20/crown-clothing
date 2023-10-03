@@ -11,7 +11,6 @@ type CheckoutItemProps = {
 }
 
 const CheckoutItem: FC<CheckoutItemProps> = ({ cartItem }) => {
-    // const { addItemToCart, removeItemFromCart, clearItemFromCart } = useContext(CartContext)
     const dispatch = useDispatch()
     const currentCartItems = useSelector(selectCartItems)
 
