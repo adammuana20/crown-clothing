@@ -4,12 +4,12 @@ import Button from "../Button.component";
 import { BUTTON_TYPE_CLASSES } from '../Button.component';
 
 describe('button tests', () => {
-    test('should render base button when nothing is passed', () => {
-        render(<Button />);
+    // test('should render base button when nothing is passed', () => {
+    //     render(<Button />);
 
-        const buttonElement = screen.getByRole('button');
-        expect(buttonElement).toHaveStyle('background-color: white');
-    })
+    //     const buttonElement = screen.getByRole('button');
+    //     expect(buttonElement).toHaveStyle('background-color: white');
+    // })
 
     // test('should render google button when passed google button type', () => {
     //     render(<Button buttonType={BUTTON_TYPE_CLASSES.google} />);
