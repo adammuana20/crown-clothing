@@ -85,7 +85,7 @@ const SignUpForm = () => {
                         onChange:handleChange,
                         name:'password',
                         value:password,
-                        minLength:'6',
+                        minLength:6,
                         required:true
                     }}
                 />
@@ -96,7 +96,7 @@ const SignUpForm = () => {
                         onChange:handleChange,
                         name:'confirmPassword',
                         value:confirmPassword,
-                        minLength:'6',
+                        minLength:6,
                         required:true
                     }}
 

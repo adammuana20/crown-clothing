@@ -6,23 +6,23 @@ type FormInputProps = {
     label: string;
     inputOptions: {
         type: string;
-        onChange: Function;
+        onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
         name: string;
         value: string;
-        minLength?: string;
+        minLength?: number | 0;
         required: boolean;
     }
 } & InputHTMLAttributes<HTMLInputElement>
 
 
 
-const FormInput: FC<FormInputProps> = ({ label, ...inputOptions }) => {
+const FormInput: FC<FormInputProps> = ({ label, inputOptions }) => {
     return (
         <Group>
         <Input {...inputOptions} />
         {
             label && (
-                    <FormInputLabel shrink={Boolean(inputOptions.value && typeof inputOptions.value === 'string' && inputOptions.value.length)}>
+                    <FormInputLabel $shrink={Boolean(inputOptions.value && typeof inputOptions.value === 'string' && inputOptions.value.length)}>
                         { label }
                     </FormInputLabel>
             )
