@@ -14,14 +14,6 @@ const defaultFormFields = {
     password: ''
 }
 
-type InputOptions = {
-    type: string;
-    onChange: Function;
-    name: string;
-    value: string;
-    required: boolean;
-}
-
 const SignInForm = () => {
     const [signInForm, setSignInForm] = useState(defaultFormFields)
     const { email, password } = signInForm
@@ -65,14 +57,14 @@ const SignInForm = () => {
                     }}
                 />
                 <FormInput
-                label='Password'
-                inputOptions={{
-                    type:'password',
-                    onChange:handleChange,
-                    name:'password',
-                    value:password,
-                    required:true
-                }}
+                    label='Password'
+                    inputOptions={{
+                        type:'password',
+                        onChange:handleChange,
+                        name:'password',
+                        value:password,
+                        required:true
+                    }}
                 />
                 <ButtonsContainer>
                     <Button type='submit'>Sign In</Button>
