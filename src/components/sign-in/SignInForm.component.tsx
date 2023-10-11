@@ -1,10 +1,12 @@
 import { useState, FormEvent, ChangeEvent } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 import Button, { BUTTON_TYPE_CLASSES } from '../button/Button.component'
 import FormInput from '../form-input/FormInput.component'
 
 import { googleSignInStart, emailSignInStart } from '../../store/user/User.action'
+import { selectEmailSignInIsLoading, selectGoogleSignInIsLoading, selectError } from '../../store/user/User.selector'
 
 import { SignInContainer, ButtonsContainer } from './SignInForm.styles'
 
@@ -17,6 +19,12 @@ const defaultFormFields = {
 const SignInForm = () => {
     const [signInForm, setSignInForm] = useState(defaultFormFields)
     const { email, password } = signInForm
+    const emailSignInIsLoading = useSelector(selectEmailSignInIsLoading)
+    const googleSignInIsLoading = useSelector(selectGoogleSignInIsLoading)
+    const error = useSelector(selectError)
+    const navigate = useNavigate()
+    
+    
 
     const dispatch = useDispatch()
 
@@ -25,7 +33,7 @@ const SignInForm = () => {
     }
 
     const signInWithGoogle = async () => {
-        dispatch(googleSignInStart())
+        dispatch(googleSignInStart(navigate))
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -36,15 +44,19 @@ const SignInForm = () => {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        dispatch(emailSignInStart(email, password))
 
+        dispatch(emailSignInStart(email, password, navigate))
         resetFormFields()
     }
+    
 
     return (
         <SignInContainer>
             <h2>Already have an account?</h2>
             <p>Sign in with email and password</p>
+            {error &&
+                <p>{error.message}</p>
+            }
             <form onSubmit={handleSubmit}>
                 <FormInput
                     label='Email'
@@ -67,8 +79,8 @@ const SignInForm = () => {
                     }}
                 />
                 <ButtonsContainer>
-                    <Button type='submit'>Sign In</Button>
-                    <Button type='button' buttonType={BUTTON_TYPE_CLASSES.google} onClick={signInWithGoogle}>
+                    <Button isLoading={emailSignInIsLoading} type='submit'>Sign In</Button>
+                    <Button isLoading={googleSignInIsLoading} type='button' buttonType={BUTTON_TYPE_CLASSES.google} onClick={signInWithGoogle}>
                     Google Sign In
                     </Button>
                 </ButtonsContainer>

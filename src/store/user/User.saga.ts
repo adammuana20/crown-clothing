@@ -3,7 +3,7 @@ import { User } from 'firebase/auth'
 
 import { USER_ACTION_TYPES } from './User.types'
 
-import { signInSuccess, signInFailed, signUpSuccess, signUpFailed, signOutFailed, signOutSuccess, EmailSignInStart, SignUpStart, SignUpSuccess } from './User.action'
+import { signInSuccess, signInFailed, signUpSuccess, signUpFailed, signOutFailed, signOutSuccess, EmailSignInStart, SignUpStart, SignUpSuccess, GoogleSignInStart, checkUserSessionComplete } from './User.action'
 
 import { getCurrentUser, createUserDocumentFromAuth, signInWithGooglePopup, signInAuthUserWithEmailAndPassword, createAuthUserWithEmailAndPassword, signOutUser, AdditionalInformation } from '../../utils/firebase/Firebase.utils'
  
@@ -22,32 +22,54 @@ export function* getSnapshotFromUserAuth(userAuth: User, additionalInformation?:
 export function* isUserAuthenticated() {
     try {
         const userAuth = yield* call(getCurrentUser)
-        if(!userAuth) return;
-        yield* call(getSnapshotFromUserAuth, userAuth)
+        if(!userAuth) {
+            yield* put(checkUserSessionComplete())
+        } else {
+            yield* call(getSnapshotFromUserAuth, userAuth)
+            yield* put(checkUserSessionComplete())
+        }
     } catch(error) {
         yield* put(signInFailed(error as Error))
-    }
+    } 
 }
 
-export function* signInWithGoogle() {
+export function* signInWithGoogle({payload: { navigate }}: GoogleSignInStart) {
     try {
         const { user } = yield* call(signInWithGooglePopup)
         yield* call(getSnapshotFromUserAuth, user)
+        yield* navigate('/', { replace: true })
     } catch(error) {
         yield* put(signInFailed(error as Error))
     }
 }
 
-export function* signInWithEmail({ payload: { email, password }}: EmailSignInStart) {
+export function* signInWithEmail({ payload: { email, password, navigate }}: EmailSignInStart) {
     try {
         const userCredential = yield* call(signInAuthUserWithEmailAndPassword, email, password)
 
         if(userCredential) {
             const { user } = userCredential
             yield* call(getSnapshotFromUserAuth, user)
+            yield* navigate('/', { replace: true })
         }
     } catch (error) {
-        yield* put(signInFailed(error as Error))
+        if (error instanceof Error && 'code' in error) {
+            const firebaseError = error as { code: string };
+            if (firebaseError.code === "auth/user-not-found") {
+              const errorMessage = new Error("User not found");
+              yield* put(signInFailed(errorMessage as Error));
+            } else if(firebaseError.code === "auth/wrong-password") {
+                const errorMessage = new Error("Incorrect Password");
+                yield* put(signInFailed(errorMessage as Error));
+            } else if(firebaseError.code === "auth/too-many-requests") {
+                const errorMessage = new Error("Access to this account has been temporarily disabled due to many failed login attempts. Please try again later.");
+                yield* put(signInFailed(errorMessage as Error));
+            } else {
+                yield* put(signInFailed(error as Error))
+            }
+        } else {
+            yield* put(signInFailed(error as Error))
+        }
     }
 }
 
