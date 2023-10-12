@@ -26,7 +26,7 @@ export const CartDropdownContainer = styled.div`
   }
 `
 
-export const EmptyMessage = styled.span`
+export const CartDropdownEmptyMessage = styled.span`
   font-size: 18px;
   margin: 50px auto;
 `
