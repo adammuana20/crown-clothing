@@ -30,3 +30,8 @@ export const Total = styled.span`
   margin-left: auto;
   font-size: 36px;
 `
+
+export const CheckoutEmptyMessage = styled.span`
+  font-size: 30px;
+  margin: 50px auto;
+`

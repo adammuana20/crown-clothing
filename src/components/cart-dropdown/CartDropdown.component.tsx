@@ -7,7 +7,7 @@ import Button from '../button/Button.component'
 import CartItem from '../cart-item/CartItem.component'
 import { selectCartItems } from '../../store/cart/Cart.selector'
 
-import { CartDropdownContainer, EmptyMessage, CartItems } from './CartDropdown.styles'
+import { CartDropdownContainer, CartDropdownEmptyMessage, CartItems } from './CartDropdown.styles'
 
 const CartDropdown = () => {
     const cartItems = useSelector(selectCartItems)
@@ -25,11 +25,13 @@ const CartDropdown = () => {
                         <CartItem key={item.id} cartItem={item} />
                     )))
                     : (
-                        <EmptyMessage>Your cart is empty</EmptyMessage>
+                        <CartDropdownEmptyMessage>Your Cart Is Empty!</CartDropdownEmptyMessage>
                     )
                 }
             </CartItems>
-            <Button onClick={goToCheckoutHandler}>Go to Checkout</Button>
+            { cartItems.length > 0 &&
+                <Button onClick={goToCheckoutHandler}>Go to Checkout</Button>
+            }
         </CartDropdownContainer>
     )
 }
