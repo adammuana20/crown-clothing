@@ -25,12 +25,13 @@ export type ButtonProps = {
     children?: React.ReactNode
     buttonType?: BUTTON_TYPE_CLASSES;
     isLoading?: boolean;
+    isDisabled?: boolean;
 } & ButtonHTMLAttributes<HTMLButtonElement>
 
-const Button: FC<ButtonProps> = ({ children, buttonType, isLoading, ...btnOptions }) => {
+const Button: FC<ButtonProps> = ({ children, buttonType, isLoading, isDisabled, ...btnOptions }) => {
     const CustomButton = getButton(buttonType)
     return (
-        <CustomButton disabled={isLoading} {...btnOptions}>
+        <CustomButton disabled={isLoading || isDisabled} {...btnOptions}>
             {isLoading ? <ButtonSpinner /> : children}
         </CustomButton>
     )

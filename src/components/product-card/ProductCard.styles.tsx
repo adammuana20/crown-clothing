@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const ProductCardContainer = styled.div`
   width: 100%;
@@ -10,9 +11,8 @@ export const ProductCardContainer = styled.div`
 
   img {
     width: 100%;
-    height: 95%;
+    height: 100%;
     object-fit: cover;
-    margin-bottom: 5px;
   }
 
   button {
@@ -50,4 +50,10 @@ export const Name = styled.span`
 
 export const Price = styled.span`
   width: 10%;
+`
+
+export const ProductLink = styled(Link)`
+  width: 100%;
+  height: 95%;
+  margin-bottom: 5px;
 `

@@ -35,3 +35,13 @@ export const CheckoutEmptyMessage = styled.span`
   font-size: 30px;
   margin: 50px auto;
 `
+
+export const GoBackToShop = styled.span`
+  cursor: pointer;
+  color: blue;
+
+  &:hover{
+    font-weight: bold;
+    text-decoration: underline;
+  }
+`

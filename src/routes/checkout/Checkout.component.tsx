@@ -1,20 +1,27 @@
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 import { selectCartItems, selectCartTotalPrice } from '../../store/cart/Cart.selector'
 
 import CheckoutItem from '../../components/checkout-item/CheckoutItem.component'
 import PaymentForm from '../../components/payment-form/PaymentForm.component'
 import { CheckoutContainer, CheckOutHeader, HeaderBlock, Total } from './Checkout.styles'
-import { CheckoutEmptyMessage } from './Checkout.styles'
+import { CheckoutEmptyMessage, GoBackToShop } from './Checkout.styles'
 
 
 const Checkout = () => {
     const cartItems = useSelector(selectCartItems)
     const cartTotalPrice = useSelector(selectCartTotalPrice)
-    console.log(cartItems);
+    const navigate = useNavigate()
+
+    const handleNavigate = () => {
+        navigate('/shop');
+    };
+
+
     return (
         <>
-            { cartItems.length < 1 ? (<CheckoutEmptyMessage>Your Cart Is Empty!</CheckoutEmptyMessage>)
+            { cartItems.length < 1 ? (<CheckoutEmptyMessage>Your cart is empty! <GoBackToShop onClick={handleNavigate}>Continue shopping</GoBackToShop>.</CheckoutEmptyMessage>)
                 : (
                     <CheckoutContainer>
                         <CheckOutHeader>

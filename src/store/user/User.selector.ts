@@ -26,6 +26,16 @@ export const selectUserIsLoading = createSelector(
     (userSlice) => userSlice.userIsLoading
 )
 
+export const selectEmailSignInButton = createSelector(
+    [selectUserReducer],
+    (userSlice) => userSlice.emailSignInButton
+)
+
+export const selectGoogleSignInButton = createSelector(
+    [selectUserReducer],
+    (userSlice) => userSlice.googleSignInButton
+)
+
 export const selectError = createSelector(
     [selectUserReducer],
     (userSlice) => userSlice.error

@@ -6,7 +6,7 @@ import Button, { BUTTON_TYPE_CLASSES } from '../button/Button.component'
 import FormInput from '../form-input/FormInput.component'
 
 import { googleSignInStart, emailSignInStart } from '../../store/user/User.action'
-import { selectEmailSignInIsLoading, selectGoogleSignInIsLoading, selectError } from '../../store/user/User.selector'
+import { selectEmailSignInIsLoading, selectGoogleSignInIsLoading, selectEmailSignInButton, selectGoogleSignInButton, selectError } from '../../store/user/User.selector'
 
 import { SignInContainer, ButtonsContainer } from './SignInForm.styles'
 
@@ -21,10 +21,10 @@ const SignInForm = () => {
     const { email, password } = signInForm
     const emailSignInIsLoading = useSelector(selectEmailSignInIsLoading)
     const googleSignInIsLoading = useSelector(selectGoogleSignInIsLoading)
+    const emailSignInButton = useSelector(selectEmailSignInButton)
+    const googleSignInButton = useSelector(selectGoogleSignInButton)
     const error = useSelector(selectError)
-    const navigate = useNavigate()
-    
-    
+    const navigate = useNavigate()   
 
     const dispatch = useDispatch()
 
@@ -79,8 +79,8 @@ const SignInForm = () => {
                     }}
                 />
                 <ButtonsContainer>
-                    <Button isLoading={emailSignInIsLoading} type='submit'>Sign In</Button>
-                    <Button isLoading={googleSignInIsLoading} type='button' buttonType={BUTTON_TYPE_CLASSES.google} onClick={signInWithGoogle}>
+                    <Button isLoading={emailSignInIsLoading} isDisabled={emailSignInButton} type='submit'>Sign In</Button>
+                    <Button isLoading={googleSignInIsLoading} isDisabled={googleSignInButton} type='button' buttonType={BUTTON_TYPE_CLASSES.google} onClick={signInWithGoogle}>
                     Google Sign In
                     </Button>
                 </ButtonsContainer>

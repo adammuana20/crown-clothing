@@ -6,6 +6,8 @@ import CartIcon from "../../components/cart-icon/CartIcon.component"
 import CartDropdown from "../../components/cart-dropdown/CartDropdown.component"
 import { selectIsCartOpen } from "../../store/cart/Cart.selector"
 
+import Search from "../search/Search.component"
+
 import { ReactComponent as CrownLogo } from '../../assets/crown.svg'
 import { selectCurrentUser, selectUserIsLoading } from "../../store/user/User.selector"
 
@@ -24,13 +26,14 @@ const Navigation = () => {
 
     return (
         <>
-            <NavigationContainer className='navigation'>
+            <NavigationContainer>
                 <LogoContainer 
                     to='/'
                 >
-                    <CrownLogo className='logo' />
+                    <CrownLogo/>
                 </LogoContainer>
                 <NavLinks>
+                    <Search />
                     <NavLink 
                             to='shop'
                     >
@@ -44,11 +47,18 @@ const Navigation = () => {
                                     SIGN OUT
                                 </NavLink>
                             ) : (
-                                <NavLink 
-                                to='auth' 
-                                >
-                                    Sign In
-                                </NavLink>
+                                <>
+                                    <NavLink 
+                                    to='sign-in' 
+                                    >
+                                        Sign In
+                                    </NavLink>
+                                        <NavLink 
+                                        to='sign-up'
+                                    >
+                                        Sign Up
+                                    </NavLink>
+                                </>
                             )
                         )
                     }
