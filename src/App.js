@@ -6,6 +6,7 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import Spinner from './components/spinner/Spinner.component'
 import { selectError } from './store/user/User.selector'
 import { checkUserSession, clearErrorMessage } from './store/user/User.action'
+import { fetchCategoriesStart } from './store/categories/Category.action'
 
 const Home = lazy(() => import('./routes/home/Home.component'))
 const SignIn = lazy(() => import('./components/sign-in/SignInForm.component'))
@@ -22,6 +23,10 @@ const App = () => {
   useEffect(() => {
     dispatch(checkUserSession())
   }, [])
+
+  useEffect(() => {
+    dispatch(fetchCategoriesStart())
+}, [])
 
   useEffect(() => {
     if(errorMessage) {

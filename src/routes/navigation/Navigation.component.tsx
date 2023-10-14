@@ -13,7 +13,7 @@ import { selectCurrentUser, selectUserIsLoading } from "../../store/user/User.se
 
 import { signOutStart } from "../../store/user/User.action"
 
-import { NavigationContainer, LogoContainer, NavLinks, NavLink } from './Navigation.styles'
+import { NavigationContainer, LogoContainer, NavLinks, StyledNavLink } from './Navigation.styles'
 import { ButtonSpinner } from "../../components/button/Button.styles"
 
 const Navigation = () => {
@@ -23,6 +23,12 @@ const Navigation = () => {
     const checkUserSession = useSelector(selectUserIsLoading)
     
     const signOutUser = () => dispatch(signOutStart())
+
+    const activeStyle = {
+        fontWeight: "bold",
+        textDecoration: "underline",
+        textUnderlineOffset: "0.2em",
+    }
 
     return (
         <>
@@ -34,30 +40,37 @@ const Navigation = () => {
                 </LogoContainer>
                 <NavLinks>
                     <Search />
-                    <NavLink 
+                    <StyledNavLink 
                             to='shop'
+                            style={({isActive}) => isActive ? activeStyle : {}}
                     >
                         Shop
-                    </NavLink>
+                    </StyledNavLink>
                     { checkUserSession ? (
                         <ButtonSpinner />
                     ) : (
                             currentUser ? (
-                                <NavLink as='span' to='#' onClick={signOutUser}>
+                                <StyledNavLink 
+                                    as='span' 
+                                    to='#' 
+                                    onClick={signOutUser}
+                                >
                                     SIGN OUT
-                                </NavLink>
+                                </StyledNavLink>
                             ) : (
                                 <>
-                                    <NavLink 
-                                    to='sign-in' 
+                                    <StyledNavLink 
+                                        to='sign-in' 
+                                        style={({isActive}) => isActive ? activeStyle : {}}
                                     >
                                         Sign In
-                                    </NavLink>
-                                        <NavLink 
+                                    </StyledNavLink>
+                                        <StyledNavLink 
                                         to='sign-up'
+                                        style={({isActive}) => isActive ? activeStyle : {}}
                                     >
                                         Sign Up
-                                    </NavLink>
+                                    </StyledNavLink>
                                 </>
                             )
                         )
