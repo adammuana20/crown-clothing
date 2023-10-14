@@ -43,6 +43,7 @@ export const Input = styled.input`
     margin: 0;
     border-bottom: none;
     background-color: transparent;
+    cursor: pointer;
   }
 
   &[type='search'] + ${FormInputLabel} {
