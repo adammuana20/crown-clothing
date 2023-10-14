@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux'
 
-import CategoryPreview from '../../components/category-preview/CategoryPreview.components'
+import CategoryPreview from '../../components/category/category-preview/CategoryPreview.components'
 import { selectCategoriesMap, selectCategoriesIsLoading } from '../../store/categories/Category.selector'
 import Spinner from '../../components/spinner/Spinner.component'
 

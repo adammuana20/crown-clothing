@@ -1,5 +1,5 @@
-import SignUpForm from '../../components/sign-up-form/SignUpForm.component'
-import SignInForm from '../../components/sign-in/SignInForm.component'
+import SignUpForm from '../../components/authentication/sign-up-form/SignUpForm.component'
+import SignInForm from '../../components/authentication/sign-in/SignInForm.component'
 
 import { AuthenticationContainer } from './Authentication.styles'
 

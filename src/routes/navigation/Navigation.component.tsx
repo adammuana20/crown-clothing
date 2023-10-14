@@ -2,8 +2,8 @@
 import { Outlet } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
-import CartIcon from "../../components/cart-icon/CartIcon.component"
-import CartDropdown from "../../components/cart-dropdown/CartDropdown.component"
+import CartIcon from "../../components/cart/cart-icon/CartIcon.component"
+import CartDropdown from "../../components/cart/cart-dropdown/CartDropdown.component"
 import { selectIsCartOpen } from "../../store/cart/Cart.selector"
 
 import Search from "../search/Search.component"
@@ -45,6 +45,12 @@ const Navigation = () => {
                             style={({isActive}) => isActive ? activeStyle : {}}
                     >
                         Shop
+                    </StyledNavLink>
+                    <StyledNavLink 
+                            to='add-product'
+                            style={({isActive}) => isActive ? activeStyle : {}}
+                    >
+                        Add Product
                     </StyledNavLink>
                     { checkUserSession ? (
                         <ButtonSpinner />

@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 
-import ProductPreview from '../../components/product-preview/ProductPreview.component'
+import ProductPreview from '../../components/product/product-preview/ProductPreview.component'
 import CategoriesPreview from '../categories-preview/CategoriesPreview.components'
 import Category from '../category/Category.component'
 

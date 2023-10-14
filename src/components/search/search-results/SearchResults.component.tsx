@@ -1,7 +1,7 @@
 import { InputHTMLAttributes, FC } from "react"
 import { useSelector } from "react-redux";
 
-import { selectCategoriesMap } from "../../store/categories/Category.selector"
+import { selectCategoriesMap } from "../../../store/categories/Category.selector"
 import SearchResult from "../search-result/SearchResult.component";
 
 type SearchResultsProp = {

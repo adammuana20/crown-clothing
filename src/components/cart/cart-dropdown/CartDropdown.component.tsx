@@ -3,9 +3,9 @@ import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
-import Button from '../button/Button.component'
+import Button from '../../button/Button.component'
 import CartItem from '../cart-item/CartItem.component'
-import { selectCartItems } from '../../store/cart/Cart.selector'
+import { selectCartItems } from '../../../store/cart/Cart.selector'
 
 import { CartDropdownContainer, CartDropdownEmptyMessage, CartItems } from './CartDropdown.styles'
 

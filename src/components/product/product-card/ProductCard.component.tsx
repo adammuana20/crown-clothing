@@ -1,10 +1,10 @@
 import { FC } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { addItemToCart } from '../../store/cart/Cart.action'
-import { selectCartItems } from '../../store/cart/Cart.selector'
-import Button, { BUTTON_TYPE_CLASSES } from '../button/Button.component'
-import { CategoryItem } from '../../store/categories/Category.types'
+import { addItemToCart } from '../../../store/cart/Cart.action'
+import { selectCartItems } from '../../../store/cart/Cart.selector'
+import Button, { BUTTON_TYPE_CLASSES } from '../../button/Button.component'
+import { CategoryItem } from '../../../store/categories/Category.types'
 
 import { ProductCardContainer, Footer, Name, Price, ProductLink } from './ProductCard.styles'
 

@@ -1,7 +1,7 @@
 import { FC, memo } from 'react'
 
 import { CartItemContainer, ItemDetails } from './CartItem.styles'
-import { CartItem as TCartItem } from '../../store/cart/Cart.types'
+import { CartItem as TCartItem } from '../../../store/cart/Cart.types'
 
 export type CartItemProps = {
     cartItem: TCartItem
