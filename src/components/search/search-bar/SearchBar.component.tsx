@@ -2,7 +2,7 @@ import { useState, ChangeEvent } from "react"
 
 import { FaSearch } from 'react-icons/fa'
 
-import FormInput from "../form-input/FormInput.component"
+import FormInput from "../../form-input/FormInput.component"
 import SearchResults from "../search-results/SearchResults.component"
 import { SearchBarContainer } from "./SearchBar.styles"
 

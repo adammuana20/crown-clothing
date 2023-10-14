@@ -2,11 +2,11 @@ import { useState, FormEvent, ChangeEvent } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
-import Button, { BUTTON_TYPE_CLASSES } from '../button/Button.component'
-import FormInput from '../form-input/FormInput.component'
+import Button, { BUTTON_TYPE_CLASSES } from '../../button/Button.component'
+import FormInput from '../../form-input/FormInput.component'
 
-import { googleSignInStart, emailSignInStart } from '../../store/user/User.action'
-import { selectEmailSignInIsLoading, selectGoogleSignInIsLoading, selectEmailSignInButton, selectGoogleSignInButton, selectError } from '../../store/user/User.selector'
+import { googleSignInStart, emailSignInStart } from '../../../store/user/User.action'
+import { selectEmailSignInIsLoading, selectGoogleSignInIsLoading, selectEmailSignInButton, selectGoogleSignInButton, selectError } from '../../../store/user/User.selector'
 
 import { SignInContainer, ButtonsContainer } from './SignInForm.styles'
 

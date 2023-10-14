@@ -1,7 +1,7 @@
 import { FC } from "react"
 
 import HighlightedSuggestion from "../highlighted-suggestion/HighlightedSuggestion.component";
-import { CategoryItem } from "../../store/categories/Category.types";
+import { CategoryItem } from "../../../store/categories/Category.types";
 
 import { SearchResultContainer, ResultList, ResultLink } from "./SearchResult.styles"
 

@@ -9,8 +9,8 @@ import { checkUserSession, clearErrorMessage } from './store/user/User.action'
 import { fetchCategoriesStart } from './store/categories/Category.action'
 
 const Home = lazy(() => import('./routes/home/Home.component'))
-const SignIn = lazy(() => import('./components/sign-in/SignInForm.component'))
-const SignUp = lazy(() => import('./components/sign-up-form/SignUpForm.component'))
+const SignIn = lazy(() => import('./components/authentication/sign-in/SignInForm.component'))
+const SignUp = lazy(() => import('./components/authentication/sign-up-form/SignUpForm.component'))
 const Navigation = lazy(() => import('./routes/navigation/Navigation.component'))
 const Shop = lazy(() => import('./routes/shop/Shop.components'))
 const Checkout = lazy(() => import('./routes/checkout/Checkout.component'))

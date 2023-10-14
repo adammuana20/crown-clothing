@@ -1,14 +1,13 @@
 import { useParams } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux";
 
-import { addItemToCart } from "../../store/cart/Cart.action";
-import { selectCartItems } from "../../store/cart/Cart.selector";
+import { addItemToCart } from "../../../store/cart/Cart.action";
+import { selectCartItems } from "../../../store/cart/Cart.selector";
 
-import Button from "../button/Button.component";
-import { BUTTON_TYPE_CLASSES } from "../button/Button.component";
-import { selectCategoriesMap } from "../../store/categories/Category.selector";
+import Button, { BUTTON_TYPE_CLASSES } from "../../button/Button.component";
+import { selectCategoriesMap } from "../../../store/categories/Category.selector";
 
-import { CategoryItem } from "../../store/categories/Category.types";
+import { CategoryItem } from "../../../store/categories/Category.types";
 
 import { ProductPreviewContainer, ProductImage, ProductInfo, Category } from "./ProductPreview.styles";
 
