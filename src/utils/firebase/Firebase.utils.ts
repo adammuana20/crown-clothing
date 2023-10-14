@@ -68,8 +68,6 @@ export const addCollectionAndDocuments = async <T extends ObjectToAdd>(collectio
     console.log('done');
 }
 
-
-
 export const getCategoriesAndDocuments = async (label: string): Promise<Category[]> => {
     const collectionRef = collection(db, label)
     const q = query(collectionRef)

@@ -5,7 +5,6 @@ import { selectCategoriesMap, selectCategoriesIsLoading } from '../../store/cate
 import Spinner from '../../components/spinner/Spinner.component'
 
 const CategoriesPreview = () => {
-    // const { categoriesMap } = useContext(CategoriesContext)
     const categoriesMap = useSelector(selectCategoriesMap)
     const isLoading = useSelector(selectCategoriesIsLoading)
 

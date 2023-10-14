@@ -16,6 +16,7 @@ export type SignUpFailed = ActionWithPayload<USER_ACTION_TYPES.SIGN_UP_FAILED, E
 export type SignOutStart = Action<USER_ACTION_TYPES.SIGN_OUT_START>
 export type SignOutSuccess = Action<USER_ACTION_TYPES.SIGN_OUT_SUCCESS>
 export type SignOutFailed = ActionWithPayload<USER_ACTION_TYPES.SIGN_OUT_FAILED, Error>
+export type ClearErrorMessage = Action<USER_ACTION_TYPES.CLEAR_ERROR_MESSAGE>
 
 export const checkUserSession = withMatcher((): CheckUserSession => createAction(USER_ACTION_TYPES.CHECK_USER_SESSION))
 export const checkUserSessionComplete = withMatcher((): CheckUserSessionComplete => createAction(USER_ACTION_TYPES.CHECK_USER_SESSION_COMPLETE))
@@ -30,3 +31,4 @@ export const signUpFailed = withMatcher((error: Error): SignUpFailed => createAc
 export const signOutStart = withMatcher((): SignOutStart => createAction( USER_ACTION_TYPES.SIGN_OUT_START ))
 export const signOutSuccess = withMatcher((): SignOutSuccess => createAction( USER_ACTION_TYPES.SIGN_OUT_SUCCESS ))
 export const signOutFailed = withMatcher((error: Error): SignOutFailed => createAction( USER_ACTION_TYPES.SIGN_OUT_FAILED, error ))
+export const clearErrorMessage = withMatcher((): ClearErrorMessage => createAction( USER_ACTION_TYPES.CLEAR_ERROR_MESSAGE ))

@@ -23,7 +23,7 @@ type ExtendedPersistConfig = PersistConfig<RootState> & {
 const persistConfig: ExtendedPersistConfig = {
     key: 'root',
     storage,
-    whitelist: ['cart']
+    whitelist: ['cart'],
 }
 
 const sagaMiddleware = createSagaMiddleware()
@@ -32,7 +32,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 const middleWares = [process.env.NODE_ENV !== 'production' 
         && logger,
-        sagaMiddleware].filter(
+        sagaMiddleware,].filter(
     (middleware): middleware is Middleware => Boolean(middleware)
 )
 

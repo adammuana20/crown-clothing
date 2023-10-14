@@ -39,7 +39,15 @@ export function* signInWithGoogle({payload: { navigate }}: GoogleSignInStart) {
         yield* call(getSnapshotFromUserAuth, user)
         yield* navigate('/', { replace: true })
     } catch(error) {
-        yield* put(signInFailed(error as Error))
+        if(error instanceof Error && 'code' in error) {
+            const firebaseError = error as { code: string }
+            if(firebaseError.code === "auth/popup-closed-by-user") {
+                const errorMessage = new Error("Pop-up Closed")                
+                yield* put(signInFailed(errorMessage as Error))
+            } else {
+                yield* put(signInFailed(error as Error))
+            }
+        }
     }
 }
 
@@ -67,8 +75,6 @@ export function* signInWithEmail({ payload: { email, password, navigate }}: Emai
             } else {
                 yield* put(signInFailed(error as Error))
             }
-        } else {
-            yield* put(signInFailed(error as Error))
         }
     }
 }

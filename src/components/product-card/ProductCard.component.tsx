@@ -6,26 +6,28 @@ import { selectCartItems } from '../../store/cart/Cart.selector'
 import Button, { BUTTON_TYPE_CLASSES } from '../button/Button.component'
 import { CategoryItem } from '../../store/categories/Category.types'
 
-import { ProductCardContainer, Footer, Name, Price } from './ProductCard.styles'
+import { ProductCardContainer, Footer, Name, Price, ProductLink } from './ProductCard.styles'
 
 type ProductCardProps = {
     product: CategoryItem;
+    categoryTitle?: string;
 }
 
-const ProductCard: FC<ProductCardProps> = ({ product }) => {
+const ProductCard: FC<ProductCardProps> = ({ product, categoryTitle }) => {
     const dispatch = useDispatch()
-    // const { addItemToCart } = useContext(CartContext)
     const cartItems = useSelector(selectCartItems)
-    const { name, price, imageUrl } = product
+    const { id, name, price, imageUrl } = product
 
-    const addProductToCart = () => dispatch(addItemToCart(cartItems, product))
+    const addProductToCart = () => dispatch(addItemToCart(cartItems, product))    
 
     return (
         <ProductCardContainer>
-            <img src={imageUrl} alt={`${name}`} />
+            <ProductLink to={categoryTitle ?`${categoryTitle}/${id}` : `${id}`}>
+                <img src={imageUrl} alt={`${name}`} />
+            </ProductLink>
             <Footer>
                 <Name>{name}</Name>
-                <Price>{price}</Price>
+                <Price>${price}</Price>
             </Footer>
             <Button buttonType={BUTTON_TYPE_CLASSES.inverted} onClick={addProductToCart}>Add to cart</Button>
         </ProductCardContainer>
