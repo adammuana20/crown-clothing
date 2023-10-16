@@ -1,10 +1,12 @@
 import { useState, FormEvent, ChangeEvent } from 'react'
 import { AuthError, AuthErrorCodes } from 'firebase/auth'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 import FormInput from '../../form-input/FormInput.component'
 import Button from '../../button/Button.component'
 import { signUpStart } from '../../../store/user/User.action'
+import { selectUserError, selectSignUpIsLoading } from '../../../store/user/User.selector'
 
 import { SignUpContainer } from './SignUpForm.styles'
 
@@ -19,6 +21,9 @@ const SignUpForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields)
     const { displayName, email, password, confirmPassword } = formFields
     const dispatch = useDispatch()
+    const error = useSelector(selectUserError)
+    const navigate = useNavigate()
+    const isLoading = useSelector(selectSignUpIsLoading)
 
     const resetFormFields = () => {
         setFormFields(defaultFormFields)
@@ -39,14 +44,10 @@ const SignUpForm = () => {
             return
         }
 
-        try {
-            dispatch(signUpStart(email, password, displayName))
+        dispatch(signUpStart(email, password, displayName, navigate))
+
+        if(!error) {
             resetFormFields()
-        } catch (err) {
-            if((err as AuthError).code === AuthErrorCodes.EMAIL_EXISTS) {
-                alert('Cannot create user, email already exist.')
-            }
-            console.log('User creation error:', err);
         }
             // console.log('Form Submitted');
             
@@ -57,6 +58,9 @@ const SignUpForm = () => {
         <SignUpContainer>
             <h2>Don't have an account?</h2>
             <span>Sign Up with your email and password</span>
+            { error &&
+                <p>{error.message}</p>
+            }
             <form onSubmit={handleSubmit}>
                 <FormInput
                     label='Display Name'
@@ -101,7 +105,7 @@ const SignUpForm = () => {
                     }}
 
                 />
-                <Button type='submit'>Sign Up</Button>
+                <Button isLoading={isLoading} type='submit'>Sign Up</Button>
             </form>
         </SignUpContainer>
     )

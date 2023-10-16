@@ -1,8 +1,8 @@
 import { takeLatest, all, call, put } from 'typed-redux-saga/macro'
 
-import { getCategoriesAndDocuments } from '../../utils/firebase/Firebase.utils'
+import { createProductDocumentFromCategory, getCategoriesAndDocuments } from '../../utils/firebase/Firebase.utils'
 
-import { fetchCategoriesSuccess, fetchCategoriesFailed } from './Category.action'
+import { fetchCategoriesSuccess, fetchCategoriesFailed, CreateProductStart, fetchCategoriesStart, createProductFailed, createProductSuccess } from './Category.action'
 
 import { CATEGORIES_ACTION_TYPES } from './Category.types'
 
@@ -15,10 +15,24 @@ export function* fetchCategoriesStartAsync() {
     }
 }
 
+export function* createProduct(productData: CreateProductStart) {
+    try {
+        yield* call(createProductDocumentFromCategory, productData.payload)
+        yield* put(createProductSuccess())
+        yield* put(fetchCategoriesStart())
+    } catch(error) {
+        yield* put(createProductFailed(error as Error))
+    }
+}
+
 export function* onFetchCategories() {
     yield* takeLatest( CATEGORIES_ACTION_TYPES.FETCH_CATEGORIES_START,  fetchCategoriesStartAsync)
 }
 
+export function* onCreateProduct() {
+    yield* takeLatest( CATEGORIES_ACTION_TYPES.CREATE_PRODUCT_START, createProduct)
+}
+
 export function* categoriesSaga() {
-    yield* all([call(onFetchCategories)])
+    yield* all([call(onFetchCategories), call(onCreateProduct)])
 }

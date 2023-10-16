@@ -24,7 +24,10 @@ import {
     QueryDocumentSnapshot
 } from 'firebase/firestore'
 
-import { Category } from '../../store/categories/Category.types'
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { v4 } from 'uuid'
+
+import { Category, CategoryItem, ProductItem } from '../../store/categories/Category.types'
 
 const firebaseConfig = {
     apiKey: 'AIzaSyCfkO6DEiDFwSH6dyFW_6VjeFlEgWswMLE',
@@ -48,6 +51,7 @@ export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider)
 export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider)
 
 export const db = getFirestore()
+export const storage = getStorage()
 
 export type ObjectToAdd = {
     title: string;
@@ -73,6 +77,7 @@ export const getCategoriesAndDocuments = async (label: string): Promise<Category
     const q = query(collectionRef)
 
     const querySnapshot = await getDocs(q)
+    
     return querySnapshot.docs.map((docSnapshot) => docSnapshot.data() as Category)
 }
 
@@ -138,4 +143,38 @@ export const getCurrentUser = (): Promise<User | null> => {
             reject
         )
     })
+}
+
+export const uploadImageToStorage = async (image: Blob) => {
+    const imgs = ref(storage, `images/${v4()}`)
+    const uploadImage = await uploadBytes(imgs, image)
+    const imageUrl = await getDownloadURL(uploadImage.ref)
+
+    return imageUrl
+}
+
+export const createProductDocumentFromCategory = async ({id, productName, categoryTitle, imageBlob, description, price}: ProductItem) => {
+    const categoryDocRef = doc(db, 'categories', categoryTitle);
+    const categorySnapshot = await getDoc(categoryDocRef);
+
+    if(categorySnapshot.exists()){
+        const categoryData = categorySnapshot.data()
+
+        const itemNames = categoryData.items.map((item: CategoryItem) => item.name)
+        if(itemNames.includes(productName)) {
+            throw new Error('Product name already exists')
+        }
+            try {
+                console.log('Im here');
+                
+                const imageUrl = await uploadImageToStorage(imageBlob)
+
+                const newProduct = { id: id, name: productName, imageUrl: imageUrl, description: description, price: price  }
+                categoryData.items.push(newProduct)
+                alert('Product Added!')
+                return await setDoc(categoryDocRef, categoryData)
+            } catch(err) {
+                console.log('error creating the Product', err);
+            }
+    }
 }

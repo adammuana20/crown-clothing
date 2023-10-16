@@ -72,6 +72,9 @@ export function* signInWithEmail({ payload: { email, password, navigate }}: Emai
             } else if(firebaseError.code === "auth/too-many-requests") {
                 const errorMessage = new Error("Access to this account has been temporarily disabled due to many failed login attempts. Please try again later.");
                 yield* put(signInFailed(errorMessage as Error));
+            } else if(firebaseError.code === "auth/network-request-failed") {
+                const errorMessage = new Error("Please try again later! Maybe you have a slow connection.");
+                yield* put(signInFailed(errorMessage as Error));
             } else {
                 yield* put(signInFailed(error as Error))
             }
@@ -79,16 +82,28 @@ export function* signInWithEmail({ payload: { email, password, navigate }}: Emai
     }
 }
 
-export function* signUp({ payload: { email, password, displayName }}: SignUpStart) {
+export function* signInAfterSignUp({payload: {user, additionalDetails}}: SignUpSuccess) {
+    yield* call(getSnapshotFromUserAuth, user, additionalDetails)
+}
+
+
+export function* signUp({ payload: { email, password, displayName, navigate }}: SignUpStart) {
     try {
         const userCredential = yield* call(createAuthUserWithEmailAndPassword, email, password)
 
         if(userCredential){
             const { user } = userCredential
             yield* put(signUpSuccess(user, { displayName }))
+            yield* navigate('/', { replace: true })
         }
     } catch (error) {
-        yield* put(signUpFailed(error as Error))
+        const firebaseError = error as { code: string }
+        if(firebaseError.code === "auth/email-already-in-use") {
+            const errorMessage = new Error("Cannot create user, Email already exist!");
+            yield* put(signInFailed(errorMessage as Error));
+        } else {
+            yield* put(signUpFailed(error as Error))
+        }   
     }
 }
 
@@ -99,10 +114,6 @@ export function* signOut() {
     } catch(error) {
         yield* put(signOutFailed(error as Error))
     }
-}
-
-export function* signInAfterSignUp({payload: {user, additionalDetails}}: SignUpSuccess) {
-    yield* call(getSnapshotFromUserAuth, user, additionalDetails)
 }
 
 export function* onSignUpStart() {

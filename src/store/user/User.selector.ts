@@ -3,6 +3,7 @@ import { createSelector } from "reselect"
 import { RootState } from "../Store";
 
 import { UserState } from "./User.reducer"
+import { create } from "domain";
 
 export const selectUserReducer = (state: RootState): UserState => state.user;
 
@@ -36,7 +37,12 @@ export const selectGoogleSignInButton = createSelector(
     (userSlice) => userSlice.googleSignInButton
 )
 
-export const selectError = createSelector(
+export const selectUserError = createSelector(
     [selectUserReducer],
     (userSlice) => userSlice.error
+)
+
+export const selectSignUpIsLoading = createSelector(
+    [selectUserReducer],
+    (userSlice) => userSlice.signUpIsLoading
 )

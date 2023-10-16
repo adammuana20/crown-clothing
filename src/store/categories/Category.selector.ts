@@ -25,3 +25,13 @@ export const selectCategoriesIsLoading = createSelector(
   [selectCategoryReducer],
   (categoriesSlice) => categoriesSlice.isLoading
 )
+
+export const selectAddProductIsLoading = createSelector(
+  [selectCategoryReducer],
+  (categoriesSlice) => categoriesSlice.addProductIsLoading
+)
+
+export const selectProductError  = createSelector(
+  [selectCategoryReducer],
+  (categoriesSlice) => categoriesSlice.error
+)
