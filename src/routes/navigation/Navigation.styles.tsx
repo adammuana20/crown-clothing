@@ -26,4 +26,8 @@ export const NavLinks = styled.div`
 export const StyledNavLink = styled(NavLink)`
     padding: 10px 15px;
     cursor: pointer;
+
+    &:hover{
+      font-weight: bold;
+    }
 `

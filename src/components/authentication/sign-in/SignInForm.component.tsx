@@ -6,7 +6,7 @@ import Button, { BUTTON_TYPE_CLASSES } from '../../button/Button.component'
 import FormInput from '../../form-input/FormInput.component'
 
 import { googleSignInStart, emailSignInStart } from '../../../store/user/User.action'
-import { selectEmailSignInIsLoading, selectGoogleSignInIsLoading, selectEmailSignInButton, selectGoogleSignInButton, selectError } from '../../../store/user/User.selector'
+import { selectEmailSignInIsLoading, selectGoogleSignInIsLoading, selectEmailSignInButton, selectGoogleSignInButton, selectUserError } from '../../../store/user/User.selector'
 
 import { SignInContainer, ButtonsContainer } from './SignInForm.styles'
 
@@ -23,7 +23,7 @@ const SignInForm = () => {
     const googleSignInIsLoading = useSelector(selectGoogleSignInIsLoading)
     const emailSignInButton = useSelector(selectEmailSignInButton)
     const googleSignInButton = useSelector(selectGoogleSignInButton)
-    const error = useSelector(selectError)
+    const error = useSelector(selectUserError)
     const navigate = useNavigate()   
 
     const dispatch = useDispatch()

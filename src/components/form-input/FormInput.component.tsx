@@ -13,6 +13,8 @@ type FormInputProps = {
         required?: boolean;
         'data-search'?: boolean;
         placeholder?: string;
+        step?: number;
+        min?: number;
     }
 } & InputHTMLAttributes<HTMLInputElement>
 

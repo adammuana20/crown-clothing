@@ -47,7 +47,7 @@ const Navigation = () => {
                         Shop
                     </StyledNavLink>
                     <StyledNavLink 
-                            to='add-product'
+                            to='product'
                             style={({isActive}) => isActive ? activeStyle : {}}
                     >
                         Add Product

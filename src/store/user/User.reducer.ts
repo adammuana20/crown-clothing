@@ -1,11 +1,25 @@
 import { AnyAction } from "redux";
+import { User } from "firebase/auth"
 
-import { signInFailed, signUpFailed, signOutFailed, signOutSuccess, signInSuccess, emailSignInStart, googleSignInStart, checkUserSessionComplete, clearErrorMessage } from "./User.action";
+import { 
+    signInFailed, 
+    signUpFailed, 
+    signOutFailed, 
+    signOutSuccess, 
+    signInSuccess, 
+    emailSignInStart, 
+    googleSignInStart, 
+    checkUserSessionComplete, 
+    clearUserErrorMessage,
+    signUpStart,
+    signUpSuccess
+} from "./User.action";
 import { UserData } from "../../utils/firebase/Firebase.utils";
 
 export type UserState = {
     readonly currentUser: UserData | null;
     readonly userIsLoading: boolean;
+    readonly signUpIsLoading: boolean;
     readonly emailSignInIsLoading: boolean;
     readonly emailSignInButton: boolean;
     readonly googleSignInIsLoading: boolean;
@@ -16,6 +30,7 @@ export type UserState = {
 export const USER_INITIAL_STATE: UserState = {
     currentUser: null,
     userIsLoading: true,
+    signUpIsLoading: false,
     emailSignInIsLoading: false,
     emailSignInButton: false,
     googleSignInIsLoading: false,
@@ -40,6 +55,13 @@ export const userReducer = (state = USER_INITIAL_STATE, action: AnyAction): User
         }
     }
 
+    if(signUpStart.match(action)) {
+        return {
+            ...state,
+            signUpIsLoading: true,
+        }
+    }
+
     if(googleSignInStart.match(action)) {
         return {
             ...state,
@@ -56,6 +78,7 @@ export const userReducer = (state = USER_INITIAL_STATE, action: AnyAction): User
             googleSignInIsLoading: false,
             googleSignInButton: false,
             emailSignInButton: false,
+            signUpIsLoading: false,
         }
     }
 
@@ -74,10 +97,11 @@ export const userReducer = (state = USER_INITIAL_STATE, action: AnyAction): User
             googleSignInIsLoading: false,
             googleSignInButton: false,
             emailSignInButton: false,
+            signUpIsLoading: false,
         }
     }
 
-    if(clearErrorMessage.match(action)) {
+    if(clearUserErrorMessage.match(action)) {
         return {
             ...state,
             error: null,
