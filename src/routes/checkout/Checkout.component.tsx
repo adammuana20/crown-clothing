@@ -7,6 +7,7 @@ import CheckoutItem from '../../components/checkout-item/CheckoutItem.component'
 import PaymentForm from '../../components/payment-form/PaymentForm.component'
 import { CheckoutContainer, CheckOutHeader, HeaderBlock, Total } from './Checkout.styles'
 import { CheckoutEmptyMessage, GoBackToShop } from './Checkout.styles'
+import { ChangeEvent, useState } from 'react'
 
 
 const Checkout = () => {
@@ -17,7 +18,6 @@ const Checkout = () => {
     const handleNavigate = () => {
         navigate('/shop');
     };
-
 
     return (
         <>
