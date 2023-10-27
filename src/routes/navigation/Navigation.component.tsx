@@ -1,5 +1,6 @@
 
-import { Outlet } from "react-router-dom"
+import { useEffect } from 'react'
+import { Outlet, useLocation } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
 
 import CartIcon from "../../components/cart/cart-icon/CartIcon.component"
@@ -9,9 +10,11 @@ import { selectIsCartOpen } from "../../store/cart/Cart.selector"
 import Search from "../search/Search.component"
 
 import { ReactComponent as CrownLogo } from '../../assets/crown.svg'
-import { selectCurrentUser, selectUserIsLoading } from "../../store/user/User.selector"
+import { selectCurrentUser, selectUserIsLoading, selectUserError } from "../../store/user/User.selector"
 
-import { signOutStart } from "../../store/user/User.action"
+import { signOutStart, clearUserErrorMessage } from "../../store/user/User.action"
+import { selectProductError } from "../../store/categories/Category.selector"
+import { clearProductErrorMessage } from '../../store/categories/Category.action'
 
 import { NavigationContainer, LogoContainer, NavLinks, StyledNavLink } from './Navigation.styles'
 import { ButtonSpinner } from "../../components/button/Button.styles"
@@ -21,6 +24,9 @@ const Navigation = () => {
     const currentUser = useSelector(selectCurrentUser)
     const isCartOpen = useSelector(selectIsCartOpen)
     const checkUserSession = useSelector(selectUserIsLoading)
+    const location = useLocation()
+    const userErrorMessage = useSelector(selectUserError)
+    const productErrorMessage = useSelector(selectProductError)
     
     const signOutUser = () => dispatch(signOutStart())
 
@@ -29,6 +35,16 @@ const Navigation = () => {
         textDecoration: "underline",
         textUnderlineOffset: "0.2em",
     }
+
+    useEffect(() => {
+        if(userErrorMessage) {
+          dispatch(clearUserErrorMessage())
+        }
+    
+        if(productErrorMessage) {
+          dispatch(clearProductErrorMessage())
+        }
+    }, [location.pathname])
 
     return (
         <>
@@ -46,23 +62,25 @@ const Navigation = () => {
                     >
                         Shop
                     </StyledNavLink>
-                    <StyledNavLink 
-                            to='product'
-                            style={({isActive}) => isActive ? activeStyle : {}}
-                    >
-                        Add Product
-                    </StyledNavLink>
                     { checkUserSession ? (
                         <ButtonSpinner />
                     ) : (
                             currentUser ? (
-                                <StyledNavLink 
-                                    as='span' 
-                                    to='#' 
-                                    onClick={signOutUser}
-                                >
-                                    SIGN OUT
-                                </StyledNavLink>
+                                <>
+                                    <StyledNavLink 
+                                            to='product'
+                                            style={({isActive}) => isActive ? activeStyle : {}}
+                                    >
+                                        Add Product
+                                    </StyledNavLink>
+                                    <StyledNavLink 
+                                        as='span' 
+                                        to='#' 
+                                        onClick={signOutUser}
+                                    >
+                                        SIGN OUT
+                                    </StyledNavLink>
+                                </>
                             ) : (
                                 <>
                                     <StyledNavLink 

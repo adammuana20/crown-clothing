@@ -1,16 +1,19 @@
-import { useEffect, lazy, Suspense } from 'react'
+import { useEffect, lazy, Suspense, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from 'react-router-dom'
 
 import Spinner from './components/spinner/Spinner.component'
 
-import { selectUserError } from './store/user/User.selector'
-import { checkUserSession, clearUserErrorMessage } from './store/user/User.action'
+import { checkUserSession } from './store/user/User.action'
+import { selectCurrentUser } from './store/user/User.selector'
 
-import { fetchCategoriesStart, clearProductErrorMessage } from './store/categories/Category.action'
-import { selectProductError } from './store/categories/Category.selector'
+import { fetchCategoriesStart } from './store/categories/Category.action'
+import { loader as ProductLoader } from './routes/product/Product.component'
+import { loader as SignInLoader } from './components/authentication/sign-in/SignInForm.component'
+import { loader as SignUpLoader } from './components/authentication/sign-up-form/SignUpForm.component'
 
+const NotFound = lazy(() => import('./components/404.component'))
 const Home = lazy(() => import('./routes/home/Home.component'))
 const SignIn = lazy(() => import('./components/authentication/sign-in/SignInForm.component'))
 const SignUp = lazy(() => import('./components/authentication/sign-up-form/SignUpForm.component'))
@@ -21,9 +24,7 @@ const Product = lazy(() => import('./routes/product/Product.component'))
 
 const App = () => {
   const dispatch = useDispatch()
-  const location = useLocation()
-  const userErrorMessage = useSelector(selectUserError)
-  const productErrorMessage = useSelector(selectProductError)
+  const currentUser = useSelector(selectCurrentUser)
 
   useEffect(() => {
     dispatch(checkUserSession())
@@ -33,28 +34,23 @@ const App = () => {
     dispatch(fetchCategoriesStart())
 }, [])
 
-  useEffect(() => {
-    if(userErrorMessage) {
-      dispatch(clearUserErrorMessage())
-    }
-
-    if(productErrorMessage) {
-      dispatch(clearProductErrorMessage())
-    }
-  }, [location.pathname])
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path='/' element={<Navigation />} >
+        <Route index  element={<Home />} />
+        <Route path='shop/*'  element={<Shop />} />
+        <Route path='product' element={<Product />} loader={() => ProductLoader(currentUser)} />
+        <Route path='sign-in'  element={<SignIn />} loader={() => SignInLoader(currentUser)} />
+        <Route path='sign-up'  element={<SignUp />} loader={() => SignUpLoader(currentUser)} />
+        <Route path='checkout' element={<Checkout />} />
+        <Route path='*' element={<NotFound />} />
+      </Route>
+    )
+  )
 
   return (
     <Suspense fallback={<Spinner />}>
-      <Routes>
-          <Route path='/' element={<Navigation />}>
-            <Route index  element={<Home />} />
-            <Route path='shop/*'  element={<Shop />} />
-            <Route path='product' element={<Product />} />
-            <Route path='sign-in'  element={<SignIn />} />
-            <Route path='sign-up'  element={<SignUp />} />
-            <Route path='checkout' element={<Checkout />} />
-          </Route>
-      </Routes>
+      <RouterProvider router={router} />
     </Suspense>
   );
 }

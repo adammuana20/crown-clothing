@@ -9,7 +9,12 @@ import { googleSignInStart, emailSignInStart } from '../../../store/user/User.ac
 import { selectEmailSignInIsLoading, selectGoogleSignInIsLoading, selectEmailSignInButton, selectGoogleSignInButton, selectUserError } from '../../../store/user/User.selector'
 
 import { SignInContainer, ButtonsContainer } from './SignInForm.styles'
+import { alreadyLoggedIn } from '../../../utils/loaders/Loaders.utils'
 
+
+export async function loader(currentUser: Object) {
+    return await alreadyLoggedIn(currentUser)
+}
 
 const defaultFormFields = {
     email: '',
