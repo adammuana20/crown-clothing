@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import CategoryPreview from '../../components/category/category-preview/CategoryPreview.components'
 import { selectCategoriesMap, selectCategoriesIsLoading } from '../../store/categories/Category.selector'
 import Spinner from '../../components/spinner/Spinner.component'
+import MobileBottomMenu from '../mobile-bottom-menu/MobileBottomMenu.component'
 
 const CategoriesPreview = () => {
     const categoriesMap = useSelector(selectCategoriesMap)
@@ -17,6 +18,7 @@ const CategoriesPreview = () => {
                     return <CategoryPreview key={title} title={title} products={products} />
                 }))
             }
+            <MobileBottomMenu />
         </>
     )
 }

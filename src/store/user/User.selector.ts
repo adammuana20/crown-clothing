@@ -3,7 +3,6 @@ import { createSelector } from "reselect"
 import { RootState } from "../Store";
 
 import { UserState } from "./User.reducer"
-import { create } from "domain";
 
 export const selectUserReducer = (state: RootState): UserState => state.user;
 

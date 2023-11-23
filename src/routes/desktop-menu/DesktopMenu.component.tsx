@@ -1,0 +1,120 @@
+
+import { useRef, useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from "react-redux"
+
+import CartIcon from "../../components/cart/cart-icon/CartIcon.component"
+
+import Search from "../search/Search.component"
+
+import { selectCurrentUser } from "../../store/user/User.selector"
+
+import { signOutStart } from "../../store/user/User.action"
+
+import { capitalizeFirstLetter } from '../../utils/helpers/Helpers.utils'
+import { FaRegUser } from "react-icons/fa";
+
+import { NavLinks, DesktopNavLink, UserIcon, UserTextContainer, MenuDropdownContainer, LogoutButton } from './DesktopMenu.styles'
+import { SidebarNavLinkContainer } from '../sidebar/Sidebar.styles'
+
+const DesktopMenu = () => {
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const currentUser = useSelector(selectCurrentUser)
+
+    const [isOpenMenuDropdown, setIsOpenMenuDropdown] = useState(false);
+    const dropdownRef = useRef<HTMLLIElement>(null);
+
+    const handleMenuDropDown = () => {
+        setIsOpenMenuDropdown(!isOpenMenuDropdown);
+    };
+
+    const signOutUser = () => {
+        dispatch(signOutStart(navigate))
+    }
+
+    useEffect(() => {
+        if(isOpenMenuDropdown) {
+            window.addEventListener('click', handleClickOutSide);
+        }
+
+    }, [isOpenMenuDropdown]);
+
+    const handleClickOutSide = (e: MouseEvent) => {
+        const { target } = e;
+        if (target instanceof Node && dropdownRef.current?.contains(target)) {
+            return;
+        }
+        
+        setIsOpenMenuDropdown(false);
+    };
+
+    return (
+        <>
+            <NavLinks>
+                <Search />
+                <DesktopNavLink 
+                        to='shop'
+                >
+                    Shop
+                </DesktopNavLink>
+                <CartIcon />
+                {   currentUser ? (
+                        <li ref={dropdownRef}>
+                            <UserIcon
+                                role="button"
+                                tabIndex={-1}
+                                onClick={handleMenuDropDown}
+                            >
+                                <UserTextContainer>
+                                    { currentUser.displayName ? 
+                                        capitalizeFirstLetter(currentUser.displayName)
+                                        : <FaRegUser size={27} />
+                                    }
+                                </UserTextContainer>
+                            </UserIcon>
+                            { isOpenMenuDropdown && (
+                                <MenuDropdownContainer>
+                                    <DesktopNavLink 
+                                            to='product'
+                                            onClick={handleMenuDropDown}
+                                    >
+                                        Add Product
+                                    </DesktopNavLink>
+                                    <DesktopNavLink 
+                                            to='wishlist'
+                                            onClick={handleMenuDropDown}
+                                    >
+                                        My Wishlist
+                                    </DesktopNavLink>
+                                    <SidebarNavLinkContainer>
+                                        <LogoutButton 
+                                            onClick={signOutUser}
+                                        >
+                                            SIGN OUT
+                                        </LogoutButton>
+                                    </SidebarNavLinkContainer>
+                                </MenuDropdownContainer>
+                            )}
+                        </li>
+                    ) : (
+                        <>
+                            <DesktopNavLink 
+                                to='sign-in' 
+                            >
+                                Sign In
+                            </DesktopNavLink>
+                                <DesktopNavLink 
+                                to='sign-up'
+                            >
+                                Sign Up
+                            </DesktopNavLink>
+                        </>
+                    )
+                }
+            </NavLinks>
+        </>
+    )
+}
+
+export default DesktopMenu

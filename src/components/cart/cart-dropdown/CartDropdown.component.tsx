@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, FC } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -9,13 +9,19 @@ import { selectCartItems } from '../../../store/cart/Cart.selector'
 
 import { CartDropdownContainer, CartDropdownEmptyMessage, CartItems } from './CartDropdown.styles'
 
-const CartDropdown = () => {
+type CartDropdownProps = {
+    toggleCartClose: () => void;
+}
+
+const CartDropdown: FC<CartDropdownProps> = ({ toggleCartClose }) => {
     const cartItems = useSelector(selectCartItems)
     const navigate = useNavigate()
 
     const goToCheckoutHandler = useCallback(() => {
         navigate('checkout') 
+        toggleCartClose()
     }, [])
+
 
     return (
         <CartDropdownContainer>

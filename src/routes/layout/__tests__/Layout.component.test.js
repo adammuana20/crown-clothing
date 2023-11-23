@@ -1,7 +1,7 @@
 import { screen, fireEvent } from "@testing-library/react";
 import * as reactRedux from "react-redux"
 
-import Navigation from "../Navigation.component";
+import Layout from "../Layout.component";
 import { renderWithProviders } from "../../../utils/test/Test.utils";
 import { signOutStart } from "../../../store/user/User.action";
 
@@ -12,9 +12,9 @@ jest.mock('react-redux', () => ({
     useDispatch: () => mockDispatch
 }))
 
-describe('Navigation tests', () => {
+describe('Layout tests', () => {
     test('It should render a Sign in link and not a Sign out if there is no currentUser', () => {
-        renderWithProviders(<Navigation />, {
+        renderWithProviders(<Layout />, {
             preloadedState: {
                 user: {
                     currentUser: null
@@ -30,7 +30,7 @@ describe('Navigation tests', () => {
     })
 
     test('It should render Sign Out and not Sign In link if there is a currentUser', () => {
-        renderWithProviders(<Navigation />, {
+        renderWithProviders(<Layout />, {
             preloadedState: {
                 user: {
                     currentUser: {}
@@ -46,7 +46,7 @@ describe('Navigation tests', () => {
     })
 
     test('It should not render a cart dropdown if isCartOpen is false', () => {
-        renderWithProviders(<Navigation />, {
+        renderWithProviders(<Layout />, {
             preloadedState: {
                 cart: {
                     isCartOpen: false,
@@ -60,7 +60,7 @@ describe('Navigation tests', () => {
     })
 
     test('It should render a cart dropdown if isCartOpen is true', () => {
-        renderWithProviders(<Navigation />, {
+        renderWithProviders(<Layout />, {
             preloadedState: {
                 cart: {
                     isCartOpen: true,
@@ -76,7 +76,7 @@ describe('Navigation tests', () => {
     
     test('It should dispatch signOutStart action when clicking on the sign out link', async () => {
 
-        renderWithProviders(<Navigation />, {
+        renderWithProviders(<Layout />, {
             preloadedState: {
                 user: {
                     currentUser: {}

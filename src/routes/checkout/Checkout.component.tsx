@@ -5,9 +5,11 @@ import { selectCartItems, selectCartTotalPrice } from '../../store/cart/Cart.sel
 
 import CheckoutItem from '../../components/checkout-item/CheckoutItem.component'
 import PaymentForm from '../../components/payment-form/PaymentForm.component'
+import MobileBottomMenu from '../mobile-bottom-menu/MobileBottomMenu.component'
+
 import { CheckoutContainer, CheckOutHeader, HeaderBlock, Total } from './Checkout.styles'
 import { CheckoutEmptyMessage, GoBackToShop } from './Checkout.styles'
-import { ChangeEvent, useState } from 'react'
+
 
 
 const Checkout = () => {
@@ -51,6 +53,7 @@ const Checkout = () => {
                     </CheckoutContainer>
                 )
             }
+            <MobileBottomMenu />
         </>
     )
 }

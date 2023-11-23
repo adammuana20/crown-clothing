@@ -1,4 +1,7 @@
+import { useRef, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+
+import CartDropdown from '../cart-dropdown/CartDropdown.component'
 
 import { selectIsCartOpen, selectCartCount } from '../../../store/cart/Cart.selector'
 import { setIsCartOpen } from '../../../store/cart/Cart.action'
@@ -12,13 +15,34 @@ const CartIcon = () => {
     const isCartOpen = useSelector(selectIsCartOpen)
     const cartCount = useSelector(selectCartCount)
     
+    const toggleIsCartOpen = () => {         
+        dispatch(setIsCartOpen(!isCartOpen))
+    }
 
-    const toggleIsCartOpen = () => dispatch(setIsCartOpen(!isCartOpen))
+    //CART DROPDOWN HIDE WHEN CLICK OUTSIDE THE DIV
+    const cartDropdownRef = useRef<HTMLDivElement>(null);
+
+    const handleCartClickOutside = (event: MouseEvent) => {
+        if (cartDropdownRef.current && !cartDropdownRef.current.contains(event.target as Node)) {
+            dispatch(setIsCartOpen(false))
+        }
+    };
+
+    useEffect(() => {
+        if(isCartOpen) {
+            window.addEventListener('click', handleCartClickOutside);
+        }
+    
+        return () => {
+            window.removeEventListener('click', handleCartClickOutside);
+        };
+    }, [isCartOpen]);
 
     return (
-        <CartIconContainer onClick={toggleIsCartOpen}>
-            <ShoppingIcon/>
+        <CartIconContainer ref={cartDropdownRef}>
+            <ShoppingIcon onClick={toggleIsCartOpen}/>
             <ItemCount>{cartCount}</ItemCount>
+            { isCartOpen && <CartDropdown toggleCartClose={() => dispatch(setIsCartOpen(false))}/>}
         </CartIconContainer>
     )
 }

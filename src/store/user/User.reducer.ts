@@ -1,5 +1,4 @@
 import { AnyAction } from "redux";
-import { User } from "firebase/auth"
 
 import { 
     signInFailed, 
@@ -12,7 +11,7 @@ import {
     checkUserSessionComplete, 
     clearUserErrorMessage,
     signUpStart,
-    signUpSuccess
+    signOutStart
 } from "./User.action";
 import { UserData } from "../../utils/firebase/Firebase.utils";
 
@@ -25,6 +24,7 @@ export type UserState = {
     readonly googleSignInIsLoading: boolean;
     readonly googleSignInButton: boolean;
     readonly error: Error | null;
+    readonly userIsSigningOut: boolean;
 }
 
 export const USER_INITIAL_STATE: UserState = {
@@ -36,6 +36,7 @@ export const USER_INITIAL_STATE: UserState = {
     googleSignInIsLoading: false,
     googleSignInButton: false,
     error: null,
+    userIsSigningOut: false,
 }
 
 export const userReducer = (state = USER_INITIAL_STATE, action: AnyAction): UserState => {
@@ -59,6 +60,13 @@ export const userReducer = (state = USER_INITIAL_STATE, action: AnyAction): User
         return {
             ...state,
             signUpIsLoading: true,
+        }
+    }
+
+    if(signOutStart.match(action)) {
+        return {
+            ...state,
+            userIsSigningOut: true,
         }
     }
 
@@ -86,6 +94,7 @@ export const userReducer = (state = USER_INITIAL_STATE, action: AnyAction): User
         return {
             ...state,
             currentUser: null,
+            userIsSigningOut: false,
         }
     }
 

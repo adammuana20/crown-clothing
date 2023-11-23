@@ -15,14 +15,18 @@ export const CartDropdownContainer = styled.div`
   padding: 20px;
   border: 1px solid black;
   background-color: white;
-  top: 90px;
-  right: 40px;
+  top: 56px;
+  right: 0;
   z-index: 5;
 
   ${BaseButton},
   ${GoogleSignInButton},
   ${InvertedButton} {
     margin-top: auto;
+  }
+
+  @media only screen and (max-width: 800px) {
+    display: none;
   }
 `
 

@@ -13,7 +13,7 @@ export type SignInFailed = ActionWithPayload<USER_ACTION_TYPES.SIGN_IN_FAILED, E
 export type SignUpStart = ActionWithPayload<USER_ACTION_TYPES.SIGN_UP_START, { email: string, password: string, displayName: string, navigate: Function }>
 export type SignUpSuccess = ActionWithPayload<USER_ACTION_TYPES.SIGN_UP_SUCCESS, { user: User, additionalDetails: AdditionalInformation }>
 export type SignUpFailed = ActionWithPayload<USER_ACTION_TYPES.SIGN_UP_FAILED, Error>
-export type SignOutStart = Action<USER_ACTION_TYPES.SIGN_OUT_START>
+export type SignOutStart = ActionWithPayload<USER_ACTION_TYPES.SIGN_OUT_START, { navigate: Function }>
 export type SignOutSuccess = Action<USER_ACTION_TYPES.SIGN_OUT_SUCCESS>
 export type SignOutFailed = ActionWithPayload<USER_ACTION_TYPES.SIGN_OUT_FAILED, Error>
 export type ClearUserErrorMessage = Action<USER_ACTION_TYPES.CLEAR_ERROR_MESSAGE>
@@ -21,14 +21,14 @@ export type ClearUserErrorMessage = Action<USER_ACTION_TYPES.CLEAR_ERROR_MESSAGE
 export const checkUserSession = withMatcher((): CheckUserSession => createAction(USER_ACTION_TYPES.CHECK_USER_SESSION))
 export const checkUserSessionComplete = withMatcher((): CheckUserSessionComplete => createAction(USER_ACTION_TYPES.CHECK_USER_SESSION_COMPLETE))
 export const setCurrentUser = withMatcher((user: UserData): SetCurrentUser => createAction( USER_ACTION_TYPES.SET_CURRENT_USER, user ))
-export const googleSignInStart = withMatcher((navigate: Function): GoogleSignInStart => createAction(USER_ACTION_TYPES.GOOGLE_SIGN_IN_START, {navigate}))
-export const emailSignInStart = withMatcher((email: string, password: string, navigate: Function): EmailSignInStart => createAction(USER_ACTION_TYPES.EMAIL_SIGN_IN_START, {email, password, navigate}))
+export const googleSignInStart = withMatcher((navigate: Function): GoogleSignInStart => createAction(USER_ACTION_TYPES.GOOGLE_SIGN_IN_START, { navigate }))
+export const emailSignInStart = withMatcher((email: string, password: string, navigate: Function): EmailSignInStart => createAction(USER_ACTION_TYPES.EMAIL_SIGN_IN_START, { email, password, navigate }))
 export const signInSuccess = withMatcher((user: UserData & { id: string}): SignInSuccess => createAction(USER_ACTION_TYPES.SIGN_IN_SUCCESS, user))
 export const signInFailed = withMatcher((error: Error): SignInFailed => createAction(USER_ACTION_TYPES.SIGN_IN_FAILED, error))
 export const signUpStart = withMatcher((email: string, password: string, displayName: string, navigate: Function): SignUpStart => createAction(USER_ACTION_TYPES.SIGN_UP_START, { email, password, displayName, navigate }))
 export const signUpSuccess = withMatcher((user: User, additionalDetails: AdditionalInformation): SignUpSuccess => createAction( USER_ACTION_TYPES.SIGN_UP_SUCCESS, { user, additionalDetails }))
 export const signUpFailed = withMatcher((error: Error): SignUpFailed => createAction( USER_ACTION_TYPES.SIGN_UP_FAILED, error ))
-export const signOutStart = withMatcher((): SignOutStart => createAction( USER_ACTION_TYPES.SIGN_OUT_START ))
+export const signOutStart = withMatcher((navigate: Function): SignOutStart => createAction( USER_ACTION_TYPES.SIGN_OUT_START, { navigate }))
 export const signOutSuccess = withMatcher((): SignOutSuccess => createAction( USER_ACTION_TYPES.SIGN_OUT_SUCCESS ))
 export const signOutFailed = withMatcher((error: Error): SignOutFailed => createAction( USER_ACTION_TYPES.SIGN_OUT_FAILED, error ))
 export const clearUserErrorMessage = withMatcher((): ClearUserErrorMessage => createAction( USER_ACTION_TYPES.CLEAR_ERROR_MESSAGE ))
