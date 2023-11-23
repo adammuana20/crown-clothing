@@ -7,8 +7,8 @@ import { Elements } from '@stripe/react-stripe-js'
 import App from './App';
 import { store, persistor } from './store/Store';
 import { stripePromise } from './utils/stripe/Stripe.utils';
+import * as serviceWorkingRegistration from './serviceWorkerRegistration'
 
-import './index.scss';
 import reportWebVitals from './reportWebVitals';
 
 
@@ -29,3 +29,5 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+serviceWorkingRegistration.register();

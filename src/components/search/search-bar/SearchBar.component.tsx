@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from "react"
+import { useState, ChangeEvent, useRef, useEffect } from "react"
 
 import { FaSearch } from 'react-icons/fa'
 
@@ -9,6 +9,7 @@ import { SearchBarContainer } from "./SearchBar.styles"
 const SearchBar = () => {
     const [searchTerm, setSearchTerm] = useState('')
     const [showResults, setShowResults] = useState(false);
+    const inputRef = useRef<HTMLInputElement | null>(null);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const searchFieldString = e.target.value.toLocaleLowerCase()
@@ -17,6 +18,22 @@ const SearchBar = () => {
         setSearchTerm(searchFieldString)
         setShowResults(searchFieldResults.length > 0)
     }
+
+    const handleClickOutside = (e: MouseEvent) => {
+        if (inputRef.current && !inputRef.current.contains(e.target as Node)) {            
+          // Clicked outside the input
+          setShowResults(false);
+        }
+    };
+
+    useEffect(() => {
+        if(showResults) {
+            window.addEventListener('click', handleClickOutside);
+        }
+        return () => {
+            window.removeEventListener('click', handleClickOutside);
+        };
+    }, [showResults]);
 
     return (
         <SearchBarContainer>
@@ -28,7 +45,9 @@ const SearchBar = () => {
                     name:'search',
                     value:searchTerm,
                     'data-search': true,
-                    placeholder: 'Search'
+                    placeholder: 'Search',
+                    autoComplete: 'off',
+                    ref: inputRef,
                 }}
             />
             {showResults && <SearchResults searchTerm={searchTerm} />}

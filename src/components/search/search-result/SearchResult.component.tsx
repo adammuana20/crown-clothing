@@ -3,7 +3,7 @@ import { FC } from "react"
 import HighlightedSuggestion from "../highlighted-suggestion/HighlightedSuggestion.component";
 import { CategoryItem } from "../../../store/categories/Category.types";
 
-import { SearchResultContainer, ResultList, ResultLink } from "./SearchResult.styles"
+import { SearchResultContainer, ResultLink, NoResult } from "./SearchResult.styles"
 
 type combinedProductAndCategory = {
     product: CategoryItem;
@@ -22,13 +22,11 @@ const SearchResult: FC<SearchResultProp> = ({ combinedProductsWithCategory, sear
                 { filteredProductsName
                     .map((suggestion, i) => 
                         <ResultLink to={`shop/${suggestion.title}/${suggestion.product.id}`} key={i}>
-                            <ResultList>
                                 <HighlightedSuggestion searchTerm={searchTerm} suggestion={suggestion.product.name} />
-                            </ResultList>
                         </ResultLink>)
                 }
                 { filteredProductsName.length === 0 && (
-                        <ResultList>No results found...</ResultList>
+                        <NoResult>No results found...</NoResult>
                     )
                 }
             </SearchResultContainer>

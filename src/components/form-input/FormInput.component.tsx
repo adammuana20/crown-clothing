@@ -15,6 +15,8 @@ type FormInputProps = {
         placeholder?: string;
         step?: number;
         min?: number;
+        autoComplete?: string;
+        ref?: React.RefObject<HTMLInputElement>;
     }
 } & InputHTMLAttributes<HTMLInputElement>
 
@@ -26,9 +28,9 @@ const FormInput: FC<FormInputProps> = ({ label, inputOptions }) => {
         <Input {...inputOptions} />
         {
             label && (
-                    <FormInputLabel $shrink={Boolean(inputOptions['data-search'] ? false : inputOptions.value && typeof inputOptions.value === 'string' && inputOptions.value.length)}>
-                        { label }
-                    </FormInputLabel>
+                <FormInputLabel $shrink={Boolean(inputOptions['data-search'] ? false : inputOptions.value && typeof inputOptions.value === 'string' && inputOptions.value.length)}>
+                    { label }
+                </FormInputLabel>
             )
         }
         </Group>

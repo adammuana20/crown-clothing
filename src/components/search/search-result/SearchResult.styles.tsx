@@ -11,17 +11,19 @@ export const SearchResultContainer = styled.div`
     overflow-y: auto;
     border: 1px solid black;
     left: 0;
+    display: block;
 `
 
-export const ResultList = styled.div`
-    height: 40px;
+export const ResultLink = styled(Link)`
+    text-transform: none;
     display: flex;
+    height: 40px;
     align-items: center;
     padding-left: 10px;
     font-weight: bold;
 
-    &:last-child {
-        padding-bottom: 0;
+    &:not(:last-child) {
+        border-bottom: 1px solid black;
     }
 
     &:hover {
@@ -30,6 +32,10 @@ export const ResultList = styled.div`
     }
 `
 
-export const ResultLink = styled(Link)`
-    text-transform: none;
+export const NoResult = styled.div`
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    font-weight: bold;
 `

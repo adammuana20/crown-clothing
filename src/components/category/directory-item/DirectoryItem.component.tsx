@@ -1,13 +1,11 @@
-import { FC, Key } from 'react'
+import { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { DirectoryItemContainer, BackgroundImage, Body } from './DirectoryItem.styles'
 
 type DirectoryCategory = {
-  id: Key;
   title: string;
   imageUrl: string;
-  route: string;
 }
 
 type DirectoryItemProps = {
@@ -15,10 +13,10 @@ type DirectoryItemProps = {
 }
 
 const DirectoryItem: FC<DirectoryItemProps> = ({ category }) => {
-    const { imageUrl, title, route } = category
+    const { imageUrl, title } = category
     const navigate = useNavigate()
 
-    const onNavigateHandler = () => navigate(route)
+    const onNavigateHandler = () => navigate(`shop/${title.toLocaleLowerCase()}`)
 
     return (
         <DirectoryItemContainer onClick={onNavigateHandler}>

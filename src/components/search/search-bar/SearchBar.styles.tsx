@@ -5,7 +5,8 @@ export const SearchBarContainer = styled.div`
     align-items: center;
     background-color: white;
     position: relative;
-    border-radius: 10px;
-    margin-inline-end: 10px;
-    padding-inline-start: 10px;
+    border-radius: 2rem;
+    padding-inline-start: 15px;
+    margin-left: 10px;
+    background-color: #eee;
 `

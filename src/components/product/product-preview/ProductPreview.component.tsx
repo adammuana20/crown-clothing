@@ -4,17 +4,19 @@ import { useSelector, useDispatch } from "react-redux";
 import { addItemToCart } from "../../../store/cart/Cart.action";
 import { selectCartItems } from "../../../store/cart/Cart.selector";
 
-import Button, { BUTTON_TYPE_CLASSES } from "../../button/Button.component";
+import Button from "../../button/Button.component";
+import MobileBottomMenu from "../../../routes/mobile-bottom-menu/MobileBottomMenu.component";
+import WishlistButton from "../../wishlist/wishlist-button/WishlistButton.component";
+
 import { selectCategoriesMap } from "../../../store/categories/Category.selector";
 
 import { CategoryItem } from "../../../store/categories/Category.types";
 
-import { ProductPreviewContainer, ProductImage, ProductInfo, Category } from "./ProductPreview.styles";
+import { ProductPreviewContainer, ProductImage, ProductInfo, ImageContainer, WishlistButtonContainer } from "./ProductPreview.styles";
 
 const ProductPreview = () => {
     const params = useParams()
     const dispatch = useDispatch()
-    const category = params.category as string
 
     const cartItems = useSelector(selectCartItems)
     const categoriesMap = useSelector(selectCategoriesMap)
@@ -27,22 +29,37 @@ const ProductPreview = () => {
 
     const addProductToCart = () => dispatch(addItemToCart(cartItems, productArr[0]))
       
-    const productElement = productArr.map(({ id, name, description, imageUrl, price }) => (
+    const productElement = productArr.map((product) => 
+    {   const { id, name, description, imageUrl, price } = product
+
+        return (
         <ProductPreviewContainer key={id}>
-            <ProductImage src={imageUrl} alt={name} />
+            <ImageContainer>
+                <ProductImage src={imageUrl} alt={name} />
+            </ImageContainer>
             <ProductInfo>
-                <h2>{name}</h2>
-                <Category>{category.toUpperCase()}</Category>
+                <WishlistButtonContainer>
+                    <h2>{name}</h2>
+                    <WishlistButton product={product} />
+                </WishlistButtonContainer>
                 <p>{description}</p>
                 <p>${price}</p>
-                <Button buttonType={BUTTON_TYPE_CLASSES.inverted} onClick={addProductToCart}>Add to cart</Button>
+                <Button onClick={addProductToCart}>Add to cart</Button>
             </ProductInfo>
         </ProductPreviewContainer>
-    ))
+        )
+    })
+    
     
     return (
         <>
-            {productElement}
+            {productElement.length > 0 ? (
+                productElement
+                ) : (
+                    <h2>Product not found!</h2>
+                )
+            }
+            <MobileBottomMenu/>
         </>
     )
 }

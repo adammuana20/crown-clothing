@@ -27,6 +27,7 @@ import {
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { v4 } from 'uuid'
 
+import { WishlistProduct } from '../../components/wishlist/wishlist-button/WishlistButton.component'
 import { Category, CategoryItem, ProductItem } from '../../store/categories/Category.types'
 
 const firebaseConfig = {
@@ -86,9 +87,11 @@ export type AdditionalInformation = {
 }
 
 export type UserData = {
+    id?: string;
     createdAt: Date;
     displayName: string;
     email: string;
+    roles: string;
 }
 
 export const createUserDocumentFromAuth = async (userAuth: User, additionalInformation?: AdditionalInformation): Promise<void | QueryDocumentSnapshot<UserData>> => {
@@ -100,12 +103,14 @@ export const createUserDocumentFromAuth = async (userAuth: User, additionalInfor
     if(!userSnapshot.exists()) {
         const { displayName, email } = userAuth
         const createdAt = new Date()
+        const roles = 'customer'
 
         try {
             await setDoc(userDocRef, {
                 displayName,
                 email,
                 createdAt,
+                roles,
                 ...additionalInformation
             })
         } catch (err) {
@@ -128,7 +133,7 @@ export const signInAuthUserWithEmailAndPassword = async (email: string, password
     return await signInWithEmailAndPassword(auth, email, password)
 }
 
-export const signOutUser = async () => signOut(auth)
+export const signOutUser = async () => await signOut(auth)
 
 export const onAuthStateChangedListener = (callback: NextOrObserver<User>) => onAuthStateChanged(auth, callback)
 
@@ -145,6 +150,8 @@ export const getCurrentUser = (): Promise<User | null> => {
     })
 }
 
+
+//ADD PRODUCT TO FIREBASE
 export const uploadImageToStorage = async (image: Blob) => {
     const imgs = ref(storage, `images/${v4()}`)
     const uploadImage = await uploadBytes(imgs, image)
@@ -154,6 +161,8 @@ export const uploadImageToStorage = async (image: Blob) => {
 }
 
 export const createProductDocumentFromCategory = async ({id, productName, categoryTitle, imageBlob, description, price}: ProductItem) => {
+    if(!auth) return
+
     const categoryDocRef = doc(db, 'categories', categoryTitle);
     const categorySnapshot = await getDoc(categoryDocRef);
 
@@ -165,16 +174,96 @@ export const createProductDocumentFromCategory = async ({id, productName, catego
             throw new Error('Product name already exists')
         }
             try {
-                console.log('Im here');
-                
                 const imageUrl = await uploadImageToStorage(imageBlob)
 
                 const newProduct = { id: id, name: productName, imageUrl: imageUrl, description: description, price: price  }
                 categoryData.items.push(newProduct)
-                alert('Product Added!')
+
                 return await setDoc(categoryDocRef, categoryData)
             } catch(err) {
                 console.log('error creating the Product', err);
             }
     }
+}
+
+// ADD WISHLIST TO FIREBASE
+export const createWishlistDocumentToUser = async(item: CategoryItem, category: string) => {
+    const userID = auth.currentUser?.uid;
+
+    if(!userID) return
+
+    const wishlistDocRef = doc(db, 'wishlists', userID);
+    const wishlistSnapshot = await getDoc(wishlistDocRef);
+
+    const createdAt = new Date();
+    
+    if(!wishlistSnapshot.exists()) {
+        try {
+            await setDoc(wishlistDocRef, {
+                wishlist: [{
+                    item,
+                    createdAt,
+                    category,
+                }]
+            })
+        } catch (err) {
+            console.log('error adding to wishlist', err);
+        }
+    } else {
+        const wishlistData = wishlistSnapshot.data()
+
+        const newWishlisth = { item, createdAt, category };
+        wishlistData.wishlist.push(newWishlisth)
+        
+        try {
+            await setDoc(wishlistDocRef, wishlistData)
+        } catch (err) {
+            console.log('error adding to wishlist', err);
+        }
+    }
+}
+
+// REMOVE WISHLISTS
+export const removeWishlistItemToUser = async(item: CategoryItem) => {
+    const userID = auth.currentUser?.uid;
+
+    if(!userID) return
+    
+    const { id } = item;
+
+    const wishlistDocRef = doc(db, 'wishlists', userID);
+    const wishlistSnapshot = await getDoc(wishlistDocRef);
+
+    if(wishlistSnapshot.exists()) {
+        const wishlistData = wishlistSnapshot.data()
+
+        const existingWishlistItem = wishlistData.wishlist.find((wishlistItem: WishlistProduct) => wishlistItem.item.id === id)        
+
+        if(existingWishlistItem) {
+            const updatedWishlist = wishlistData.wishlist.filter((wishlistItem: WishlistProduct) => wishlistItem.item.id !== id)
+            
+            try {
+                await setDoc(wishlistDocRef, {
+                    wishlist: updatedWishlist
+                })                
+            } catch(err) {
+                console.log('error removing to wishlist', err);
+            }
+        }
+    }
+}
+
+
+// GET USER WISHLISTS
+export const getWishlistAndDocuments = async() => {
+    const userID = auth.currentUser?.uid;
+
+    if(!userID) return
+
+    const wishlistDocRef = doc(db, 'wishlists', userID);
+    const wishlistSnapshot = await getDoc(wishlistDocRef);
+
+    if(!wishlistSnapshot.exists()) return
+    
+    return wishlistSnapshot.data().wishlist.map((wishlistItem: WishlistProduct) => wishlistItem)
 }

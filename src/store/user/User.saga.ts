@@ -3,7 +3,7 @@ import { User } from 'firebase/auth'
 
 import { USER_ACTION_TYPES } from './User.types'
 
-import { signInSuccess, signInFailed, signUpSuccess, signUpFailed, signOutFailed, signOutSuccess, EmailSignInStart, SignUpStart, SignUpSuccess, GoogleSignInStart, checkUserSessionComplete } from './User.action'
+import { signInSuccess, signInFailed, signUpSuccess, signUpFailed, signOutFailed, signOutSuccess, EmailSignInStart, SignUpStart, SignUpSuccess, GoogleSignInStart, checkUserSessionComplete, SignOutStart } from './User.action'
 
 import { getCurrentUser, createUserDocumentFromAuth, signInWithGooglePopup, signInAuthUserWithEmailAndPassword, createAuthUserWithEmailAndPassword, signOutUser, AdditionalInformation } from '../../utils/firebase/Firebase.utils'
  
@@ -37,7 +37,7 @@ export function* signInWithGoogle({payload: { navigate }}: GoogleSignInStart) {
     try {
         const { user } = yield* call(signInWithGooglePopup)
         yield* call(getSnapshotFromUserAuth, user)
-        yield* navigate('/', { replace: true })
+        navigate('/', { replace: true })
     } catch(error) {
         if(error instanceof Error && 'code' in error) {
             const firebaseError = error as { code: string }
@@ -58,7 +58,7 @@ export function* signInWithEmail({ payload: { email, password, navigate }}: Emai
         if(userCredential) {
             const { user } = userCredential
             yield* call(getSnapshotFromUserAuth, user)
-            yield* navigate('/', { replace: true })
+            navigate('/', { replace: true })
         }
     } catch (error) {
         if (error instanceof Error && 'code' in error) {
@@ -94,7 +94,7 @@ export function* signUp({ payload: { email, password, displayName, navigate }}: 
         if(userCredential){
             const { user } = userCredential
             yield* put(signUpSuccess(user, { displayName }))
-            yield* navigate('/', { replace: true })
+            navigate('/', { replace: true })
         }
     } catch (error) {
         const firebaseError = error as { code: string }
@@ -107,10 +107,11 @@ export function* signUp({ payload: { email, password, displayName, navigate }}: 
     }
 }
 
-export function* signOut() {
+export function* signOut({payload: { navigate }}: SignOutStart) {
     try {   
         yield* call(signOutUser)
         yield* put(signOutSuccess())
+        navigate('sign-in', { replace: true })
     } catch(error) {
         yield* put(signOutFailed(error as Error))
     }
