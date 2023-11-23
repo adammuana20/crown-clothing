@@ -26,7 +26,7 @@ const WishlistItem: FC<WishlistItemProps> = ({ wishlistItem }) => {
     }
 
     return (
-        <WishlistItemContainer isLoading={removeWishlistisLoading}>
+        <WishlistItemContainer $isLoading={removeWishlistisLoading}>
             <WishlistItemLink to={`/shop/${category}/${id}`}>
                 <ImageContainer>
                     <WishlistImage src={imageUrl} alt={name} />

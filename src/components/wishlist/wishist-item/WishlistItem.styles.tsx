@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Button from "../../button/Button.component";
 
 type WishlistItemContainerProps = {
-    isLoading: boolean;
+    $isLoading: boolean;
   }
 
 export const WishlistItemContainer = styled.div<WishlistItemContainerProps>`
@@ -15,8 +15,11 @@ export const WishlistItemContainer = styled.div<WishlistItemContainerProps>`
         border-bottom: 1px solid #efefef;
     }
 
-    ${({isLoading}) => css`
-        background-color: black;
+    ${({$isLoading}) => $isLoading && css`
+        opacity: 0.6;
+        a {
+            pointer-events: none;
+        }
     `}
 `
 
