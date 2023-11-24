@@ -67,8 +67,10 @@ const DesktopMenu = () => {
                                 onClick={handleMenuDropDown}
                             >
                                 <UserTextContainer>
-                                    { currentUser.displayName ? 
-                                        capitalizeFirstLetter(currentUser.displayName)
+                                    { currentUser.imageUrl ? 
+                                        <img src={currentUser.imageUrl} alt='Avatar' />
+                                        : currentUser.displayName ?
+                                            capitalizeFirstLetter(currentUser.displayName)
                                         : <FaRegUser size={27} />
                                     }
                                 </UserTextContainer>
@@ -76,11 +78,19 @@ const DesktopMenu = () => {
                             { isOpenMenuDropdown && (
                                 <MenuDropdownContainer>
                                     <DesktopNavLink 
-                                            to='product'
+                                            to='profile'
                                             onClick={handleMenuDropDown}
                                     >
-                                        Add Product
+                                        My Profile
                                     </DesktopNavLink>
+                                    { currentUser.roles && currentUser.roles.includes('admin') && (
+                                        <DesktopNavLink 
+                                                to='product'
+                                                onClick={handleMenuDropDown}
+                                        >
+                                            Add Product
+                                        </DesktopNavLink>
+                                    )}
                                     <DesktopNavLink 
                                             to='wishlist'
                                             onClick={handleMenuDropDown}

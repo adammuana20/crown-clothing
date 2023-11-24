@@ -1,5 +1,7 @@
 import { useSelector } from "react-redux"
 
+import MobileBottomMenu from "../../../routes/mobile-bottom-menu/MobileBottomMenu.component"
+
 import { selectWishlist } from "../../../store/wishlist/Wishlist.selector"
 import { WishlistProduct } from "../wishlist-button/WishlistButton.component"
 
@@ -8,7 +10,7 @@ import WishlistItem from "../wishist-item/WishlistItem.component"
 
 
 const WishlistItems = () => {
-    const myWishlist = useSelector(selectWishlist)
+    const myWishlist = useSelector(selectWishlist)    
     
     return (
         <>
@@ -23,6 +25,7 @@ const WishlistItems = () => {
                     }
                 </>
             }
+            <MobileBottomMenu/>
         </>
     )
 }

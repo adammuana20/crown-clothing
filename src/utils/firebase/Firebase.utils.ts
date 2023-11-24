@@ -9,7 +9,10 @@ import {
     signOut,
     onAuthStateChanged,
     NextOrObserver,
-    User
+    User,
+    EmailAuthProvider,
+    reauthenticateWithCredential,
+    updatePassword,
 } from 'firebase/auth'
 
 import {
@@ -21,10 +24,11 @@ import {
     writeBatch,
     query,
     getDocs,
-    QueryDocumentSnapshot
+    QueryDocumentSnapshot,
+    updateDoc,
 } from 'firebase/firestore'
 
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { getStorage, ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
 import { v4 } from 'uuid'
 
 import { WishlistProduct } from '../../components/wishlist/wishlist-button/WishlistButton.component'
@@ -92,18 +96,20 @@ export type UserData = {
     displayName: string;
     email: string;
     roles: string;
+    imageUrl: string;
 }
 
 export const createUserDocumentFromAuth = async (userAuth: User, additionalInformation?: AdditionalInformation): Promise<void | QueryDocumentSnapshot<UserData>> => {
     if(!userAuth) return
-    const userDocRef = doc(db, 'users', userAuth.uid)
 
+    const userDocRef = doc(db, 'users', userAuth.uid)
     const userSnapshot = await getDoc(userDocRef)
 
     if(!userSnapshot.exists()) {
         const { displayName, email } = userAuth
         const createdAt = new Date()
-        const roles = 'customer'
+        const roles = ['customer']
+        const imageUrl = ''
 
         try {
             await setDoc(userDocRef, {
@@ -111,14 +117,66 @@ export const createUserDocumentFromAuth = async (userAuth: User, additionalInfor
                 email,
                 createdAt,
                 roles,
+                imageUrl,
                 ...additionalInformation
             })
         } catch (err) {
-            console.log('error creating the user', err);
+            throw new Error('Error creating the user');
         }
     }
 
     return userSnapshot as QueryDocumentSnapshot<UserData>
+}
+
+export const updateUserProfileFromDocument = async (displayName: string, email: string, imageFile: string, selectedIamge: string)=> {
+    const userID = auth.currentUser?.uid;
+    if(!userID) return    
+
+    const userDocRef = doc(db, 'users', userID)
+    const userSnapshot = await getDoc(userDocRef)
+
+    if(!userSnapshot.exists()) return
+
+    try {
+        if(selectedIamge) {
+            const imageUrl = await uploadImageToStorage(imageFile)
+            
+            return await updateDoc(userDocRef, {
+                displayName,
+                email,
+                imageUrl,
+            })
+        } else {
+            return await updateDoc(userDocRef, {
+                displayName,
+                email,
+            })
+        }
+    } catch(err) {
+        console.log('Failed updating profie: ',err);
+        
+    }
+}
+
+export const updateUserPasswordFromDocument = async (oldPassword: string, newPassword: string) => {
+    const user = auth.currentUser;    
+    
+    if(!user) {
+        console.error('No user is currently signed in');
+        return;
+    }
+
+    try {
+        if(user.email) {
+            const credential = EmailAuthProvider.credential(user.email, oldPassword)
+
+            await reauthenticateWithCredential(user, credential)
+            await updatePassword(user, newPassword)
+            console.log('Password updated successfully');
+        }
+    } catch(error) {
+        console.error('Error updating password:', error);
+    }
 }
 
 export const createAuthUserWithEmailAndPassword = async (email: string, password: string) => {
@@ -131,6 +189,13 @@ export const signInAuthUserWithEmailAndPassword = async (email: string, password
     if(!email || !password) return
 
     return await signInWithEmailAndPassword(auth, email, password)
+}
+
+export const getAuthUserProviderID = async () => {
+    if(!auth) return
+    const providerId = auth.currentUser?.providerData[0]?.providerId || null;
+
+    return providerId
 }
 
 export const signOutUser = async () => await signOut(auth)
@@ -152,15 +217,24 @@ export const getCurrentUser = (): Promise<User | null> => {
 
 
 //ADD PRODUCT TO FIREBASE
-export const uploadImageToStorage = async (image: Blob) => {
+export const uploadImageToStorage = async (image: string) => {
     const imgs = ref(storage, `images/${v4()}`)
-    const uploadImage = await uploadBytes(imgs, image)
+    
+    try {
+
+    const blob = new Blob([image], { type: 'image/jpeg' });
+    const uploadImage = await uploadBytesResumable(imgs, blob)
+    
     const imageUrl = await getDownloadURL(uploadImage.ref)
 
     return imageUrl
+    } catch(err) {
+        console.log('Error', err);
+        
+    }
 }
 
-export const createProductDocumentFromCategory = async ({id, productName, categoryTitle, imageBlob, description, price}: ProductItem) => {
+export const createProductDocumentFromCategory = async ({id, productName, categoryTitle, imageFile, description, price}: ProductItem) => {
     if(!auth) return
 
     const categoryDocRef = doc(db, 'categories', categoryTitle);
@@ -174,14 +248,14 @@ export const createProductDocumentFromCategory = async ({id, productName, catego
             throw new Error('Product name already exists')
         }
             try {
-                const imageUrl = await uploadImageToStorage(imageBlob)
+                const imageUrl = await uploadImageToStorage(imageFile)
 
                 const newProduct = { id: id, name: productName, imageUrl: imageUrl, description: description, price: price  }
                 categoryData.items.push(newProduct)
 
                 return await setDoc(categoryDocRef, categoryData)
             } catch(err) {
-                console.log('error creating the Product', err);
+                throw new Error('Error creating the Product. Please try again!');
             }
     }
 }
@@ -199,7 +273,7 @@ export const createWishlistDocumentToUser = async(item: CategoryItem, category: 
     
     if(!wishlistSnapshot.exists()) {
         try {
-            await setDoc(wishlistDocRef, {
+            return await setDoc(wishlistDocRef, {
                 wishlist: [{
                     item,
                     createdAt,
@@ -207,7 +281,7 @@ export const createWishlistDocumentToUser = async(item: CategoryItem, category: 
                 }]
             })
         } catch (err) {
-            console.log('error adding to wishlist', err);
+            throw new Error('Error adding to wishlist. Please try again')
         }
     } else {
         const wishlistData = wishlistSnapshot.data()
@@ -216,9 +290,9 @@ export const createWishlistDocumentToUser = async(item: CategoryItem, category: 
         wishlistData.wishlist.push(newWishlisth)
         
         try {
-            await setDoc(wishlistDocRef, wishlistData)
+            return await setDoc(wishlistDocRef, wishlistData)
         } catch (err) {
-            console.log('error adding to wishlist', err);
+            throw new Error('Error adding to wishlist. Please try again')
         }
     }
 }
@@ -243,11 +317,11 @@ export const removeWishlistItemToUser = async(item: CategoryItem) => {
             const updatedWishlist = wishlistData.wishlist.filter((wishlistItem: WishlistProduct) => wishlistItem.item.id !== id)
             
             try {
-                await setDoc(wishlistDocRef, {
+                return await setDoc(wishlistDocRef, {
                     wishlist: updatedWishlist
                 })                
             } catch(err) {
-                console.log('error removing to wishlist', err);
+                throw new Error('error removing to wishlist')
             }
         }
     }
@@ -263,7 +337,7 @@ export const getWishlistAndDocuments = async() => {
     const wishlistDocRef = doc(db, 'wishlists', userID);
     const wishlistSnapshot = await getDoc(wishlistDocRef);
 
-    if(!wishlistSnapshot.exists()) return
+    if(!wishlistSnapshot.exists()) return []
     
     return wishlistSnapshot.data().wishlist.map((wishlistItem: WishlistProduct) => wishlistItem)
 }

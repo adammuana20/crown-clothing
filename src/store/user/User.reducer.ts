@@ -11,7 +11,8 @@ import {
     checkUserSessionComplete, 
     clearUserErrorMessage,
     signUpStart,
-    signOutStart
+    signOutStart,
+    setProviderIDSuccess
 } from "./User.action";
 import { UserData } from "../../utils/firebase/Firebase.utils";
 
@@ -25,6 +26,7 @@ export type UserState = {
     readonly googleSignInButton: boolean;
     readonly error: Error | null;
     readonly userIsSigningOut: boolean;
+    readonly providerID: string | null;
 }
 
 export const USER_INITIAL_STATE: UserState = {
@@ -37,6 +39,7 @@ export const USER_INITIAL_STATE: UserState = {
     googleSignInButton: false,
     error: null,
     userIsSigningOut: false,
+    providerID: null,
 }
 
 export const userReducer = (state = USER_INITIAL_STATE, action: AnyAction): UserState => {
@@ -78,6 +81,14 @@ export const userReducer = (state = USER_INITIAL_STATE, action: AnyAction): User
         }
     }
 
+
+    if(setProviderIDSuccess.match(action)) {
+        return {
+            ...state,
+            providerID: action.payload
+        }
+    }
+
     if(signInSuccess.match(action)) {
         return { 
             ...state,
@@ -95,6 +106,7 @@ export const userReducer = (state = USER_INITIAL_STATE, action: AnyAction): User
             ...state,
             currentUser: null,
             userIsSigningOut: false,
+            providerID: null,
         }
     }
 

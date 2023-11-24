@@ -61,6 +61,11 @@ export const UserTextContainer = styled.div`
     justify-content: center;
     width: 100%;
     height: 100%;
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
 `
 
 export const MenuDropdownContainer = styled.div`

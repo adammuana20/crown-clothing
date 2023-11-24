@@ -17,6 +17,9 @@ export type SignOutStart = ActionWithPayload<USER_ACTION_TYPES.SIGN_OUT_START, {
 export type SignOutSuccess = Action<USER_ACTION_TYPES.SIGN_OUT_SUCCESS>
 export type SignOutFailed = ActionWithPayload<USER_ACTION_TYPES.SIGN_OUT_FAILED, Error>
 export type ClearUserErrorMessage = Action<USER_ACTION_TYPES.CLEAR_ERROR_MESSAGE>
+export type SetProviderIDStart = Action<USER_ACTION_TYPES.SET_PROVIDER_ID_START>
+export type SetProviderIDSuccess = ActionWithPayload<USER_ACTION_TYPES.SET_PROVIDER_ID_SUCCESS, string>
+export type SetProviderIDFailed = ActionWithPayload<USER_ACTION_TYPES.SET_PROVIDER_ID_FAILED, Error>
 
 export const checkUserSession = withMatcher((): CheckUserSession => createAction(USER_ACTION_TYPES.CHECK_USER_SESSION))
 export const checkUserSessionComplete = withMatcher((): CheckUserSessionComplete => createAction(USER_ACTION_TYPES.CHECK_USER_SESSION_COMPLETE))
@@ -32,3 +35,6 @@ export const signOutStart = withMatcher((navigate: Function): SignOutStart => cr
 export const signOutSuccess = withMatcher((): SignOutSuccess => createAction( USER_ACTION_TYPES.SIGN_OUT_SUCCESS ))
 export const signOutFailed = withMatcher((error: Error): SignOutFailed => createAction( USER_ACTION_TYPES.SIGN_OUT_FAILED, error ))
 export const clearUserErrorMessage = withMatcher((): ClearUserErrorMessage => createAction( USER_ACTION_TYPES.CLEAR_ERROR_MESSAGE ))
+export const setProviderIDStart = withMatcher((): SetProviderIDStart => createAction(USER_ACTION_TYPES.SET_PROVIDER_ID_START))
+export const setProviderIDSuccess = withMatcher((providerID: string): SetProviderIDSuccess => createAction(USER_ACTION_TYPES.SET_PROVIDER_ID_SUCCESS, providerID))
+export const setProviderIDFailed = withMatcher((error: Error): SetProviderIDFailed => createAction( USER_ACTION_TYPES.SET_PROVIDER_ID_FAILED, error ))

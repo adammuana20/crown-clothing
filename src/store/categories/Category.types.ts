@@ -29,7 +29,7 @@ export type CategoryMap = {
 export type ProductItem = {
     id: string;
     productName: string;
-    imageBlob: Blob;
+    imageFile: string;
     price: number;
     description: string;
     categoryTitle: string;

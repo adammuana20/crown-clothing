@@ -3,9 +3,9 @@ import { User } from 'firebase/auth'
 
 import { USER_ACTION_TYPES } from './User.types'
 
-import { signInSuccess, signInFailed, signUpSuccess, signUpFailed, signOutFailed, signOutSuccess, EmailSignInStart, SignUpStart, SignUpSuccess, GoogleSignInStart, checkUserSessionComplete, SignOutStart } from './User.action'
+import { signInSuccess, signInFailed, signUpSuccess, signUpFailed, signOutFailed, signOutSuccess, EmailSignInStart, SignUpStart, SignUpSuccess, GoogleSignInStart, checkUserSessionComplete, SignOutStart, setProviderIDFailed, setProviderIDSuccess, setProviderIDStart } from './User.action'
 
-import { getCurrentUser, createUserDocumentFromAuth, signInWithGooglePopup, signInAuthUserWithEmailAndPassword, createAuthUserWithEmailAndPassword, signOutUser, AdditionalInformation } from '../../utils/firebase/Firebase.utils'
+import { getCurrentUser, createUserDocumentFromAuth, signInWithGooglePopup, signInAuthUserWithEmailAndPassword, createAuthUserWithEmailAndPassword, signOutUser, AdditionalInformation, getAuthUserProviderID } from '../../utils/firebase/Firebase.utils'
  
 export function* getSnapshotFromUserAuth(userAuth: User, additionalInformation?: AdditionalInformation) {
     try {
@@ -13,6 +13,7 @@ export function* getSnapshotFromUserAuth(userAuth: User, additionalInformation?:
 
         if(userSnapshot) {
             yield* put(signInSuccess({ id: userSnapshot.id, ...userSnapshot.data() }))
+            yield* put(setProviderIDStart())
         }
     } catch(error) {
         yield* put(signInFailed(error as Error))
@@ -117,6 +118,25 @@ export function* signOut({payload: { navigate }}: SignOutStart) {
     }
 }
 
+export function* setProviderID() {
+    try {
+        const providerID = yield* call(getAuthUserProviderID)
+
+        if(providerID) {
+            yield* put(setProviderIDSuccess(providerID))
+        }
+        
+    } catch(error) {
+        yield* put(setProviderIDFailed(error as Error))
+    }
+}
+
+
+
+export function* onSetProviderID() {
+    yield* takeLatest(USER_ACTION_TYPES.SET_PROVIDER_ID_START, setProviderID)
+}
+
 export function* onSignUpStart() {
     yield* takeLatest(USER_ACTION_TYPES.SIGN_UP_START, signUp)
 }
@@ -148,6 +168,7 @@ export function* userSagas() {
         call(onEmailSignInStart), 
         call(onSignUpStart), 
         call(onSignUpSuccess),
-        call(onSignOutStart)
+        call(onSignOutStart),
+        call(onSetProviderID),
     ])
 }

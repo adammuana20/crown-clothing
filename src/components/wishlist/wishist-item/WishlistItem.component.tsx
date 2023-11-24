@@ -2,11 +2,8 @@ import { FC, useState } from "react"
 import { useDispatch } from "react-redux"
 
 import { WishlistProduct } from "../wishlist-button/WishlistButton.component"
-import { BUTTON_TYPE_CLASSES } from "../../button/Button.component"
 
 import { removeWishlistItemStart } from "../../../store/wishlist/Wishlist.action"
-
-import { CategoryItem } from "../../../store/categories/Category.types"
 
 import { WishlistItemContainer, WishlistItemLink, ImageContainer, WishlistImage, WishlistContentContainer, RemoveButton, Price } from "./WishlistItem.styles"
 
@@ -20,7 +17,7 @@ const WishlistItem: FC<WishlistItemProps> = ({ wishlistItem }) => {
     const { category, item } = wishlistItem
     const [removeWishlistisLoading, setRemoveWishlistisLoading] = useState(false)
     
-    const handleRemoveWishlist = () => {
+    const handleRemoveWishlist = async () => {
         setRemoveWishlistisLoading(true)
         dispatch(removeWishlistItemStart(item, setRemoveWishlistisLoading))
     }
