@@ -11,6 +11,7 @@ import { GlobalStyle } from './global.styles'
 import { fetchWishlistStart } from './store/wishlist/Wishlist.action'
 
 const PrivateRoute = lazy(() => import('./routes/private-route/PrivateRoute.component'))
+const Profile = lazy(() => import('./routes/profile/Profile.component'))
 const NotFound = lazy(() => import('./components/404.component'))
 const Home = lazy(() => import('./routes/home/Home.component'))
 const SignIn = lazy(() => import('./components/authentication/sign-in/SignInForm.component'))
@@ -46,10 +47,11 @@ const App = () => {
       <Route path='/' element={<Layout />} >
         <Route index  element={<Home />} />
         <Route path='shop/*'  element={<Shop />} />
-        <Route element={<PrivateRoute navigateToPath='sign-in' isAllowed={!!currentUser && currentUser.roles.includes('customer')} />}>
+        <Route element={<PrivateRoute navigateToPath='sign-in' isAllowed={!!currentUser && !!currentUser.roles && currentUser.roles.includes('customer')} />}>
+          <Route path='profile'  element={<Profile />} />
           <Route path='wishlist'  element={<Wishlist />} />
         </Route>
-        <Route element={<PrivateRoute navigateToPath='sign-in' isAllowed={!!currentUser && currentUser.roles.includes('admin')}/>}>
+        <Route element={<PrivateRoute navigateToPath='sign-in' isAllowed={!!currentUser && !!currentUser.roles && currentUser.roles.includes('admin')}/>}>
           <Route path='product' element={<Product />}/>
         </Route>
         <Route element={<PrivateRoute navigateToPath='/' isAllowed={!currentUser}/>}>

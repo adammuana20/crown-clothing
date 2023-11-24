@@ -69,7 +69,7 @@ const AddProduct = () => {
         
         
         if(image) {
-            const productData = {id: v4() ,categoryTitle: category, productName: capitalizeEachWord(productName), imageBlob: image, description: description, price: parseFloat(price) }
+            const productData = {id: v4() ,categoryTitle: category, productName: capitalizeEachWord(productName), imageFile: image, description: description, price: parseFloat(price) }
             dispatch(createProductStart(productData))
             resetFormFields()
         }
@@ -97,7 +97,7 @@ const AddProduct = () => {
                         required:true
                     }}
                 />
-                <input type='file' name='image' onChange={handleChange} required/>
+                <input type='file' name='image' onChange={handleChange} accept="image/x-png,image/jpeg" required/>
                 <select
                     value={category}
                     onChange={handleChange}

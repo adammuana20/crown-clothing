@@ -45,3 +45,8 @@ export const selectSignUpIsLoading = createSelector(
     [selectUserReducer],
     (userSlice) => userSlice.signUpIsLoading
 )
+
+export const selectProviderID = createSelector(
+    [selectUserReducer],
+    (userSlice) => userSlice.providerID
+)
