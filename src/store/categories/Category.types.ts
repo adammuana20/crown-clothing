@@ -9,7 +9,7 @@ export enum CATEGORIES_ACTION_TYPES {
 }
 
 export type CategoryItem = {
-    id: number;
+    id: string;
     name: string;
     imageUrl: string;
     price: number;
@@ -24,13 +24,4 @@ export type Category = {
 
 export type CategoryMap = {
     [key: string]: CategoryItem[]
-}
-
-export type ProductItem = {
-    id: string;
-    productName: string;
-    imageFile: string;
-    price: number;
-    description: string;
-    categoryTitle: string;
 }

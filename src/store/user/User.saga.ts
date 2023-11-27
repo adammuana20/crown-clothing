@@ -6,6 +6,8 @@ import { USER_ACTION_TYPES } from './User.types'
 import { signInSuccess, signInFailed, signUpSuccess, signUpFailed, signOutFailed, signOutSuccess, EmailSignInStart, SignUpStart, SignUpSuccess, GoogleSignInStart, checkUserSessionComplete, SignOutStart, setProviderIDFailed, setProviderIDSuccess, setProviderIDStart } from './User.action'
 
 import { getCurrentUser, createUserDocumentFromAuth, signInWithGooglePopup, signInAuthUserWithEmailAndPassword, createAuthUserWithEmailAndPassword, signOutUser, AdditionalInformation, getAuthUserProviderID } from '../../utils/firebase/Firebase.utils'
+import { fetchWishlistStart } from '../wishlist/Wishlist.action'
+import { fetchCartItemsStart } from '../cart/Cart.action'
  
 export function* getSnapshotFromUserAuth(userAuth: User, additionalInformation?: AdditionalInformation) {
     try {
@@ -112,6 +114,8 @@ export function* signOut({payload: { navigate }}: SignOutStart) {
     try {   
         yield* call(signOutUser)
         yield* put(signOutSuccess())
+        yield* put(fetchWishlistStart())
+        yield* put(fetchCartItemsStart())
         navigate('sign-in', { replace: true })
     } catch(error) {
         yield* put(signOutFailed(error as Error))

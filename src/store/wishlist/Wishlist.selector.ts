@@ -13,5 +13,5 @@ export const selectWishlist = createSelector(
 
 export const selectWishlistIsLoading = createSelector(
     [selectWishlistReducer],
-    (wishlistSlice) => wishlistSlice.wishlistIsLoading
+    (wishlistSlice) => wishlistSlice.wishlistIsFetching
 )

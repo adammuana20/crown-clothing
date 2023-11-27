@@ -31,13 +31,13 @@ const Checkout = () => {
                                 <span>Product</span>
                             </HeaderBlock>
                             <HeaderBlock>
-                                <span>Description</span>
-                            </HeaderBlock>
-                            <HeaderBlock>
                                 <span>Quantity</span>
                             </HeaderBlock>
                             <HeaderBlock>
                                 <span>Price</span>
+                            </HeaderBlock>
+                            <HeaderBlock>
+                                <span>Total</span>
                             </HeaderBlock>
                             <HeaderBlock>
                                 <span>Remove</span>
@@ -48,7 +48,7 @@ const Checkout = () => {
                                 <CheckoutItem key={cartItem.id} cartItem={cartItem} />
                             ))
                         }
-                        <Total>TOTAL: ${cartTotalPrice}</Total>
+                        <Total>Sub Total: ${cartTotalPrice}</Total>
                         <PaymentForm />
                     </CheckoutContainer>
                 )

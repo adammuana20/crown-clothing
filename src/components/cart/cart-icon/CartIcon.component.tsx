@@ -41,7 +41,10 @@ const CartIcon = () => {
     return (
         <CartIconContainer ref={cartDropdownRef}>
             <ShoppingIcon onClick={toggleIsCartOpen}/>
-            <ItemCount>{cartCount}</ItemCount>
+            { cartCount !== 0 ?
+                <ItemCount>{cartCount}</ItemCount>
+                : null
+            }
             { isCartOpen && <CartDropdown toggleCartClose={() => dispatch(setIsCartOpen(false))}/>}
         </CartIconContainer>
     )

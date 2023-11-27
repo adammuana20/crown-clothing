@@ -66,11 +66,9 @@ const AddProduct = () => {
 
             return capsEachWordText
         }
-        
-        
         if(image) {
-            const productData = {id: v4() ,categoryTitle: category, productName: capitalizeEachWord(productName), imageFile: image, description: description, price: parseFloat(price) }
-            dispatch(createProductStart(productData))
+            const product = {id: v4(), name: capitalizeEachWord(productName), imageUrl: image, description: description, price: parseFloat(price)}
+            dispatch(createProductStart(product, category))
             resetFormFields()
         }
     }

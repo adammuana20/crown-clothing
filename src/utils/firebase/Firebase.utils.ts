@@ -32,7 +32,8 @@ import { getStorage, ref, getDownloadURL, uploadBytesResumable } from 'firebase/
 import { v4 } from 'uuid'
 
 import { WishlistProduct } from '../../components/wishlist/wishlist-button/WishlistButton.component'
-import { Category, CategoryItem, ProductItem } from '../../store/categories/Category.types'
+import { Category, CategoryItem } from '../../store/categories/Category.types'
+import { CartItem } from '../../store/cart/Cart.types'
 
 const firebaseConfig = {
     apiKey: 'AIzaSyCfkO6DEiDFwSH6dyFW_6VjeFlEgWswMLE',
@@ -141,16 +142,18 @@ export const updateUserProfileFromDocument = async (displayName: string, email: 
         if(selectedIamge) {
             const imageUrl = await uploadImageToStorage(imageFile)
             
-            return await updateDoc(userDocRef, {
+            await updateDoc(userDocRef, {
                 displayName,
                 email,
                 imageUrl,
             })
+            return true;
         } else {
-            return await updateDoc(userDocRef, {
+            await updateDoc(userDocRef, {
                 displayName,
                 email,
             })
+            return true;
         }
     } catch(err) {
         console.log('Failed updating profie: ',err);
@@ -234,7 +237,7 @@ export const uploadImageToStorage = async (image: string) => {
     }
 }
 
-export const createProductDocumentFromCategory = async ({id, productName, categoryTitle, imageFile, description, price}: ProductItem) => {
+export const createProductDocumentFromCategory = async (product: CategoryItem, categoryTitle: string) => {
     if(!auth) return
 
     const categoryDocRef = doc(db, 'categories', categoryTitle);
@@ -244,16 +247,17 @@ export const createProductDocumentFromCategory = async ({id, productName, catego
         const categoryData = categorySnapshot.data()
 
         const itemNames = categoryData.items.map((item: CategoryItem) => item.name)
-        if(itemNames.includes(productName)) {
+        if(itemNames.includes(product.name)) {
             throw new Error('Product name already exists')
         }
             try {
-                const imageUrl = await uploadImageToStorage(imageFile)
+                const imageUrl = await uploadImageToStorage(product.imageUrl)
 
-                const newProduct = { id: id, name: productName, imageUrl: imageUrl, description: description, price: price  }
+                const newProduct = { id: product.id, name: product.name, imageUrl: imageUrl, description: product.description, price: product.price  }
                 categoryData.items.push(newProduct)
 
-                return await setDoc(categoryDocRef, categoryData)
+                await setDoc(categoryDocRef, categoryData)
+                return true;
             } catch(err) {
                 throw new Error('Error creating the Product. Please try again!');
             }
@@ -264,7 +268,7 @@ export const createProductDocumentFromCategory = async ({id, productName, catego
 export const createWishlistDocumentToUser = async(item: CategoryItem, category: string) => {
     const userID = auth.currentUser?.uid;
 
-    if(!userID) return
+    if(!userID) throw new Error('No user is logged in')
 
     const wishlistDocRef = doc(db, 'wishlists', userID);
     const wishlistSnapshot = await getDoc(wishlistDocRef);
@@ -273,23 +277,24 @@ export const createWishlistDocumentToUser = async(item: CategoryItem, category: 
     
     if(!wishlistSnapshot.exists()) {
         try {
-            return await setDoc(wishlistDocRef, {
+            await setDoc(wishlistDocRef, {
                 wishlist: [{
                     item,
                     createdAt,
                     category,
                 }]
             })
+
+            return true;
         } catch (err) {
             throw new Error('Error adding to wishlist. Please try again')
         }
     } else {
-        const wishlistData = wishlistSnapshot.data()
-
-        const newWishlisth = { item, createdAt, category };
-        wishlistData.wishlist.push(newWishlisth)
-        
         try {
+            const wishlistData = wishlistSnapshot.data()
+
+            const newWishlist = { item, createdAt, category };
+            wishlistData.wishlist.push(newWishlist)
             return await setDoc(wishlistDocRef, wishlistData)
         } catch (err) {
             throw new Error('Error adding to wishlist. Please try again')
@@ -317,9 +322,10 @@ export const removeWishlistItemToUser = async(item: CategoryItem) => {
             const updatedWishlist = wishlistData.wishlist.filter((wishlistItem: WishlistProduct) => wishlistItem.item.id !== id)
             
             try {
-                return await setDoc(wishlistDocRef, {
+                await setDoc(wishlistDocRef, {
                     wishlist: updatedWishlist
-                })                
+                })
+                return true        
             } catch(err) {
                 throw new Error('error removing to wishlist')
             }
@@ -340,4 +346,137 @@ export const getWishlistAndDocuments = async() => {
     if(!wishlistSnapshot.exists()) return []
     
     return wishlistSnapshot.data().wishlist.map((wishlistItem: WishlistProduct) => wishlistItem)
+}
+
+export const getCartItemsAndDocuments = async() => {
+    const userID = auth.currentUser?.uid
+
+    if(!userID) return []
+
+    const cartDocRef = doc(db, 'cart', userID)
+    const cartSnapshot = await getDoc(cartDocRef)
+
+    if(!cartSnapshot.exists()) return []
+
+    return cartSnapshot.data().cart.map((cartItem: CartItem) => cartItem)
+}
+
+
+// ADD PRODUCT ITEM TO CART
+export const createCartDocumentToUser = async(product: CategoryItem, quantity: number, category: string) => {
+    const userID = auth.currentUser?.uid;
+
+    if(!userID) return
+
+    const cartDocRef = doc(db, 'cart', userID);
+    const cartSnapshot = await getDoc(cartDocRef);
+
+    const { id, name, description, price, imageUrl } = product
+
+    if(!cartSnapshot.exists()) {
+        try {
+            await setDoc(cartDocRef, {
+                cart: [{
+                    id, 
+                    name, 
+                    description, 
+                    price,
+                    quantity,
+                    imageUrl,
+                    category,
+                }]
+            })
+            console.log('Successfuly added to Cart');
+        } catch(error) {
+            console.error('Error adding item to cart: ', error);
+        }
+    } else {
+        try {
+            const cartData = cartSnapshot.data()
+            
+            //FIND THE CART ITEM TO ADD
+            const existingCartItem = cartData.cart.find((cartItem: CartItem) => cartItem.id === product.id);
+            
+            // CHECK IF THE CART ITEM EXISTS. IF IT IS ADD 1 TO THE CART ITEM QUANTITY
+            if(existingCartItem !== undefined) {
+                const updateCartItems = cartData.cart.map((cartItem: CartItem) => cartItem.id === product.id 
+                    ? { ...cartItem, quantity: cartItem.quantity + quantity}
+                    : cartItem)
+                    
+
+                await setDoc(cartDocRef, {
+                    cart: updateCartItems
+                })
+                console.log('Cart Quantity Updated')
+                
+            } else {
+                const newCartItems = { id, name, description, price, quantity, imageUrl, category, }
+                cartData.cart.push(newCartItems)
+
+                await setDoc(cartDocRef, cartData)
+                console.log('New Item Added to Cart');
+            }
+
+        } catch(error) {
+            throw new Error('Error adding item to cart:', error as Error)
+        }
+    }
+}
+
+// DECREASE QTY OF ITEM TO CART
+export const updateQtyItemToCartFromUserDocument = async(productID: string, quantity: number) => {
+    const userID = auth.currentUser?.uid;
+
+    if(!userID) return
+
+    const cartDocRef = doc(db, 'cart', userID);
+    const cartSnapshot = await getDoc(cartDocRef);
+
+    if(cartSnapshot.exists()) {
+        try {
+            const cartData = cartSnapshot.data()
+            
+            //FIND THE CART ITEM TO ADD
+            const existingCartItem = cartData.cart.find((cartItem: CartItem) => cartItem.id === productID);
+            
+            if(existingCartItem !== undefined) {
+                const updatedCartItems = cartData.cart.map((cartItem: CartItem) => cartItem.id === productID 
+                    ? { ...cartItem, quantity: quantity}
+                    : cartItem)
+                
+                await setDoc(cartDocRef, {
+                    cart: updatedCartItems
+                })
+                console.log('Cart Quantity Updated')
+                
+            }
+        } catch(error) {
+            throw new Error('Error updating QTY to cart', error as Error)
+        }
+    }
+}
+
+// REMOVE ITEM FROM CART OF USER
+export const removeItemFromCartOfUser = async(productID: string) => {
+    const userID = auth.currentUser?.uid;
+
+    if(!userID) return
+
+    const cartDocRef = doc(db, 'cart', userID);
+    const cartSnapshot = await getDoc(cartDocRef);
+
+    if(cartSnapshot.exists()) {
+        try {
+            const cartData = cartSnapshot.data()
+
+            const updatedCartItems = cartData.cart.filter((cartItem: CartItem) => cartItem.id !== productID)
+
+            await setDoc(cartDocRef, {
+                cart: updatedCartItems
+            })
+            console.log('Cart Quantity Updated')
+        } catch(error) {
+            console.error('Failed to remove item form cart', error)
+        }
+    }
 }

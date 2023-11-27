@@ -1,18 +1,27 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-export const CheckoutItemContainer = styled.div`
+import { Link } from "react-router-dom";
+
+type CheckOutItemProps = {
+  $isUpdating: boolean;
+}
+
+export const CheckoutItemContainer = styled.div<CheckOutItemProps>`
   width: 100%;
-  display: flex;
   min-height: 100px;
   border-bottom: 1px solid darkgrey;
   padding: 15px 0;
   font-size: 20px;
-  align-items: center;
+  display: flex;
+
+  ${({$isUpdating}) => $isUpdating && css`
+    opacity: 0.6;
+    pointer-events: none;
+  `}
 `
 
 export const ImageContainer = styled.div`
-  width: 23%;
-  padding-right: 15px;
+  width: 11%;
 
     img {
       width: 100%;
@@ -21,22 +30,38 @@ export const ImageContainer = styled.div`
 `
 
 export const BaseSpan = styled.span`
-  width: 23%;
+  width: 26%;
+  text-align: center;
 `
 
-export const Quantity = styled(BaseSpan)`
+export const ProductInputContainer = styled.div`
+  width: 26%;
   display: flex;
+  justify-content: center;
 `
 
-export const Arrow = styled.div`
+export const RemoveItem = styled.div`
+  width: 8%;
   cursor: pointer;
+  text-align: end;
+  padding-right: 2.5rem;
 `
 
-export const Value = styled.span`
-  margin: 0 10px;
+export const ProductLink = styled(Link)`
+  text-transform: none;
+  width: 14%;
 `
 
-export const RemoveButton = styled.div`
-  padding-left: 12px;
-  cursor: pointer;
+export const ProductDetailsContainer = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+
+  ${ProductLink} {
+    padding-left: 0.6rem;
+
+    &:hover {
+      font-weight: bold;
+    }
+  }
 `

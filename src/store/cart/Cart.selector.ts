@@ -25,7 +25,17 @@ export const selectCartCount = createSelector(
 
 export const selectCartTotalPrice = createSelector(
     [selectCartItems],
-    (cartItems) => cartItems.reduce((total, cartItem) => 
+    (cartSlice) => cartSlice.reduce((total, cartItem) => 
     (total + (cartItem.quantity * cartItem.price))
 , 0)
+)
+
+export const selectAddingItemToCart = createSelector(
+    [selectCartReducer],
+    (cartSlice) => cartSlice.addingItemToCart
+)
+
+export const selectUpdatingQtyFromCart = createSelector(
+    [selectCartReducer],
+    (cartSlice) => cartSlice.updatingQtyFromCart
 )

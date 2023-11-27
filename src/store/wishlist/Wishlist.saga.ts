@@ -1,16 +1,14 @@
 import { takeLatest, put, call, all, takeEvery } from "typed-redux-saga/macro";
 import { WISHLIST_ACTION_TYPES } from "./Wishlist.types";
-import { CreateWishlistItemStart, FetchWishlistStart, RemoveWishlistItemStart, createWishlistItemFailed, createWishlistItemSuccess, fetchWishlistFailed, fetchWishlistStart, fetchWishlistSuccess, removeWishlistItemFailed, removeWishlistItemSuccess } from "./Wishlist.action";
+import { CreateWishlistItemStart, RemoveWishlistItemStart, createWishlistItemFailed, createWishlistItemSuccess, fetchWishlistFailed, fetchWishlistStart, fetchWishlistSuccess, removeWishlistItemFailed, removeWishlistItemSuccess } from "./Wishlist.action";
 import { createWishlistDocumentToUser, getWishlistAndDocuments, removeWishlistItemToUser } from "../../utils/firebase/Firebase.utils";
 
-export function* fetchWishlistStartAsync({payload: { setWishlistIsLoading }}: FetchWishlistStart) {
+export function* fetchWishlistStartAsync() {
     try {
         const wishlistArray = yield* call(getWishlistAndDocuments)        
         yield* put(fetchWishlistSuccess(wishlistArray))
     } catch(error) {
         yield* put(fetchWishlistFailed(error as Error))
-    } finally {
-        setWishlistIsLoading(false)
     }
 }
 
@@ -18,10 +16,11 @@ export function* createWishlistItem({payload: { wishlistItem, category, setIsAdd
     try {
         yield* call(createWishlistDocumentToUser, wishlistItem, category)
         yield* put(createWishlistItemSuccess())
-        yield* put(fetchWishlistStart(setIsAddingToWishlist))
+        yield* put(fetchWishlistStart())
     } catch(error) {
         yield* put(createWishlistItemFailed(error as Error))
-        setIsAddingToWishlist(false)
+    } finally {        
+        yield* call(setIsAddingToWishlist, false)
     }
 }
 
@@ -29,10 +28,11 @@ export function* removeWishlistItem({payload: { wishlistItem, setIsRemovingToWis
     try {
         yield* call(removeWishlistItemToUser, wishlistItem)
         yield* put(removeWishlistItemSuccess())
-        yield* put(fetchWishlistStart(setIsRemovingToWishlist))
+        yield* put(fetchWishlistStart())
     } catch(error) {
         yield* put(removeWishlistItemFailed(error as Error))
-        setIsRemovingToWishlist(false)
+    } finally {
+        yield* call(setIsRemovingToWishlist, false)
     }
 }
 

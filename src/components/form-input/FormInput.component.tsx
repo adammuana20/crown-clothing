@@ -8,7 +8,7 @@ type FormInputProps = {
         type: string;
         onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
         name: string;
-        value: string;
+        value: string | number;
         minLength?: number | 0;
         required?: boolean;
         'data-search'?: boolean;
