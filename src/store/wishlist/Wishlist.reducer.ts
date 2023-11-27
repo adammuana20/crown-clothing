@@ -4,13 +4,13 @@ import { createWishlistItemFailed, createWishlistItemStart, createWishlistItemSu
 
 export type WishlistState = {
     readonly wishlist: WishlistProduct[];
-    readonly wishlistIsLoading: boolean;
+    readonly wishlistIsFetching: boolean;
     readonly error: Error | null;
 }
 
 export const WISHLIST_INITIAL_STATE: WishlistState = {
     wishlist: [],
-    wishlistIsLoading: false,
+    wishlistIsFetching: false,
     error: null,
 }
 
@@ -33,7 +33,7 @@ export const wishlistReducer = (state = WISHLIST_INITIAL_STATE, action: AnyActio
     if(fetchWishlistStart.match(action)) {
         return {
             ...state,
-            wishlistIsLoading: true,
+            wishlistIsFetching: true,
         }
     }
 
@@ -41,14 +41,14 @@ export const wishlistReducer = (state = WISHLIST_INITIAL_STATE, action: AnyActio
         return {
             ...state,
             wishlist: action.payload,
-            wishlistIsLoading: false,
+            wishlistIsFetching: false,
         }
     }
 
     if(fetchWishlistFailed.match(action)) {
         return {
             ...state,
-            wishlistIsLoading: false,
+            wishlistIsFetching: false,
             error: action.payload,
         }
     }

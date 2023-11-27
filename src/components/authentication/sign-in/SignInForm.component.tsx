@@ -1,17 +1,14 @@
-import { useState, FormEvent, ChangeEvent, useEffect } from 'react'
+import { useState, FormEvent, ChangeEvent } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import Button, { BUTTON_TYPE_CLASSES } from '../../button/Button.component'
 import FormInput from '../../form-input/FormInput.component'
 
-import { fetchWishlistStart } from '../../../store/wishlist/Wishlist.action'
-
 import { googleSignInStart, emailSignInStart } from '../../../store/user/User.action'
 import { selectEmailSignInIsLoading, selectGoogleSignInIsLoading, selectEmailSignInButton, selectGoogleSignInButton, selectUserError, selectCurrentUser } from '../../../store/user/User.selector'
 
 import { SignInContainer, ButtonsContainer } from './SignInForm.styles'
-import { alreadyLoggedIn } from '../../../utils/loaders/Loaders.utils'
 
 
 // export async function loader(currentUser: Object) {
@@ -30,17 +27,9 @@ const SignInForm = () => {
     const googleSignInIsLoading = useSelector(selectGoogleSignInIsLoading)
     const emailSignInButton = useSelector(selectEmailSignInButton)
     const googleSignInButton = useSelector(selectGoogleSignInButton)
-    const currentUser = useSelector(selectCurrentUser)
     const error = useSelector(selectUserError)
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const [isWishlistLoading, setIsWishlistLoading] = useState(false)
-
-    useEffect(() => {
-        if(!currentUser) {
-            dispatch(fetchWishlistStart(setIsWishlistLoading))
-        }
-    }, [])
 
     const resetFormFields = () => {
         setSignInForm(defaultFormFields)

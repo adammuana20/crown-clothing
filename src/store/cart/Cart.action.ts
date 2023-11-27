@@ -41,26 +41,46 @@ const clearCartItem = (cartItems: CartItem[], cartItemToClear: CartItem) => cart
 
 
 export type SetIsCartOpen = ActionWithPayload<CART_ACTION_TYPES.SET_IS_CART_OPEN, boolean>
-
-export type SetCartItems = ActionWithPayload<CART_ACTION_TYPES.SET_CART_ITEMS, CartItem[]>
-
-
+export type SetCartItemsStart = ActionWithPayload<CART_ACTION_TYPES.ADD_ITEMS_TO_CART_START, { product: CategoryItem, qty: number, category: string } >
+export type SetCartItemsSuccess = Action<CART_ACTION_TYPES.ADD_ITEMS_TO_CART_SUCCESS>
+export type SetCartItemsFailed = ActionWithPayload<CART_ACTION_TYPES.ADD_ITEMS_TO_CART_FAILED, Error>
+export type UpdateQtyItemFromCartStart = ActionWithPayload<CART_ACTION_TYPES.UPDATE_QTY_ITEM_FROM_CART_START, { productID: string, qty: number, setIsUpdating: React.Dispatch<React.SetStateAction<boolean>> } >
+export type UpdateQtyItemFromCartSuccess = Action<CART_ACTION_TYPES.UPDATE_QTY_ITEM_FROM_CART_SUCCESS>
+export type UpdateQtyItemFromCartFailed = ActionWithPayload<CART_ACTION_TYPES.UPDATE_QTY_ITEM_FROM_CART_FAILED, Error>
+export type RemoveItemFromCartStart = ActionWithPayload<CART_ACTION_TYPES.REMOVE_ITEM_FROM_CART_START, { productID: string } >
+export type RemoveItemFromCartSuccess = Action<CART_ACTION_TYPES.REMOVE_ITEM_FROM_CART_SUCCESS>
+export type RemoveItemFromCartFailed = ActionWithPayload<CART_ACTION_TYPES.REMOVE_ITEM_FROM_CART_FAILED, Error>
+export type FetchCartItemsStart = Action<CART_ACTION_TYPES.FETCH_CART_ITEMS_START>
+export type FetchCartItemsSuccess = ActionWithPayload<CART_ACTION_TYPES.FETCH_CART_ITEMS_SUCCESS, CartItem[]>
+export type FetchCartItemsFailed = Action<CART_ACTION_TYPES.FETCH_CART_ITEMS_FAILED>
 
 export const setIsCartOpen = withMatcher((bool: boolean): SetIsCartOpen => createAction( CART_ACTION_TYPES.SET_IS_CART_OPEN, bool ))
+export const addItemsToCartStart = withMatcher((product: CategoryItem, qty: number, category: string,): SetCartItemsStart => createAction(CART_ACTION_TYPES.ADD_ITEMS_TO_CART_START, { product, qty, category }))
+export const addItemsToCartSuccess = withMatcher((): SetCartItemsSuccess => createAction(CART_ACTION_TYPES.ADD_ITEMS_TO_CART_SUCCESS))
+export const addItemsToCartFailed = withMatcher((error: Error): SetCartItemsFailed => createAction(CART_ACTION_TYPES.ADD_ITEMS_TO_CART_FAILED, error))
+export const updateQtyItemFromCartStart = withMatcher((productID: string, qty: number, setIsUpdating: React.Dispatch<React.SetStateAction<boolean>>): UpdateQtyItemFromCartStart => createAction(CART_ACTION_TYPES.UPDATE_QTY_ITEM_FROM_CART_START, { productID, qty, setIsUpdating }))
+export const updateQtyItemFromCartSuccess = withMatcher((): UpdateQtyItemFromCartSuccess => createAction(CART_ACTION_TYPES.UPDATE_QTY_ITEM_FROM_CART_SUCCESS))
+export const updateQtyItemFromCartFailed = withMatcher((error: Error): UpdateQtyItemFromCartFailed => createAction(CART_ACTION_TYPES.UPDATE_QTY_ITEM_FROM_CART_FAILED, error))
 
-export const setCartItems = withMatcher((cartItems: CartItem[]): SetCartItems => createAction(CART_ACTION_TYPES.SET_CART_ITEMS, cartItems))
+export const removeItemFromCartStart = withMatcher((productID: string): RemoveItemFromCartStart => createAction(CART_ACTION_TYPES.REMOVE_ITEM_FROM_CART_START, { productID }))
+export const removeItemFromCartSuccess = withMatcher((): RemoveItemFromCartSuccess => createAction(CART_ACTION_TYPES.REMOVE_ITEM_FROM_CART_SUCCESS))
+export const removeItemFromCartFailed = withMatcher((error: Error): RemoveItemFromCartFailed => createAction(CART_ACTION_TYPES.REMOVE_ITEM_FROM_CART_FAILED, error))
 
-export const addItemToCart = (cartItems: CartItem[], productToAdd: CategoryItem) => {
-    const newCartItems = addCartItem(cartItems, productToAdd)
-    return setCartItems(newCartItems)
-}
+export const fetchCartItemsStart = withMatcher((): FetchCartItemsStart => createAction(CART_ACTION_TYPES.FETCH_CART_ITEMS_START))
+export const fetchCartItemsSuccess = withMatcher((productArray: CartItem[]): FetchCartItemsSuccess => createAction( CART_ACTION_TYPES.FETCH_CART_ITEMS_SUCCESS, productArray ))
+export const fetchCartItemsFailed = withMatcher((error: Error): FetchCartItemsFailed => createAction(CART_ACTION_TYPES.FETCH_CART_ITEMS_FAILED, error))
 
-export const removeItemFromCart = (cartItems: CartItem[], cartItemToRemove: CartItem) => {
-    const newCartItems = removeCartItem(cartItems, cartItemToRemove)
-    return setCartItems(newCartItems)
-}
+// export const addItemToCart = (cartItems: CartItem[], productToAdd: CategoryItem) => {
+//     const newCartItems = addCartItem(cartItems, productToAdd)
+//     return setCartItems(newCartItems)
+// }
 
-export const clearItemFromCart = (cartItems: CartItem[], cartItemToClear: CartItem) => {
-    const newCartItems = clearCartItem(cartItems, cartItemToClear)
-    return setCartItems(newCartItems)
-}
+// export const removeItemFromCart = (cartItems: CartItem[], cartItemToRemove: CartItem) => {
+//     const newCartItems = removeCartItem(cartItems, cartItemToRemove)
+//     return setCartItems(newCartItems)
+// }
+
+// export const clearItemFromCart = (cartItems: CartItem[], cartItemToClear: CartItem) => {
+//     const newCartItems = clearCartItem(cartItems, cartItemToClear)
+//     return setCartItems(newCartItems)
+// }

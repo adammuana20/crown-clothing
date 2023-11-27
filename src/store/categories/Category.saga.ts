@@ -15,9 +15,9 @@ export function* fetchCategoriesStartAsync() {
     }
 }
 
-export function* createProduct(productData: CreateProductStart) {
+export function* createProduct({payload: { product, categoryTitle }}: CreateProductStart) {
     try {
-        yield* call(createProductDocumentFromCategory, productData.payload)
+        yield* call(createProductDocumentFromCategory, product, categoryTitle)
         yield* put(createProductSuccess())
         yield* put(fetchCategoriesStart())
     } catch(error) {

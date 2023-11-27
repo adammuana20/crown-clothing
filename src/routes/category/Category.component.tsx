@@ -38,7 +38,7 @@ const Category = () => {
                             {
                                 products &&
                                 products.map((product) => (
-                                        <ProductCard key={product.id} product={product} categoryTitle={category} isFromShopRoute={false} />
+                                        <ProductCard key={product.id} product={product} categoryTitle={category} />
                                     )
                                 )
                             }

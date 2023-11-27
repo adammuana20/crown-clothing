@@ -9,6 +9,8 @@ import { selectCurrentUser, selectUserIsLoading } from './store/user/User.select
 import { fetchCategoriesStart } from './store/categories/Category.action'
 import { GlobalStyle } from './global.styles'
 import { fetchWishlistStart } from './store/wishlist/Wishlist.action'
+import { fetchCartItemsStart } from './store/cart/Cart.action'
+import { selectWishlistIsLoading } from './store/wishlist/Wishlist.selector'
 
 const PrivateRoute = lazy(() => import('./routes/private-route/PrivateRoute.component'))
 const Profile = lazy(() => import('./routes/profile/Profile.component'))
@@ -26,7 +28,6 @@ const App = () => {
   const dispatch = useDispatch()
   const currentUser = useSelector(selectCurrentUser)
   const checkingUserSession = useSelector(selectUserIsLoading)
-  const [isWishlistLoading, setIsWishlistLoading] = useState(false)
   
   useEffect(() => {
     dispatch(checkUserSession())
@@ -35,8 +36,8 @@ const App = () => {
 
   useEffect(() => {
     if(currentUser && currentUser.id) {
-      setIsWishlistLoading(true)
-      dispatch(fetchWishlistStart(setIsWishlistLoading))
+      dispatch(fetchWishlistStart())
+      dispatch(fetchCartItemsStart())
     }
   }, [currentUser])
 
@@ -69,8 +70,7 @@ const App = () => {
     <Suspense fallback={<Spinner />}>
       <GlobalStyle />
       { checkingUserSession ? <Spinner />
-        : isWishlistLoading ? <Spinner /> :
-        <RouterProvider router={router} />
+        : <RouterProvider router={router} />
       }
     </Suspense>
   );

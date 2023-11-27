@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const ProductPreviewContainer = styled.div`
     display: flex;
-    padding: 20px 0;
+    margin: 20px 0 80px;
 `
 
 export const ImageContainer = styled.div`
@@ -25,4 +25,19 @@ export const WishlistButtonContainer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+`
+
+export const ProductInputContainer = styled.div`
+    padding-bottom: 2rem;
+`
+
+export const RelatedProductsContainer = styled.div`
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 20px;
+    row-gap: 50px;
+`
+
+export const RelatedProductsWrapper = styled.div`
+    
 `
