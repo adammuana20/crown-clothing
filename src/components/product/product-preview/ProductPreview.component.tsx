@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux";
 
@@ -36,6 +36,10 @@ const ProductPreview = () => {
     const isLoading = useSelector(selectAddingItemToCart)
 
     const categoriesMap = useSelector(selectCategoriesMap)
+
+    useEffect(() => {
+        setQty(1)
+    }, [params.id])
     
     if(!category) return <h2>Product not found</h2>
 
@@ -90,7 +94,6 @@ const ProductPreview = () => {
         }
 
         return (
-        <>
             <ProductPreviewContainer key={id}>
                 <ImageContainer>
                     <ProductImage src={imageUrl} alt={name} />
@@ -108,16 +111,6 @@ const ProductPreview = () => {
                     <Button onClick={addProductToCart} isLoading={isLoading}>Add to cart</Button>
                 </ProductInfo>
             </ProductPreviewContainer>
-            <RelatedProductsWrapper>
-                <h2>Related Products</h2>
-                <RelatedProductsContainer>
-                    { relatedProductsArr.map((product) =>
-                            <ProductCard product={product} categoryTitle={category} key={product.id} />
-                        )
-                    }
-                </RelatedProductsContainer>
-            </RelatedProductsWrapper>
-        </>
         )
     })
     
@@ -125,7 +118,18 @@ const ProductPreview = () => {
     return (
         <>
             {productElement.length > 0 ? (
-                productElement
+                <>
+                    {productElement}
+                    <RelatedProductsWrapper>
+                    <h2>Related Products</h2>
+                    <RelatedProductsContainer>
+                        { relatedProductsArr.map((product) =>
+                                <ProductCard product={product} categoryTitle={category} key={product.id} />
+                            )
+                        }
+                    </RelatedProductsContainer>
+                    </RelatedProductsWrapper>
+                </>
                 ) : (
                     <h2>Product not found!</h2>
                 )
@@ -136,3 +140,4 @@ const ProductPreview = () => {
 }
 
 export default ProductPreview
+
