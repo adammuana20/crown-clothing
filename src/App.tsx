@@ -10,7 +10,7 @@ import { fetchCategoriesStart } from './store/categories/Category.action'
 import { GlobalStyle } from './global.styles'
 import { fetchWishlistStart } from './store/wishlist/Wishlist.action'
 import { fetchCartItemsStart } from './store/cart/Cart.action'
-import { selectWishlistIsLoading } from './store/wishlist/Wishlist.selector'
+import { fetchOrdersStart } from './store/orders/Orders.action'
 
 const PrivateRoute = lazy(() => import('./routes/private-route/PrivateRoute.component'))
 const Profile = lazy(() => import('./routes/profile/Profile.component'))
@@ -22,7 +22,8 @@ const Layout = lazy(() => import('./routes/layout/Layout.component'))
 const Shop = lazy(() => import('./routes/shop/Shop.components'))
 const Checkout = lazy(() => import('./routes/checkout/Checkout.component'))
 const Product = lazy(() => import('./routes/product/Product.component'))
-const Wishlist = lazy(() => import('./components/wishlist/wishlist-items/WishlistItems.component'))
+const Wishlist = lazy(() => import('./routes/wishlist/Wishlist.component'))
+const Orders = lazy(() => import('./routes/orders/Orders.component'))
 
 const App = () => {
   const dispatch = useDispatch()
@@ -38,6 +39,7 @@ const App = () => {
     if(currentUser && currentUser.id) {
       dispatch(fetchWishlistStart())
       dispatch(fetchCartItemsStart())
+      dispatch(fetchOrdersStart())
     }
   }, [currentUser])
 
@@ -51,6 +53,7 @@ const App = () => {
         <Route element={<PrivateRoute navigateToPath='sign-in' isAllowed={!!currentUser && !!currentUser.roles && currentUser.roles.includes('customer')} />}>
           <Route path='profile'  element={<Profile />} />
           <Route path='wishlist'  element={<Wishlist />} />
+          <Route path='orders'  element={<Orders />} />
         </Route>
         <Route element={<PrivateRoute navigateToPath='sign-in' isAllowed={!!currentUser && !!currentUser.roles && currentUser.roles.includes('admin')}/>}>
           <Route path='product' element={<Product />}/>
