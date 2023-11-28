@@ -1,4 +1,4 @@
-import { takeEvery, all, call, put, takeLatest, delay } from "typed-redux-saga"
+import { takeEvery, all, call, put, takeLatest, delay } from "typed-redux-saga/macro"
 import { CART_ACTION_TYPES } from "./Cart.types"
 import { 
     UpdateQtyItemFromCartStart, 
@@ -14,7 +14,7 @@ import {
     RemoveItemFromCartStart,
     removeItemFromCartSuccess,
 } from "./Cart.action"
-import { createCartDocumentToUser, updateQtyItemToCartFromUserDocument, getCartItemsAndDocuments, removeItemFromCartOfUser } from "../../utils/firebase/Firebase.utils"
+import { createCartDocumentOfUser, updateQtyItemToCartFromUserDocument, getCartItemsAndDocuments, removeItemFromCartOfUser } from "../../utils/firebase/Firebase.utils"
 
 
 export function* fetchCartItemsStartAsync() {
@@ -32,7 +32,7 @@ export function* fetchCartItemsStartAsync() {
 
 export function* setCartItems({payload: { product, qty, category }}: SetCartItemsStart) {
     try {
-        yield* call(createCartDocumentToUser, product, qty, category)
+        yield* call(createCartDocumentOfUser, product, qty, category)
         yield* put(addItemsToCartSuccess())
         yield* put(fetchCartItemsStart())
     } catch(error) {

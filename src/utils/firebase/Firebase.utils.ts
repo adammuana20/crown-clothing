@@ -353,7 +353,7 @@ export const getCartItemsAndDocuments = async() => {
 
     if(!userID) return []
 
-    const cartDocRef = doc(db, 'cart', userID)
+    const cartDocRef = doc(db, 'carts', userID)
     const cartSnapshot = await getDoc(cartDocRef)
 
     if(!cartSnapshot.exists()) return []
@@ -363,12 +363,12 @@ export const getCartItemsAndDocuments = async() => {
 
 
 // ADD PRODUCT ITEM TO CART
-export const createCartDocumentToUser = async(product: CategoryItem, quantity: number, category: string) => {
+export const createCartDocumentOfUser = async(product: CategoryItem, quantity: number, category: string) => {
     const userID = auth.currentUser?.uid;
 
     if(!userID) return
 
-    const cartDocRef = doc(db, 'cart', userID);
+    const cartDocRef = doc(db, 'carts', userID);
     const cartSnapshot = await getDoc(cartDocRef);
 
     const { id, name, description, price, imageUrl } = product
@@ -429,7 +429,7 @@ export const updateQtyItemToCartFromUserDocument = async(productID: string, quan
 
     if(!userID) return
 
-    const cartDocRef = doc(db, 'cart', userID);
+    const cartDocRef = doc(db, 'carts', userID);
     const cartSnapshot = await getDoc(cartDocRef);
 
     if(cartSnapshot.exists()) {
@@ -462,7 +462,7 @@ export const removeItemFromCartOfUser = async(productID: string) => {
 
     if(!userID) return
 
-    const cartDocRef = doc(db, 'cart', userID);
+    const cartDocRef = doc(db, 'carts', userID);
     const cartSnapshot = await getDoc(cartDocRef);
 
     if(cartSnapshot.exists()) {
@@ -477,6 +477,65 @@ export const removeItemFromCartOfUser = async(productID: string) => {
             console.log('Cart Quantity Updated')
         } catch(error) {
             console.error('Failed to remove item form cart', error)
+        }
+    }
+}
+
+export const clearCartItemsOfUserAfterOrder = async() => {
+    const userID = auth.currentUser?.uid;
+
+    if(!userID) return
+
+    const cartDocRef = doc(db, 'carts', userID);
+    const cartSnapshot = await getDoc(cartDocRef);
+
+    if(cartSnapshot.exists()) {
+        try {
+            await setDoc(cartDocRef, {
+                cart: []
+            })
+            console.log('Cart Quantity Updated')
+        } catch(error) {
+            console.error('Failed to remove item form cart', error)
+        }
+    }
+}
+
+export const createOrderDocumentOfUser = async(paymentMethod: string, cartItems: CartItem[], amount: number) => {
+    const userID = auth.currentUser?.uid
+
+    if(!userID) return
+
+    const orderDocRef = doc(db, 'orders', userID);
+    const orderSnapshot = await getDoc(orderDocRef);
+
+    if(!orderSnapshot.exists()) {
+        try {
+            const createdAt = new Date()
+            await setDoc(orderDocRef, {
+                order: [{
+                    id: v4(),
+                    items: cartItems,
+                    amount,
+                    createdAt,
+                    paymentMethod,
+                }]
+            })
+        } catch(error) {
+            console.log('Creating Order failed', error);
+        }
+    } else {
+        try {
+            const orderData = orderSnapshot.data()
+            const createdAt = new Date()
+
+            const newOrder = { id: v4(), items: cartItems, amount, createdAt, paymentMethod, }
+            orderData.order.push(newOrder)
+
+            await setDoc(orderDocRef, orderData)
+        } catch(error) {
+            console.log('Creating Order Failed', error);
+            
         }
     }
 }
