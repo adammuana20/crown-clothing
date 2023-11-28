@@ -1,17 +1,19 @@
 import { AnyAction } from "redux";
-import { createOrderFailed, createOrderStart, createOrderSuccess } from "./Orders.action";
+import { createOrderFailed, createOrderStart, createOrderSuccess, fetchOrdersFailed, fetchOrdersStart, fetchOrdersSuccess } from "./Orders.action";
 import { Order } from "./Orders.types";
 
 
 export type OrderState = {
     readonly orders: Order[];
     readonly creatingNewOrder: boolean;
+    readonly fetchingOrders: boolean;
     readonly error: Error | null;
 }
 
 export const ORDER_INITIAL_STATE: OrderState = {
     orders: [],
     creatingNewOrder: false,
+    fetchingOrders: false,
     error: null,
 }
 
@@ -35,6 +37,29 @@ export const orderReducer = (state = ORDER_INITIAL_STATE, action: AnyAction): Or
         return {
             ...state,
             creatingNewOrder: false,
+        }
+    }
+
+    if(fetchOrdersStart.match(action)) {
+        return {
+            ...state,
+            fetchingOrders: true,
+        }
+    }
+
+    if(fetchOrdersSuccess.match(action)) {
+        return {
+            ...state,
+            fetchingOrders: false,
+            orders: action.payload,
+        }
+    }
+
+    if(fetchOrdersFailed.match(action)) {
+        return {
+            ...state,
+            fetchingOrders: false,
+            error: action.payload,
         }
     }
 

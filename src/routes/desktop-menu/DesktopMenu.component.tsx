@@ -92,6 +92,12 @@ const DesktopMenu = () => {
                                         </DesktopNavLink>
                                     )}
                                     <DesktopNavLink 
+                                            to='orders'
+                                            onClick={handleMenuDropDown}
+                                    >
+                                        My Orders
+                                    </DesktopNavLink>
+                                    <DesktopNavLink 
                                             to='wishlist'
                                             onClick={handleMenuDropDown}
                                     >

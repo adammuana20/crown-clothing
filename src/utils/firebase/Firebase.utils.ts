@@ -34,6 +34,7 @@ import { v4 } from 'uuid'
 import { WishlistProduct } from '../../components/wishlist/wishlist-button/WishlistButton.component'
 import { Category, CategoryItem } from '../../store/categories/Category.types'
 import { CartItem } from '../../store/cart/Cart.types'
+import { Order } from '../../store/orders/Orders.types'
 
 const firebaseConfig = {
     apiKey: 'AIzaSyCfkO6DEiDFwSH6dyFW_6VjeFlEgWswMLE',
@@ -516,7 +517,7 @@ export const createOrderDocumentOfUser = async(paymentMethod: string, cartItems:
                 order: [{
                     id: v4(),
                     items: cartItems,
-                    amount,
+                    total: amount,
                     createdAt,
                     paymentMethod,
                 }]
@@ -529,7 +530,7 @@ export const createOrderDocumentOfUser = async(paymentMethod: string, cartItems:
             const orderData = orderSnapshot.data()
             const createdAt = new Date()
 
-            const newOrder = { id: v4(), items: cartItems, amount, createdAt, paymentMethod, }
+            const newOrder = { id: v4(), items: cartItems, total: amount, createdAt, paymentMethod, }
             orderData.order.push(newOrder)
 
             await setDoc(orderDocRef, orderData)
@@ -538,4 +539,17 @@ export const createOrderDocumentOfUser = async(paymentMethod: string, cartItems:
             
         }
     }
+}
+
+export const getOrdersAndDocuments = async() => {
+    const userID = auth.currentUser?.uid
+
+    if(!userID) return
+
+    const orderDocRef = doc(db, 'orders', userID);
+    const orderSnapshot = await getDoc(orderDocRef);
+
+    if(!orderSnapshot.exists()) return []
+
+    return orderSnapshot.data().order.map((orders: Order) => orders)
 }
