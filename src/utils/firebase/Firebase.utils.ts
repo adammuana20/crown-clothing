@@ -387,7 +387,6 @@ export const createCartDocumentOfUser = async(product: CategoryItem, quantity: n
                     category,
                 }]
             })
-            console.log('Successfuly added to Cart');
         } catch(error) {
             console.error('Error adding item to cart: ', error);
         }
@@ -408,14 +407,12 @@ export const createCartDocumentOfUser = async(product: CategoryItem, quantity: n
                 await setDoc(cartDocRef, {
                     cart: updateCartItems
                 })
-                console.log('Cart Quantity Updated')
                 
             } else {
                 const newCartItems = { id, name, description, price, quantity, imageUrl, category, }
                 cartData.cart.push(newCartItems)
 
                 await setDoc(cartDocRef, cartData)
-                console.log('New Item Added to Cart');
             }
 
         } catch(error) {
@@ -447,9 +444,7 @@ export const updateQtyItemToCartFromUserDocument = async(productID: string, quan
                 
                 await setDoc(cartDocRef, {
                     cart: updatedCartItems
-                })
-                console.log('Cart Quantity Updated')
-                
+                })                
             }
         } catch(error) {
             throw new Error('Error updating QTY to cart', error as Error)
@@ -475,7 +470,6 @@ export const removeItemFromCartOfUser = async(productID: string) => {
             await setDoc(cartDocRef, {
                 cart: updatedCartItems
             })
-            console.log('Cart Quantity Updated')
         } catch(error) {
             console.error('Failed to remove item form cart', error)
         }
@@ -495,7 +489,6 @@ export const clearCartItemsOfUserAfterOrder = async() => {
             await setDoc(cartDocRef, {
                 cart: []
             })
-            console.log('Cart Quantity Updated')
         } catch(error) {
             console.error('Failed to remove item form cart', error)
         }

@@ -26,6 +26,10 @@ export const WishlistItemContainer = styled.div<WishlistItemContainerProps>`
 export const WishlistItemLink = styled(Link)`
     text-transform: none;
     font-weight: 400;
+
+    &:hover {
+        font-weight: bold;
+    }
 `
 
 export const ImageContainer = styled.div`
