@@ -26,6 +26,7 @@ import {
 } from "./ProductPreview.styles";
 import ProductInputQuantity from "../product-input-quantity/ProductInputQuantity.component";
 import ProductCard from "../product-card/ProductCard.component";
+import { ButtonContainer } from "../../../routes/category/Category.styles";
 
 const ProductPreview = () => {
     const params = useParams()
@@ -36,6 +37,11 @@ const ProductPreview = () => {
     const isLoading = useSelector(selectAddingItemToCart)
 
     const categoriesMap = useSelector(selectCategoriesMap)
+    const [limit, setLimit] = useState(8)
+
+    const loadmore = () => {
+        setLimit((prev) => prev + 8)
+    }
 
     useEffect(() => {
         setQty(1)
@@ -101,7 +107,7 @@ const ProductPreview = () => {
                 <ProductInfo>
                     <WishlistButtonContainer>
                         <h2>{name}</h2>
-                        <WishlistButton product={product} />
+                        <WishlistButton product={product} category={category} />
                     </WishlistButtonContainer>
                     <p>{description}</p>
                     <p>${price}</p>
@@ -121,14 +127,22 @@ const ProductPreview = () => {
                 <>
                     {productElement}
                     <RelatedProductsWrapper>
-                    <h2>Related Products</h2>
-                    <RelatedProductsContainer>
-                        { relatedProductsArr.map((product) =>
-                                <ProductCard product={product} categoryTitle={category} key={product.id} />
-                            )
-                        }
-                    </RelatedProductsContainer>
+                        <h2>Related Products</h2>
+                        <RelatedProductsContainer>
+                            { relatedProductsArr
+                                .filter((_, idx) => idx < limit)
+                                .map((product) =>
+                                    <ProductCard product={product} categoryTitle={category} key={product.id} />
+                                )
+                            }
+                        </RelatedProductsContainer>
                     </RelatedProductsWrapper>
+                    <ButtonContainer>
+                        { relatedProductsArr.length <= limit ? 
+                            null :
+                            <Button onClick={loadmore}>Load More</Button>
+                        }
+                    </ButtonContainer>
                 </>
                 ) : (
                     <h2>Product not found!</h2>

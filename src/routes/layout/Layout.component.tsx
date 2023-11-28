@@ -21,6 +21,7 @@ const Layout = () => {
     const location = useLocation()
     const userErrorMessage = useSelector(selectUserError)
     const productErrorMessage = useSelector(selectProductError)
+    const isSliderPage = location.pathname === '/'
 
     useEffect(() => {
         if(userErrorMessage) {
@@ -42,7 +43,7 @@ const Layout = () => {
                 </HeaderContainer>
             </HeaderWrapper>
             <OutletMain>
-                <OutletContainer>
+                <OutletContainer $isSliderPage={isSliderPage}>
                     <Outlet />
                 </OutletContainer>
             </OutletMain>

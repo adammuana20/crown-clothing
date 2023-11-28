@@ -1,9 +1,9 @@
-import Directory from '../../components/category/directory/Directory.component'
+import Directory from "../../components/directories/directory/Directory.component";
 
 
 const Home = () => {
   return (
-        <Directory />
+    <Directory />
   );
 }
 

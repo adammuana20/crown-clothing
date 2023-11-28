@@ -1,10 +1,13 @@
 import styled from 'styled-components'
 
+type LayoutProps = {
+  $isSliderPage: boolean
+}
+
 export const HeaderWrapper = styled.header`
   top: 0;
   box-shadow: 0 10px 15px 0 rgba(0,0,0,.06);
   background-color: white;
-  margin-bottom: 25px;
   position: sticky;
   z-index: 99;  
 `
@@ -28,9 +31,9 @@ export const OutletMain = styled.main`
     margin-bottom: 5rem;
 `
 
-export const OutletContainer = styled.div`
+export const OutletContainer = styled.div<LayoutProps>`
   padding: 0;
-  max-width: 1250px;
-  margin: 2rem auto;
-  padding: 0 1rem;
+  max-width: ${({ $isSliderPage }) => ($isSliderPage ? '100%' : '1250px')};
+  margin: ${({ $isSliderPage }) => ($isSliderPage ? '0' : '2rem auto')};
+  padding: ${({ $isSliderPage }) => ($isSliderPage ? '0' : '0 1rem')};
 `
