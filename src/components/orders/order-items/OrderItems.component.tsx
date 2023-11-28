@@ -22,7 +22,7 @@ const OrderItems: FC<OrderItemsProps> = ({ myOrders }) => {
         <OrdersContainer>
             <p>Date Ordered: {orderDate}</p>
             { myOrders.items.map((item) => (
-                    <OrderItem item={item} />
+                    <OrderItem item={item} key={item.id} />
                 ))
             }
             <OrderTotalContainer>
