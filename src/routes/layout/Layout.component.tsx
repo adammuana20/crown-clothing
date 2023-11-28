@@ -27,10 +27,12 @@ const Layout = () => {
         if(userErrorMessage) {
           dispatch(clearUserErrorMessage())
         }
-    
+        
         if(productErrorMessage) {
           dispatch(clearProductErrorMessage())
         }
+
+        window.scrollTo(0, 0);
     }, [location.pathname])
 
     return (
