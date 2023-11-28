@@ -10,7 +10,8 @@ import { CategoryItem } from '../../store/categories/Category.types'
 
 import { selectCategoriesMap, selectCategoriesIsLoading } from '../../store/categories/Category.selector'
 
-import { CategoryContainer, CategoryTitle } from './Category.styles'
+import { CategoryContainer, CategoryTitle, ButtonContainer } from './Category.styles'
+import Button from '../../components/button/Button.component'
 
 type CategoryRouteParams = {
     category: string;
@@ -21,11 +22,16 @@ const Category = () => {
     const categoriesMap = useSelector(selectCategoriesMap)
     const isLoading = useSelector(selectCategoriesIsLoading)
     const [products, setProducts] = useState<CategoryItem[]>([])
+    const [limit, setLimit] = useState(8)
     
 
     useEffect(() => {
         setProducts(categoriesMap[category] || [])
     }, [category, categoriesMap])
+
+    const loadmore = () => {
+        setLimit((prev) => prev + 4)
+    }
 
     return (
         <>
@@ -37,12 +43,20 @@ const Category = () => {
                         <CategoryContainer>
                             {
                                 products &&
-                                products.map((product) => (
+                                products
+                                .filter((_, idx) => idx < limit)
+                                .map((product) => (
                                         <ProductCard key={product.id} product={product} categoryTitle={category} />
                                     )
                                 )
                             }
                         </CategoryContainer>
+                        <ButtonContainer>
+                            { products.length <= limit ? 
+                                null :
+                                <Button onClick={loadmore}>Load More</Button>
+                            }
+                        </ButtonContainer>
                     </>
                 ) : <h2>Category not found!</h2>
             }
