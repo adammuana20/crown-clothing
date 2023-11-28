@@ -1,4 +1,5 @@
 import { useState, FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { useSelector, useDispatch } from "react-redux";
 import { StripeCardElement } from "@stripe/stripe-js";
@@ -16,6 +17,7 @@ const PaymentForm = () => {
     const stripe = useStripe()
     const elements = useElements()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const cartItems = useSelector(selectCartItems)
     const amount = useSelector(selectCartTotalPrice)
     const currentUser = useSelector(selectCurrentUser)
@@ -63,6 +65,7 @@ const PaymentForm = () => {
             if(paymentResult.paymentIntent.status === 'succeeded') {
                 dispatch(createOrderStart('card', cartItems, amount ))
                 alert('Payment Successful')
+                navigate('/orders')
             }
         }
     }
