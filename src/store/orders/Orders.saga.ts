@@ -1,15 +1,14 @@
 import { takeEvery, all, call, put, takeLatest, delay } from "typed-redux-saga/macro"
 import { ORDER_ACTION_TYPES } from "./Orders.types"
-import { CreateOrderStart, createOrderFailed, createOrderSuccess, fetchOrdersFailed, fetchOrdersSuccess } from "./Orders.action"
+import { CreateOrderStart, createOrderFailed, createOrderSuccess, fetchOrdersFailed, fetchOrdersStart, fetchOrdersSuccess } from "./Orders.action"
 import { clearCartItemsOfUserAfterOrder, createOrderDocumentOfUser, getOrdersAndDocuments } from "../../utils/firebase/Firebase.utils"
-import { fetchCartItemsStart } from "../cart/Cart.action"
 
 export function* createOrder({payload: { paymentMethod, cartItems, amount }}: CreateOrderStart) {
     try {
         yield* call(createOrderDocumentOfUser, paymentMethod, cartItems, amount)
         yield* call(clearCartItemsOfUserAfterOrder)
         yield* put(createOrderSuccess())
-        yield* put(fetchCartItemsStart())
+        yield* put(fetchOrdersStart())
     } catch(error) {
         yield* put(createOrderFailed(error as Error))
     }
@@ -18,7 +17,6 @@ export function* createOrder({payload: { paymentMethod, cartItems, amount }}: Cr
 export function* fetchOrders() {
     try {
         const ordersArray = yield* call(getOrdersAndDocuments)
-        console.log(ordersArray);
         
         if(ordersArray) {
             yield* put(fetchOrdersSuccess(ordersArray))
