@@ -12,3 +12,9 @@ export const CategoryTitle = styled.h2`
     margin-bottom: 25px;
     text-align: center;
 `
+
+export const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    margin-top: 4rem;
+`
