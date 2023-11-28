@@ -1,19 +1,22 @@
 import { useState, FormEvent } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { StripeCardElement } from "@stripe/stripe-js";
 
 import { BUTTON_TYPE_CLASSES } from '../button/Button.component'
-import { selectCartTotalPrice } from '../../store/cart/Cart.selector'
+import { selectCartTotalPrice, selectCartItems } from '../../store/cart/Cart.selector'
 import { selectCurrentUser } from '../../store/user/User.selector'
 
 import { PaymentFormContainer, FormContainer, PaymentButton } from "./PaymentForm.styles";
+import { createOrderStart } from "../../store/orders/Orders.action";
 
 const isValidCardElement = (card: StripeCardElement | null): card is StripeCardElement => card !== null
 
 const PaymentForm = () => {
     const stripe = useStripe()
     const elements = useElements()
+    const dispatch = useDispatch()
+    const cartItems = useSelector(selectCartItems)
     const amount = useSelector(selectCartTotalPrice)
     const currentUser = useSelector(selectCurrentUser)
 
@@ -46,7 +49,8 @@ const PaymentForm = () => {
             payment_method: {
                 card: cardDetails,
                 billing_details: {
-                    name: currentUser?.displayName ? currentUser?.displayName : 'Guest'
+                    name: currentUser?.displayName,
+                    email: currentUser?.email,
                 }
             }
         })
@@ -57,6 +61,7 @@ const PaymentForm = () => {
             alert(paymentResult.error.message)
         } else {
             if(paymentResult.paymentIntent.status === 'succeeded') {
+                dispatch(createOrderStart('card', cartItems, amount ))
                 alert('Payment Successful')
             }
         }
