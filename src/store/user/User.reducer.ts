@@ -8,11 +8,19 @@ import {
     signInSuccess, 
     emailSignInStart, 
     googleSignInStart, 
-    checkUserSessionComplete, 
     clearUserErrorMessage,
     signUpStart,
     signOutStart,
-    setProviderIDSuccess
+    setProviderIDSuccess,
+    updateUserInfoStart,
+    updateUserInfoSuccess,
+    updateUserInfoFailed,
+    fetchUpdatedUserInfoStart,
+    fetchUpdatedUserInfoSuccess,
+    fetchUpdatedUserInfoFailed,
+    updateUserPasswordStart,
+    updateUserPasswordSuccess,
+    updateUserPasswordFailed
 } from "./User.action";
 import { UserData } from "../../utils/firebase/Firebase.utils";
 
@@ -27,6 +35,8 @@ export type UserState = {
     readonly error: Error | null;
     readonly userIsSigningOut: boolean;
     readonly providerID: string | null;
+    readonly updatingUserInfo: boolean;
+    readonly updatingUserPassword: boolean;
 }
 
 export const USER_INITIAL_STATE: UserState = {
@@ -40,16 +50,11 @@ export const USER_INITIAL_STATE: UserState = {
     error: null,
     userIsSigningOut: false,
     providerID: null,
+    updatingUserInfo: false,
+    updatingUserPassword: false,
 }
 
 export const userReducer = (state = USER_INITIAL_STATE, action: AnyAction): UserState => {
-
-    if(checkUserSessionComplete.match(action)) {
-        return {
-            ...state,
-            userIsLoading: false,
-        }
-    }
 
     if(emailSignInStart.match(action)) {
         return {
@@ -98,6 +103,7 @@ export const userReducer = (state = USER_INITIAL_STATE, action: AnyAction): User
             googleSignInButton: false,
             emailSignInButton: false,
             signUpIsLoading: false,
+            userIsLoading: false,
         }
     }
 
@@ -126,6 +132,73 @@ export const userReducer = (state = USER_INITIAL_STATE, action: AnyAction): User
         return {
             ...state,
             error: null,
+        }
+    }
+
+    if(updateUserInfoStart.match(action)) {
+        return {
+            ...state,
+            updatingUserInfo: true,
+        }
+    }
+
+    if(updateUserInfoSuccess.match(action)) {
+        return {
+            ...state,
+            updatingUserInfo: false,
+        }
+    }
+
+    if(updateUserInfoFailed.match(action)) {
+        return {
+            ...state,
+            updatingUserInfo: false,
+            error: action.payload,
+        }
+    }
+
+    if(updateUserPasswordStart.match(action)) {
+        return {
+            ...state,
+            updatingUserPassword: true,
+        }
+    }
+
+    if(updateUserPasswordSuccess.match(action)) {
+        return {
+            ...state,
+            updatingUserPassword: false,
+        }
+    }
+
+    if(updateUserPasswordFailed.match(action)) {
+        return {
+            ...state,
+            updatingUserPassword: false,
+            error: action.payload,
+        }
+    }
+
+    if(fetchUpdatedUserInfoStart.match(action)) {
+        return {
+            ...state,
+            updatingUserInfo: true,
+        }
+    }
+
+    if(fetchUpdatedUserInfoSuccess.match(action)) {
+        return {
+            ...state,
+            updatingUserInfo: false,
+            currentUser: action.payload,
+        }
+    }
+
+    if(fetchUpdatedUserInfoFailed.match(action)) {
+        return {
+            ...state,
+            updatingUserInfo: false,
+            error: action.payload,
         }
     }
 

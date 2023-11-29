@@ -50,3 +50,13 @@ export const selectProviderID = createSelector(
     [selectUserReducer],
     (userSlice) => userSlice.providerID
 )
+
+export const selectUpdatingUserInfo = createSelector(
+    [selectUserReducer],
+    (userSlice) => userSlice.updatingUserInfo
+)
+
+export const selectUpdatingUserPassword = createSelector(
+    [selectUserReducer],
+    (userSlice) => userSlice.updatingUserPassword
+)

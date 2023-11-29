@@ -179,7 +179,7 @@ export const updateUserPasswordFromDocument = async (oldPassword: string, newPas
             console.log('Password updated successfully');
         }
     } catch(error) {
-        console.error('Error updating password:', error);
+        throw new Error('Error updating password:', error as Error)
     }
 }
 
@@ -217,6 +217,16 @@ export const getCurrentUser = (): Promise<User | null> => {
             reject
         )
     })
+}
+
+export const getUpdatedUserInfo = async() => {
+    const userID = auth.currentUser?.uid;
+    if(!userID) return 
+
+    const userDocRef = doc(db, 'users', userID)
+    const userSnapshot = await getDoc(userDocRef)
+
+    return userSnapshot as QueryDocumentSnapshot<UserData>
 }
 
 
