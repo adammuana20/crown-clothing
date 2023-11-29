@@ -1,11 +1,15 @@
 import { ChangeEvent, FC, FormEvent, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { FaRegUser } from "react-icons/fa"
 
-import { capitalizeFirstLetter } from "../../../utils/helpers/Helpers.utils"
-
 import FormInput from "../../form-input/FormInput.component"
-import { UserData, updateUserProfileFromDocument } from "../../../utils/firebase/Firebase.utils"
 import Button from "../../button/Button.component"
+
+import { selectUpdatingUserInfo, selectUpdatingUserPassword } from "../../../store/user/User.selector"
+import { updateUserInfoStart } from "../../../store/user/User.action"
+import { UserData } from "../../../utils/firebase/Firebase.utils"
+
+import { capitalizeFirstLetter } from "../../../utils/helpers/Helpers.utils"
 
 import { ImageContainer, ImageWrapper, Name, ChangePhotoButtonContainer, ChangePhotoButton, ImageUrl } from "./EditProfile.styles"
 
@@ -24,16 +28,15 @@ const EditProfile: FC<EditProfileProps> = ({ currentUser }) => {
     const { email, displayName, imageUrl } = userInfo
     const [selectedImage, setSelectedImage] = useState('')
     const [disableButton, setDisableButton] = useState(true)
-    
-    const resetFormFields = () => {
-        setUserInfo(defaultFormFields)
-    }
+    const dispatch = useDispatch()
+    const isUpdatingUserInfo = useSelector(selectUpdatingUserInfo)
+    const isUpdatingUserPassword = useSelector(selectUpdatingUserPassword)
     
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        await updateUserProfileFromDocument(displayName, email, imageUrl, selectedImage)
-        resetFormFields()
+        dispatch(updateUserInfoStart(displayName, email, imageUrl, selectedImage))
+        
     }
 
     const imageChange = (file: Blob) => {
@@ -103,7 +106,7 @@ const EditProfile: FC<EditProfileProps> = ({ currentUser }) => {
                         required:true
                     }}
                 />
-                <Button isDisabled={disableButton}>Save Profile</Button>
+                <Button isDisabled={isUpdatingUserPassword || disableButton} isLoading={isUpdatingUserInfo}>Save Profile</Button>
             </form>
         </>
     )

@@ -1,8 +1,13 @@
 import { ChangeEvent, FC, FormEvent, useState } from "react"
-import { UserData, updateUserPasswordFromDocument } from "../../../utils/firebase/Firebase.utils"
+import { useDispatch, useSelector } from "react-redux"
+
+import { selectUpdatingUserPassword, selectUpdatingUserInfo } from "../../../store/user/User.selector"
+
+import { UserData } from "../../../utils/firebase/Firebase.utils"
 
 import FormInput from "../../form-input/FormInput.component"
 import Button from "../../button/Button.component"
+import { updateUserPasswordStart } from "../../../store/user/User.action"
 
 type ChangePasswordProps = {
     currentUser: UserData | null
@@ -17,6 +22,9 @@ const defaultFormFields = {
 const ChangePassword: FC<ChangePasswordProps> = ({ currentUser }) => {
     const [password, setPassword] = useState(defaultFormFields)
     const { oldPassword, newPassword, confirmNewPassword } = password
+    const dispatch = useDispatch()
+    const isUpdatingUserPassword = useSelector(selectUpdatingUserPassword)
+    const isUpdatingUserInfo = useSelector(selectUpdatingUserInfo)
 
     const resetFormFields = () => {
         setPassword(defaultFormFields)
@@ -29,7 +37,7 @@ const ChangePassword: FC<ChangePasswordProps> = ({ currentUser }) => {
             return alert('Password did not match')
         }
 
-        await updateUserPasswordFromDocument(oldPassword, newPassword)
+        dispatch(updateUserPasswordStart(oldPassword, newPassword))
         resetFormFields()
     }
 
@@ -73,7 +81,7 @@ const ChangePassword: FC<ChangePasswordProps> = ({ currentUser }) => {
                         required:true
                     }}
                 />
-                <Button>Save Password</Button>
+                <Button isLoading={isUpdatingUserPassword} isDisabled={isUpdatingUserInfo} >Save Password</Button>
             </form>
         </>
     )

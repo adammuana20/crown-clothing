@@ -1,4 +1,4 @@
-import { takeEvery, all, call, put, takeLatest, delay } from "typed-redux-saga/macro"
+import { all, call, put, takeLatest } from "typed-redux-saga/macro"
 import { ORDER_ACTION_TYPES } from "./Orders.types"
 import { CreateOrderStart, createOrderFailed, createOrderSuccess, fetchOrdersFailed, fetchOrdersStart, fetchOrdersSuccess } from "./Orders.action"
 import { clearCartItemsOfUserAfterOrder, createOrderDocumentOfUser, getOrdersAndDocuments } from "../../utils/firebase/Firebase.utils"

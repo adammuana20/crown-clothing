@@ -36,7 +36,7 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    if(currentUser && currentUser.id) {
+    if(currentUser) {
       dispatch(fetchWishlistStart())
       dispatch(fetchCartItemsStart())
       dispatch(fetchOrdersStart())

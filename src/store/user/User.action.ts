@@ -4,7 +4,6 @@ import { createAction, withMatcher, Action, ActionWithPayload } from "../../util
 import { UserData, AdditionalInformation } from "../../utils/firebase/Firebase.utils"
 
 export type CheckUserSession = Action<USER_ACTION_TYPES.CHECK_USER_SESSION>
-export type CheckUserSessionComplete = Action<USER_ACTION_TYPES.CHECK_USER_SESSION_COMPLETE>
 export type SetCurrentUser = ActionWithPayload<USER_ACTION_TYPES.SET_CURRENT_USER, UserData>
 export type GoogleSignInStart = ActionWithPayload<USER_ACTION_TYPES.GOOGLE_SIGN_IN_START, { navigate: Function }>
 export type EmailSignInStart = ActionWithPayload<USER_ACTION_TYPES.EMAIL_SIGN_IN_START, { email: string, password: string, navigate: Function }>
@@ -20,9 +19,17 @@ export type ClearUserErrorMessage = Action<USER_ACTION_TYPES.CLEAR_ERROR_MESSAGE
 export type SetProviderIDStart = Action<USER_ACTION_TYPES.SET_PROVIDER_ID_START>
 export type SetProviderIDSuccess = ActionWithPayload<USER_ACTION_TYPES.SET_PROVIDER_ID_SUCCESS, string>
 export type SetProviderIDFailed = ActionWithPayload<USER_ACTION_TYPES.SET_PROVIDER_ID_FAILED, Error>
+export type UpdateUserInfoStart = ActionWithPayload<USER_ACTION_TYPES.UPDATE_USER_INFO_START, { displayName: string, email: string, imageFile: string, selectedIamge: string }>
+export type UpdateUserInfoSuccess = Action<USER_ACTION_TYPES.UPDATE_USER_INFO_SUCCESS>
+export type UpdateUserInfoFailed = ActionWithPayload<USER_ACTION_TYPES.UPDATE_USER_INFO_FAILED, Error>
+export type UpdateUserPasswordStart = ActionWithPayload<USER_ACTION_TYPES.UPDATE_USER_PASSWORD_START, { oldPassword: string, newPassword: string }>
+export type UpdateUserPasswordSuccess = Action<USER_ACTION_TYPES.UPDATE_USER_PASSWORD_SUCCESS>
+export type UpdateUserPasswordFailed = ActionWithPayload<USER_ACTION_TYPES.UPDATE_USER_PASSWORD_FAILED, Error>
+export type FetchUpdatedUserInfoStart = Action<USER_ACTION_TYPES.FETCH_UPDATED_USER_INFO_START>
+export type FetchUpdatedUserInfoSuccess = ActionWithPayload<USER_ACTION_TYPES.FETCH_UPDATED_USER_INFO_SUCCESS, UserData>
+export type FetchUpdatedUserInfoFailed = ActionWithPayload<USER_ACTION_TYPES.FETCH_UPDATED_USER_INFO_FAILED, Error>
 
 export const checkUserSession = withMatcher((): CheckUserSession => createAction(USER_ACTION_TYPES.CHECK_USER_SESSION))
-export const checkUserSessionComplete = withMatcher((): CheckUserSessionComplete => createAction(USER_ACTION_TYPES.CHECK_USER_SESSION_COMPLETE))
 export const setCurrentUser = withMatcher((user: UserData): SetCurrentUser => createAction( USER_ACTION_TYPES.SET_CURRENT_USER, user ))
 export const googleSignInStart = withMatcher((navigate: Function): GoogleSignInStart => createAction(USER_ACTION_TYPES.GOOGLE_SIGN_IN_START, { navigate }))
 export const emailSignInStart = withMatcher((email: string, password: string, navigate: Function): EmailSignInStart => createAction(USER_ACTION_TYPES.EMAIL_SIGN_IN_START, { email, password, navigate }))
@@ -38,3 +45,14 @@ export const clearUserErrorMessage = withMatcher((): ClearUserErrorMessage => cr
 export const setProviderIDStart = withMatcher((): SetProviderIDStart => createAction(USER_ACTION_TYPES.SET_PROVIDER_ID_START))
 export const setProviderIDSuccess = withMatcher((providerID: string): SetProviderIDSuccess => createAction(USER_ACTION_TYPES.SET_PROVIDER_ID_SUCCESS, providerID))
 export const setProviderIDFailed = withMatcher((error: Error): SetProviderIDFailed => createAction( USER_ACTION_TYPES.SET_PROVIDER_ID_FAILED, error ))
+export const updateUserInfoStart = withMatcher((displayName: string, email: string, imageFile: string, selectedIamge: string): UpdateUserInfoStart => createAction(USER_ACTION_TYPES.UPDATE_USER_INFO_START, { displayName, email, imageFile, selectedIamge }))
+export const updateUserInfoSuccess = withMatcher((): UpdateUserInfoSuccess => createAction(USER_ACTION_TYPES.UPDATE_USER_INFO_SUCCESS))
+export const updateUserInfoFailed = withMatcher((error: Error): UpdateUserInfoFailed => createAction( USER_ACTION_TYPES.UPDATE_USER_INFO_FAILED, error ))
+
+export const updateUserPasswordStart = withMatcher((oldPassword: string, newPassword: string): UpdateUserPasswordStart => createAction(USER_ACTION_TYPES.UPDATE_USER_PASSWORD_START, { oldPassword, newPassword }))
+export const updateUserPasswordSuccess = withMatcher((): UpdateUserPasswordSuccess => createAction(USER_ACTION_TYPES.UPDATE_USER_PASSWORD_SUCCESS))
+export const updateUserPasswordFailed = withMatcher((error: Error): UpdateUserPasswordFailed => createAction( USER_ACTION_TYPES.UPDATE_USER_PASSWORD_FAILED, error ))
+
+export const fetchUpdatedUserInfoStart = withMatcher((): FetchUpdatedUserInfoStart => createAction(USER_ACTION_TYPES.FETCH_UPDATED_USER_INFO_START))
+export const fetchUpdatedUserInfoSuccess = withMatcher((user: UserData & { id: string}): FetchUpdatedUserInfoSuccess => createAction(USER_ACTION_TYPES.FETCH_UPDATED_USER_INFO_SUCCESS, user))
+export const fetchUpdatedUserInfoFailed = withMatcher((error: Error): FetchUpdatedUserInfoFailed => createAction( USER_ACTION_TYPES.FETCH_UPDATED_USER_INFO_FAILED, error ))

@@ -3,9 +3,9 @@ import { User } from 'firebase/auth'
 
 import { USER_ACTION_TYPES } from './User.types'
 
-import { signInSuccess, signInFailed, signUpSuccess, signUpFailed, signOutFailed, signOutSuccess, EmailSignInStart, SignUpStart, SignUpSuccess, GoogleSignInStart, checkUserSessionComplete, SignOutStart, setProviderIDFailed, setProviderIDSuccess, setProviderIDStart } from './User.action'
+import { signInSuccess, signInFailed, signUpSuccess, signUpFailed, signOutFailed, signOutSuccess, EmailSignInStart, SignUpStart, SignUpSuccess, GoogleSignInStart, SignOutStart, setProviderIDFailed, setProviderIDSuccess, setProviderIDStart, updateUserInfoFailed, UpdateUserInfoStart, updateUserInfoSuccess, fetchUpdatedUserInfoSuccess, fetchUpdatedUserInfoFailed, fetchUpdatedUserInfoStart, updateUserPasswordFailed, UpdateUserPasswordStart, updateUserPasswordSuccess } from './User.action'
 
-import { getCurrentUser, createUserDocumentFromAuth, signInWithGooglePopup, signInAuthUserWithEmailAndPassword, createAuthUserWithEmailAndPassword, signOutUser, AdditionalInformation, getAuthUserProviderID } from '../../utils/firebase/Firebase.utils'
+import { getCurrentUser, createUserDocumentFromAuth, signInWithGooglePopup, signInAuthUserWithEmailAndPassword, createAuthUserWithEmailAndPassword, signOutUser, AdditionalInformation, getAuthUserProviderID, updateUserProfileFromDocument, getUpdatedUserInfo, updateUserPasswordFromDocument } from '../../utils/firebase/Firebase.utils'
 import { fetchWishlistStart } from '../wishlist/Wishlist.action'
 import { fetchCartItemsStart } from '../cart/Cart.action'
  
@@ -22,18 +22,45 @@ export function* getSnapshotFromUserAuth(userAuth: User, additionalInformation?:
     }
 }
 
-export function* isUserAuthenticated() {
+export function* updateUserInfo({payload: { displayName, email, imageFile, selectedIamge }}: UpdateUserInfoStart) {
     try {
-        const userAuth = yield* call(getCurrentUser)
-        if(!userAuth) {
-            yield* put(checkUserSessionComplete())
-        } else {
-            yield* call(getSnapshotFromUserAuth, userAuth)
-            yield* put(checkUserSessionComplete())
+        yield* call(updateUserProfileFromDocument, displayName, email, imageFile, selectedIamge)
+        yield* put(updateUserInfoSuccess())
+        yield* put(fetchUpdatedUserInfoStart())
+    } catch(error) {
+        yield* put(updateUserInfoFailed(error as Error))
+    }
+}
+
+export function* updateUserPassword({payload: { oldPassword, newPassword }}: UpdateUserPasswordStart) {
+    try {
+        yield* call(updateUserPasswordFromDocument, oldPassword, newPassword)
+        yield* put(updateUserPasswordSuccess())
+    } catch(error) {
+        yield* put(updateUserPasswordFailed(error as Error))
+    }
+}
+
+export function* fetchUpdatedUserInfo() {
+    try{
+        const userSnapshot = yield* call(getUpdatedUserInfo)
+
+        if(userSnapshot) {
+            yield* put(fetchUpdatedUserInfoSuccess({ id: userSnapshot.id, ...userSnapshot.data() }))
         }
     } catch(error) {
-        yield* put(signInFailed(error as Error))
-    } 
+        yield* put(fetchUpdatedUserInfoFailed(error as Error))
+    }
+}
+
+export function* isUserAuthenticated() {
+    try {
+      const userAuth = yield* call(getCurrentUser);
+      if (!userAuth) return;
+      yield* call(getSnapshotFromUserAuth, userAuth);
+    } catch (error) {
+      yield* put(signInFailed(error as Error));
+    }
 }
 
 export function* signInWithGoogle({payload: { navigate }}: GoogleSignInStart) {
@@ -165,6 +192,19 @@ export function* onSignOutStart() {
     yield* takeLatest(USER_ACTION_TYPES.SIGN_OUT_START, signOut)
 }
 
+export function* onUpdateUserInfo() {
+    yield* takeLatest(USER_ACTION_TYPES.UPDATE_USER_INFO_START, updateUserInfo)
+}
+
+export function* onFetchUpdatedUserInfo() {
+    yield* takeLatest(USER_ACTION_TYPES.FETCH_UPDATED_USER_INFO_START, fetchUpdatedUserInfo)
+}
+
+export function* onUpdateUserPasword() {
+    yield* takeLatest(USER_ACTION_TYPES.UPDATE_USER_PASSWORD_START, updateUserPassword)
+}
+
+
 export function* userSagas() {
     yield* all([
         call(onCheckUserSession), 
@@ -174,5 +214,8 @@ export function* userSagas() {
         call(onSignUpSuccess),
         call(onSignOutStart),
         call(onSetProviderID),
+        call(onUpdateUserInfo),
+        call(onFetchUpdatedUserInfo),
+        call(onUpdateUserPasword),
     ])
 }
