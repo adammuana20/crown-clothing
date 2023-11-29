@@ -16,6 +16,7 @@ export const SliderActive = css`
 
 export const AutoSliderContainer = styled.div`
     position: relative;
+    overflow: hidden;
 `
 
 export const SliderSlides = styled.div`
