@@ -99,9 +99,6 @@ const ProductPreview = () => {
     const productElement = productArr.map((product) => 
     {   const { id, name, description, imageUrl, price } = product
         const addProductToCart = () => {
-            if(cartError) {
-                dispatch(clearCartErrorMessage())
-            }
             dispatch(addItemsToCartStart(product, Number(qty), category, showToast))
         }
 
@@ -113,7 +110,7 @@ const ProductPreview = () => {
                 <ProductInfo>
                     <WishlistButtonContainer>
                         <h2>{name}</h2>
-                        <WishlistButton product={product} category={category} />
+                        <WishlistButton product={product} category={category} showToast={showToast} />
                     </WishlistButtonContainer>
                     <p>{description}</p>
                     <p>${price}</p>
@@ -132,8 +129,8 @@ const ProductPreview = () => {
             {productElement.length > 0 ? (
                 <>
                     {productElement}
-                    <RelatedProducts category={category} catID={params.id} />
-                    <PopUp handleClose={() => handleClose} message={'Added to Cart!'} toasts={toasts} />
+                    <RelatedProducts category={category} catID={params.id} showToast={showToast} />
+                    <PopUp handleClose={handleClose} toasts={toasts} />
                 </>
                 ) : (
                     <h2>Product not found!</h2>

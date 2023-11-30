@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, FC } from "react"
+import { FC } from "react"
 import ReactDOM from "react-dom"
 import { FaCircleCheck } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
@@ -8,7 +8,6 @@ import { PopUpContainer, Message, IconMessageContainer, Line, ToastContainer, To
 import { Toast } from "../../../hooks/usePopup.hooks";
 
 type PopUpProps = {
-    message: string;
     handleClose: (id: number) => void;
     toasts: Toast[];
 }

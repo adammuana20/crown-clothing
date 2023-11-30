@@ -17,16 +17,17 @@ import {
 type ProductCardProps = {
     product: CategoryItem;
     categoryTitle: string;
+    showToast: (type: string, message: string) => void;
 }
 
-const ProductCard: FC<ProductCardProps> = ({ product, categoryTitle }) => {
+const ProductCard: FC<ProductCardProps> = ({ product, categoryTitle, showToast }) => {
     const { id, name, price, imageUrl } = product
 
     return (
         <ProductCardWrapper>
             <WishlistRibbon/>
             <WishlistContainer>
-                <WishlistButton product={product} category={categoryTitle} />
+                <WishlistButton product={product} category={categoryTitle} showToast={showToast} />
             </WishlistContainer>
             <ProductCardContainer>
                 <ProductLink to={`/shop/${categoryTitle}/${id}`}>

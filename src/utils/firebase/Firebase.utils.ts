@@ -295,8 +295,6 @@ export const createWishlistDocumentToUser = async(item: CategoryItem, category: 
                     category,
                 }]
             })
-
-            return true;
         } catch (err) {
             throw new Error('Error adding to wishlist. Please try again')
         }
@@ -304,11 +302,19 @@ export const createWishlistDocumentToUser = async(item: CategoryItem, category: 
         try {
             const wishlistData = wishlistSnapshot.data()
 
+            const { id } = item;
+
+            const existingWishlistItem = wishlistData.wishlist.find((wishlistItem: WishlistProduct) => wishlistItem.item.id === id)
+
+            if(existingWishlistItem) {
+                throw new Error('Product already in wishlist')
+            }
+
             const newWishlist = { item, createdAt, category };
             wishlistData.wishlist.push(newWishlist)
-            return await setDoc(wishlistDocRef, wishlistData)
+            await setDoc(wishlistDocRef, wishlistData)
         } catch (err) {
-            throw new Error('Error adding to wishlist. Please try again')
+            throw new Error('Product already in wishlist!', err as Error)
         }
     }
 }
@@ -325,21 +331,22 @@ export const removeWishlistItemToUser = async(item: CategoryItem) => {
     const wishlistSnapshot = await getDoc(wishlistDocRef);
 
     if(wishlistSnapshot.exists()) {
-        const wishlistData = wishlistSnapshot.data()
+        try{
+            const wishlistData = wishlistSnapshot.data()
 
-        const existingWishlistItem = wishlistData.wishlist.find((wishlistItem: WishlistProduct) => wishlistItem.item.id === id)        
+            const existingWishlistItem = wishlistData.wishlist.find((wishlistItem: WishlistProduct) => wishlistItem.item.id === id)        
 
-        if(existingWishlistItem) {
-            const updatedWishlist = wishlistData.wishlist.filter((wishlistItem: WishlistProduct) => wishlistItem.item.id !== id)
-            
-            try {
+            if(existingWishlistItem) {
+                const updatedWishlist = wishlistData.wishlist.filter((wishlistItem: WishlistProduct) => wishlistItem.item.id !== id)
+                
                 await setDoc(wishlistDocRef, {
                     wishlist: updatedWishlist
-                })
-                return true        
-            } catch(err) {
-                throw new Error('error removing to wishlist')
+                })   
+            } else {
+                throw new Error('Wishlist already removed!')
             }
+        } catch(error) {
+            throw new Error('Wishlist already removed!', error as Error)
         }
     }
 }

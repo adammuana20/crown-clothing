@@ -3,9 +3,12 @@ import { useState } from 'react'
 
 import Button from '../../button/Button.component'
 import CategoryPreview from '../category-preview/CategoryPreview.components'
-import { selectCategoriesMap, selectCategoriesIsLoading } from '../../../store/categories/Category.selector'
 import Spinner from '../../spinner/Spinner.component'
 import MobileBottomMenu from '../../../routes/mobile-bottom-menu/MobileBottomMenu.component'
+
+import { selectCategoriesMap, selectCategoriesIsLoading } from '../../../store/categories/Category.selector'
+
+
 import { ButtonContainer } from '../../../routes/category/Category.styles'
 
 

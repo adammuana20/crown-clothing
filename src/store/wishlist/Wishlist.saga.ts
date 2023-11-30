@@ -12,23 +12,25 @@ export function* fetchWishlistStartAsync() {
     }
 }
 
-export function* createWishlistItem({payload: { wishlistItem, category, setIsAddingToWishlist }}: CreateWishlistItemStart) {
+export function* createWishlistItem({payload: { wishlistItem, category, setIsAddingToWishlist, showToast }}: CreateWishlistItemStart) {
     try {
         yield* call(createWishlistDocumentToUser, wishlistItem, category)
         yield* put(createWishlistItemSuccess())
-        yield* put(fetchWishlistStart())
+        yield* put(fetchWishlistStart())        
+        showToast('success', 'Added to Wishlist!')
     } catch(error) {
         yield* put(createWishlistItemFailed(error as Error))
-    } finally {        
+    } finally {
         yield* call(setIsAddingToWishlist, false)
     }
 }
 
-export function* removeWishlistItem({payload: { wishlistItem, setIsRemovingToWishlist }}: RemoveWishlistItemStart) {
+export function* removeWishlistItem({payload: { wishlistItem, setIsRemovingToWishlist, showToast }}: RemoveWishlistItemStart) {
     try {
         yield* call(removeWishlistItemToUser, wishlistItem)
         yield* put(removeWishlistItemSuccess())
         yield* put(fetchWishlistStart())
+        showToast('success', 'Removed to Wishlist!')        
     } catch(error) {
         yield* put(removeWishlistItemFailed(error as Error))
     } finally {
