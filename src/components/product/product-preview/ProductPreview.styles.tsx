@@ -30,14 +30,3 @@ export const WishlistButtonContainer = styled.div`
 export const ProductInputContainer = styled.div`
     padding-bottom: 2rem;
 `
-
-export const RelatedProductsContainer = styled.div`
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    column-gap: 20px;
-    row-gap: 50px;
-`
-
-export const RelatedProductsWrapper = styled.div`
-    
-`

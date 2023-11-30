@@ -39,3 +39,8 @@ export const selectUpdatingQtyFromCart = createSelector(
     [selectCartReducer],
     (cartSlice) => cartSlice.updatingQtyFromCart
 )
+
+export const selectCartError = createSelector(
+    [selectCartReducer],
+    (cartSlice) => cartSlice.error
+)

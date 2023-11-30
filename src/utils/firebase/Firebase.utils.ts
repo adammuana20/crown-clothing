@@ -349,7 +349,7 @@ export const removeWishlistItemToUser = async(item: CategoryItem) => {
 export const getWishlistAndDocuments = async() => {
     const userID = auth.currentUser?.uid;
 
-    if(!userID) return
+    if(!userID) return []
 
     const wishlistDocRef = doc(db, 'wishlists', userID);
     const wishlistSnapshot = await getDoc(wishlistDocRef);
@@ -377,7 +377,7 @@ export const getCartItemsAndDocuments = async() => {
 export const createCartDocumentOfUser = async(product: CategoryItem, quantity: number, category: string) => {
     const userID = auth.currentUser?.uid;
 
-    if(!userID) return
+    if(!userID) throw new Error('User is not logged in')
 
     const cartDocRef = doc(db, 'carts', userID);
     const cartSnapshot = await getDoc(cartDocRef);
@@ -398,12 +398,12 @@ export const createCartDocumentOfUser = async(product: CategoryItem, quantity: n
                 }]
             })
         } catch(error) {
-            console.error('Error adding item to cart: ', error);
+            throw new Error('Failed Adding item to Cart', error as Error)
         }
     } else {
         try {
-            const cartData = cartSnapshot.data()
             
+            const cartData = cartSnapshot.data()
             //FIND THE CART ITEM TO ADD
             const existingCartItem = cartData.cart.find((cartItem: CartItem) => cartItem.id === product.id);
             
@@ -426,7 +426,7 @@ export const createCartDocumentOfUser = async(product: CategoryItem, quantity: n
             }
 
         } catch(error) {
-            throw new Error('Error adding item to cart:', error as Error)
+            throw new Error('Failed Adding item to Cart', error as Error)
         }
     }
 }

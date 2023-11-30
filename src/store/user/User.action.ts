@@ -4,6 +4,7 @@ import { createAction, withMatcher, Action, ActionWithPayload } from "../../util
 import { UserData, AdditionalInformation } from "../../utils/firebase/Firebase.utils"
 
 export type CheckUserSession = Action<USER_ACTION_TYPES.CHECK_USER_SESSION>
+export type CheckUserSessionComplete = Action<USER_ACTION_TYPES.CHECK_USER_SESSION_COMPLETE>
 export type SetCurrentUser = ActionWithPayload<USER_ACTION_TYPES.SET_CURRENT_USER, UserData>
 export type GoogleSignInStart = ActionWithPayload<USER_ACTION_TYPES.GOOGLE_SIGN_IN_START, { navigate: Function }>
 export type EmailSignInStart = ActionWithPayload<USER_ACTION_TYPES.EMAIL_SIGN_IN_START, { email: string, password: string, navigate: Function }>
@@ -15,7 +16,7 @@ export type SignUpFailed = ActionWithPayload<USER_ACTION_TYPES.SIGN_UP_FAILED, E
 export type SignOutStart = ActionWithPayload<USER_ACTION_TYPES.SIGN_OUT_START, { navigate: Function }>
 export type SignOutSuccess = Action<USER_ACTION_TYPES.SIGN_OUT_SUCCESS>
 export type SignOutFailed = ActionWithPayload<USER_ACTION_TYPES.SIGN_OUT_FAILED, Error>
-export type ClearUserErrorMessage = Action<USER_ACTION_TYPES.CLEAR_ERROR_MESSAGE>
+export type ClearUserErrorMessage = Action<USER_ACTION_TYPES.CLEAR_USER_ERROR_MESSAGE>
 export type SetProviderIDStart = Action<USER_ACTION_TYPES.SET_PROVIDER_ID_START>
 export type SetProviderIDSuccess = ActionWithPayload<USER_ACTION_TYPES.SET_PROVIDER_ID_SUCCESS, string>
 export type SetProviderIDFailed = ActionWithPayload<USER_ACTION_TYPES.SET_PROVIDER_ID_FAILED, Error>
@@ -30,6 +31,7 @@ export type FetchUpdatedUserInfoSuccess = ActionWithPayload<USER_ACTION_TYPES.FE
 export type FetchUpdatedUserInfoFailed = ActionWithPayload<USER_ACTION_TYPES.FETCH_UPDATED_USER_INFO_FAILED, Error>
 
 export const checkUserSession = withMatcher((): CheckUserSession => createAction(USER_ACTION_TYPES.CHECK_USER_SESSION))
+export const checkUserSessionComplete = withMatcher((): CheckUserSessionComplete => createAction(USER_ACTION_TYPES.CHECK_USER_SESSION_COMPLETE))
 export const setCurrentUser = withMatcher((user: UserData): SetCurrentUser => createAction( USER_ACTION_TYPES.SET_CURRENT_USER, user ))
 export const googleSignInStart = withMatcher((navigate: Function): GoogleSignInStart => createAction(USER_ACTION_TYPES.GOOGLE_SIGN_IN_START, { navigate }))
 export const emailSignInStart = withMatcher((email: string, password: string, navigate: Function): EmailSignInStart => createAction(USER_ACTION_TYPES.EMAIL_SIGN_IN_START, { email, password, navigate }))
@@ -41,7 +43,7 @@ export const signUpFailed = withMatcher((error: Error): SignUpFailed => createAc
 export const signOutStart = withMatcher((navigate: Function): SignOutStart => createAction( USER_ACTION_TYPES.SIGN_OUT_START, { navigate }))
 export const signOutSuccess = withMatcher((): SignOutSuccess => createAction( USER_ACTION_TYPES.SIGN_OUT_SUCCESS ))
 export const signOutFailed = withMatcher((error: Error): SignOutFailed => createAction( USER_ACTION_TYPES.SIGN_OUT_FAILED, error ))
-export const clearUserErrorMessage = withMatcher((): ClearUserErrorMessage => createAction( USER_ACTION_TYPES.CLEAR_ERROR_MESSAGE ))
+export const clearUserErrorMessage = withMatcher((): ClearUserErrorMessage => createAction( USER_ACTION_TYPES.CLEAR_USER_ERROR_MESSAGE ))
 export const setProviderIDStart = withMatcher((): SetProviderIDStart => createAction(USER_ACTION_TYPES.SET_PROVIDER_ID_START))
 export const setProviderIDSuccess = withMatcher((providerID: string): SetProviderIDSuccess => createAction(USER_ACTION_TYPES.SET_PROVIDER_ID_SUCCESS, providerID))
 export const setProviderIDFailed = withMatcher((error: Error): SetProviderIDFailed => createAction( USER_ACTION_TYPES.SET_PROVIDER_ID_FAILED, error ))

@@ -20,7 +20,8 @@ import {
     fetchUpdatedUserInfoFailed,
     updateUserPasswordStart,
     updateUserPasswordSuccess,
-    updateUserPasswordFailed
+    updateUserPasswordFailed,
+    checkUserSessionComplete,
 } from "./User.action";
 import { UserData } from "../../utils/firebase/Firebase.utils";
 
@@ -55,6 +56,13 @@ export const USER_INITIAL_STATE: UserState = {
 }
 
 export const userReducer = (state = USER_INITIAL_STATE, action: AnyAction): UserState => {
+
+    if(checkUserSessionComplete.match(action)) {
+        return {
+            ...state,
+            userIsLoading: false,
+        }
+    }
 
     if(emailSignInStart.match(action)) {
         return {

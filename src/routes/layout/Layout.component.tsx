@@ -21,6 +21,7 @@ const Layout = () => {
     const location = useLocation()
     const userErrorMessage = useSelector(selectUserError)
     const productErrorMessage = useSelector(selectProductError)
+
     const isSliderPage = location.pathname === '/'
 
     useEffect(() => {

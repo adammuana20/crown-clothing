@@ -2,13 +2,17 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux";
 
-import { addItemsToCartStart } from "../../../store/cart/Cart.action";
+import { addItemsToCartStart, clearCartErrorMessage } from "../../../store/cart/Cart.action";
+import { usePopup } from "../../../hooks/usePopup.hooks";
 
-import { selectAddingItemToCart } from "../../../store/cart/Cart.selector"
+import { selectAddingItemToCart, selectCartError } from "../../../store/cart/Cart.selector"
 
 import Button from "../../button/Button.component";
 import MobileBottomMenu from "../../../routes/mobile-bottom-menu/MobileBottomMenu.component";
 import WishlistButton from "../../wishlist/wishlist-button/WishlistButton.component";
+import PopUp from "../../ui/popup/PopUp.component";
+import ProductInputQuantity from "../product-input-quantity/ProductInputQuantity.component";
+import RelatedProducts from "../related-products/RelatedProducts.component";
 
 import { selectCategoriesMap } from "../../../store/categories/Category.selector";
 
@@ -21,40 +25,38 @@ import {
     ImageContainer, 
     WishlistButtonContainer, 
     ProductInputContainer, 
-    RelatedProductsContainer,
-    RelatedProductsWrapper,
 } from "./ProductPreview.styles";
-import ProductInputQuantity from "../product-input-quantity/ProductInputQuantity.component";
-import ProductCard from "../product-card/ProductCard.component";
-import { ButtonContainer } from "../../../routes/category/Category.styles";
 
 const ProductPreview = () => {
     const params = useParams()
-    const { category } = params
-
     const dispatch = useDispatch()
+    const { category } = params
+    const { showToast, handleClose, toasts } = usePopup()
+    const categoriesMap = useSelector(selectCategoriesMap)
     const [qty, setQty] = useState<string | number>(1)
     const isLoading = useSelector(selectAddingItemToCart)
-
-    const categoriesMap = useSelector(selectCategoriesMap)
-    const [limit, setLimit] = useState(8)
-
-    const loadmore = () => {
-        setLimit((prev) => prev + 8)
-    }
-
-    useEffect(() => {
-        setQty(1)
-    }, [params.id])
-    
-    if(!category) return <h2>Product not found</h2>
+    const cartError = useSelector(selectCartError)
 
     const productArr = Object.keys(categoriesMap).reduce((acc, title) => {
         const filteredProduct = categoriesMap[title].filter(product => product.id.toString() === params.id);
         return acc.concat(filteredProduct);
     }, [] as CategoryItem[]);
 
-    const relatedProductsArr = categoriesMap[category].filter(product => product.id.toString() !== params.id);    
+
+    useEffect(() => {
+        setQty(1)
+    }, [params.id])
+
+    useEffect(() => {
+        if(cartError) {
+            showToast('error', cartError.message)
+            dispatch(clearCartErrorMessage())
+        }
+    }, [cartError])
+    
+    if(!category) return <h2>Product not found</h2>
+
+  
 
     const onChangeInput = (value: string | number) => {
         if(Number(value) >= 10) {
@@ -92,11 +94,15 @@ const ProductPreview = () => {
 
         setQty((qty) => (Number(qty) - 1))
     }
+    
       
     const productElement = productArr.map((product) => 
     {   const { id, name, description, imageUrl, price } = product
         const addProductToCart = () => {
-            dispatch(addItemsToCartStart(product, Number(qty), category))
+            if(cartError) {
+                dispatch(clearCartErrorMessage())
+            }
+            dispatch(addItemsToCartStart(product, Number(qty), category, showToast))
         }
 
         return (
@@ -126,23 +132,8 @@ const ProductPreview = () => {
             {productElement.length > 0 ? (
                 <>
                     {productElement}
-                    <RelatedProductsWrapper>
-                        <h2>Related Products</h2>
-                        <RelatedProductsContainer>
-                            { relatedProductsArr
-                                .filter((_, idx) => idx < limit)
-                                .map((product) =>
-                                    <ProductCard product={product} categoryTitle={category} key={product.id} />
-                                )
-                            }
-                        </RelatedProductsContainer>
-                    </RelatedProductsWrapper>
-                    <ButtonContainer>
-                        { relatedProductsArr.length <= limit ? 
-                            null :
-                            <Button onClick={loadmore}>Load More</Button>
-                        }
-                    </ButtonContainer>
+                    <RelatedProducts category={category} catID={params.id} />
+                    <PopUp handleClose={() => handleClose} message={'Added to Cart!'} toasts={toasts} />
                 </>
                 ) : (
                     <h2>Product not found!</h2>
