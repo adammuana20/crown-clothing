@@ -3,7 +3,7 @@ import { User } from 'firebase/auth'
 
 import { USER_ACTION_TYPES } from './User.types'
 
-import { signInSuccess, signInFailed, signUpSuccess, signUpFailed, signOutFailed, signOutSuccess, EmailSignInStart, SignUpStart, SignUpSuccess, GoogleSignInStart, SignOutStart, setProviderIDFailed, setProviderIDSuccess, setProviderIDStart, updateUserInfoFailed, UpdateUserInfoStart, updateUserInfoSuccess, fetchUpdatedUserInfoSuccess, fetchUpdatedUserInfoFailed, fetchUpdatedUserInfoStart, updateUserPasswordFailed, UpdateUserPasswordStart, updateUserPasswordSuccess } from './User.action'
+import { signInSuccess, checkUserSessionComplete, signInFailed, signUpSuccess, signUpFailed, signOutFailed, signOutSuccess, EmailSignInStart, SignUpStart, SignUpSuccess, GoogleSignInStart, SignOutStart, setProviderIDFailed, setProviderIDSuccess, setProviderIDStart, updateUserInfoFailed, UpdateUserInfoStart, updateUserInfoSuccess, fetchUpdatedUserInfoSuccess, fetchUpdatedUserInfoFailed, fetchUpdatedUserInfoStart, updateUserPasswordFailed, UpdateUserPasswordStart, updateUserPasswordSuccess } from './User.action'
 
 import { getCurrentUser, createUserDocumentFromAuth, signInWithGooglePopup, signInAuthUserWithEmailAndPassword, createAuthUserWithEmailAndPassword, signOutUser, AdditionalInformation, getAuthUserProviderID, updateUserProfileFromDocument, getUpdatedUserInfo, updateUserPasswordFromDocument } from '../../utils/firebase/Firebase.utils'
 import { fetchWishlistStart } from '../wishlist/Wishlist.action'
@@ -55,9 +55,12 @@ export function* fetchUpdatedUserInfo() {
 
 export function* isUserAuthenticated() {
     try {
-      const userAuth = yield* call(getCurrentUser);
-      if (!userAuth) return;
-      yield* call(getSnapshotFromUserAuth, userAuth);
+        const userAuth = yield* call(getCurrentUser);
+        if(!userAuth) {
+            yield* put(checkUserSessionComplete())
+        } else {
+            yield* call(getSnapshotFromUserAuth, userAuth)
+        }
     } catch (error) {
       yield* put(signInFailed(error as Error));
     }

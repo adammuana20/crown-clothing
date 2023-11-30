@@ -24,17 +24,17 @@ export function* fetchCartItemsStartAsync() {
         if(productArray) {
             yield* put(fetchCartItemsSuccess(productArray))
         }
-        
-    } catch(err) {
-        yield* put(fetchCartItemsFailed(err as Error))
+    } catch(error) {
+        yield* put(fetchCartItemsFailed(error as Error))
     }
 }
 
-export function* setCartItems({payload: { product, qty, category }}: SetCartItemsStart) {
+export function* setCartItems({payload: { product, qty, category, showToast }}: SetCartItemsStart) {
     try {
         yield* call(createCartDocumentOfUser, product, qty, category)
         yield* put(addItemsToCartSuccess())
         yield* put(fetchCartItemsStart())
+        showToast('success', 'Added to cart!')
     } catch(error) {
         yield* put(addItemsToCartFailed(error as Error))
     }
