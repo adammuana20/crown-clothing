@@ -8,13 +8,13 @@ import { selectCategoriesMap } from "../../../store/categories/Category.selector
 import { RelatedProductsContainer, RelatedProductsWrapper } from "./RelatedProducts.styles"
 import { ButtonContainer } from "../../../routes/category/Category.styles"
 
-
 type RelatedProductsProps = {
     category: string;
     catID: string | undefined;
+    showToast: (type: string, message: string) => void;
 }
 
-const RelatedProducts: FC<RelatedProductsProps> = ({ category, catID }) => {
+const RelatedProducts: FC<RelatedProductsProps> = ({ category, catID, showToast }) => {
     const categoriesMap = useSelector(selectCategoriesMap)
     const [limit, setLimit] = useState(8)    
 
@@ -32,7 +32,7 @@ const RelatedProducts: FC<RelatedProductsProps> = ({ category, catID }) => {
                     { relatedProductsArr
                         .filter((_, idx) => idx < limit)
                         .map((product) =>
-                            <ProductCard product={product} categoryTitle={category} key={product.id} />
+                            <ProductCard product={product} categoryTitle={category} key={product.id} showToast={showToast} />
                         )
                     }
                 </RelatedProductsContainer>

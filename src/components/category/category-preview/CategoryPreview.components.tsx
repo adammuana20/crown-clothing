@@ -1,8 +1,14 @@
 import { FC } from 'react'
+
 import ProductCard from '../../product/product-card/ProductCard.component'
+import PopUp from '../../ui/popup/PopUp.component'
+
+import { usePopup } from '../../../hooks/usePopup.hooks'
+
+import { CategoryItem } from '../../../store/categories/Category.types'
 
 import { CategoryPreviewContainer, Preview, Title } from './CategoryPreview.styles'
-import { CategoryItem } from '../../../store/categories/Category.types'
+
 
 type CategoryPreviewProps = {
     title: string;
@@ -10,6 +16,8 @@ type CategoryPreviewProps = {
 }
 
 const CategoryPreview: FC<CategoryPreviewProps> = ({ title, products }) => {
+    const { showToast, handleClose, toasts } = usePopup()
+
     return (
         <CategoryPreviewContainer>
             <h2>
@@ -20,10 +28,11 @@ const CategoryPreview: FC<CategoryPreviewProps> = ({ title, products }) => {
                     products
                     .filter((_, idx) => idx < 4)
                     .map((product) => (
-                        <ProductCard key={product.id} product={product} categoryTitle={title} />
+                        <ProductCard key={product.id} product={product} categoryTitle={title} showToast={showToast} />
                     ))
                 }
             </Preview>
+            <PopUp handleClose={handleClose} toasts={toasts} />
         </CategoryPreviewContainer>
     )
 }

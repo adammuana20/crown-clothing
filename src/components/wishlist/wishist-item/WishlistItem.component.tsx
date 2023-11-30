@@ -9,17 +9,19 @@ import { WishlistItemContainer, WishlistItemLink, ImageContainer, WishlistImage,
 
 type WishlistItemProps = {
     wishlistItem: WishlistProduct
+    showToast: (type: string, message: string) => void;
 }
 
-const WishlistItem: FC<WishlistItemProps> = ({ wishlistItem }) => {
+const WishlistItem: FC<WishlistItemProps> = ({ wishlistItem, showToast }) => {
     const dispatch = useDispatch()
+
     const { id, name, imageUrl, price } = wishlistItem.item
     const { category, item } = wishlistItem
-    const [removeWishlistisLoading, setRemoveWishlistisLoading] = useState(false)
-    
-    const handleRemoveWishlist = async () => {
+    const [removeWishlistisLoading, setRemoveWishlistisLoading] = useState<boolean>(false)
+
+    const handleRemoveWishlist = () => {
         setRemoveWishlistisLoading(true)
-        dispatch(removeWishlistItemStart(item, setRemoveWishlistisLoading))
+        dispatch(removeWishlistItemStart(item, setRemoveWishlistisLoading, showToast))
     }
 
     return (
@@ -34,7 +36,7 @@ const WishlistItem: FC<WishlistItemProps> = ({ wishlistItem }) => {
                     <p>{name}</p>
                 </WishlistItemLink>
                 <Price>${price}</Price>
-                <RemoveButton onClick={handleRemoveWishlist} isLoading={removeWishlistisLoading}>Remove</RemoveButton>
+                <RemoveButton onClick={handleRemoveWishlist} disabled={removeWishlistisLoading}>Remove</RemoveButton>
             </WishlistContentContainer>
         </WishlistItemContainer>
     )

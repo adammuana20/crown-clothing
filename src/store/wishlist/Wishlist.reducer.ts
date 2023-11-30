@@ -1,6 +1,6 @@
 import { AnyAction } from "redux"
 import { WishlistProduct } from "../../components/wishlist/wishlist-button/WishlistButton.component";
-import { createWishlistItemFailed, createWishlistItemStart, createWishlistItemSuccess, fetchWishlistFailed, fetchWishlistStart, fetchWishlistSuccess, removeWishlistItemFailed } from "./Wishlist.action";
+import { clearWishlistErrorMessage, createWishlistItemFailed, fetchWishlistFailed, fetchWishlistStart, fetchWishlistSuccess, removeWishlistItemFailed } from "./Wishlist.action";
 
 export type WishlistState = {
     readonly wishlist: WishlistProduct[];
@@ -50,6 +50,13 @@ export const wishlistReducer = (state = WISHLIST_INITIAL_STATE, action: AnyActio
             ...state,
             wishlistIsFetching: false,
             error: action.payload,
+        }
+    }
+
+    if(clearWishlistErrorMessage.match(action)) {
+        return {
+            ...state,
+            error: null,
         }
     }
 

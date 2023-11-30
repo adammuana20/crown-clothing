@@ -15,3 +15,8 @@ export const selectWishlistIsLoading = createSelector(
     [selectWishlistReducer],
     (wishlistSlice) => wishlistSlice.wishlistIsFetching
 )
+
+export const selectWishlistError = createSelector(
+    [selectWishlistReducer],
+    (wishlistSlice) => wishlistSlice.error
+)
