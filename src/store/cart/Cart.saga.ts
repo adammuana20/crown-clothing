@@ -58,7 +58,7 @@ export function* removeItemFromCart({payload: { productID, showToast, setIsUpdat
         yield* call(removeItemFromCartOfUser, productID)
         yield* put(removeItemFromCartSuccess())
         yield* put(fetchCartItemsStart())
-        showToast('success', 'Item removed from Cart!')
+        showToast('success', 'Item Removed From Cart!')
     } catch(error) {
         yield* put(removeItemFromCartFailed(error as Error))
     } finally {

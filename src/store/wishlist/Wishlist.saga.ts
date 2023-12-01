@@ -30,7 +30,7 @@ export function* removeWishlistItem({payload: { wishlistItem, setIsRemovingToWis
         yield* call(removeWishlistItemToUser, wishlistItem)
         yield* put(removeWishlistItemSuccess())
         yield* put(fetchWishlistStart())
-        showToast('success', 'Removed to Wishlist!')        
+        showToast('success', 'Removed From Wishlist!')        
     } catch(error) {
         yield* put(removeWishlistItemFailed(error as Error))
     } finally {
