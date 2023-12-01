@@ -125,19 +125,20 @@ export function* signInWithEmail({ payload: { email, password, showToast }}: Ema
     }
 }
 
-export function* signInAfterSignUp({payload: {user, additionalDetails}}: SignUpSuccess) {
+export function* signInAfterSignUp({payload: { user, additionalDetails, showToast }}: SignUpSuccess) {
     yield* call(getSnapshotFromUserAuth, user, additionalDetails)
+    showToast('success', 'Signed In!')
 }
 
 
-export function* signUp({ payload: { email, password, displayName, navigate }}: SignUpStart) {
+export function* signUp({ payload: { email, password, displayName, showToast }}: SignUpStart) {
     try {
         const userCredential = yield* call(createAuthUserWithEmailAndPassword, email, password)
 
         if(userCredential){
             const { user } = userCredential
-            yield* put(signUpSuccess(user, { displayName }))
-            navigate('/', { replace: true })
+            yield* put(signUpSuccess(user, { displayName }, showToast))
+            showToast('success', 'Account Created Successfully!')
         }
     } catch (error) {
         const firebaseError = error as { code: string }

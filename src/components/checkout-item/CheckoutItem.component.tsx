@@ -9,7 +9,6 @@ import { CheckoutItemContainer, ImageContainer, BaseSpan, ProductInputContainer,
 import { removeItemFromCartStart, updateQtyItemFromCartStart } from '../../store/cart/Cart.action'
 import { useToast } from '../../contexts/Toast.context'
 
-// import { addItemToCart, removeItemFromCart, clearItemFromCart } from '../../store/cart/Cart.action'
 
 type CheckoutItemProps = {
     cartItem: TCartItem;

@@ -10,8 +10,8 @@ export type GoogleSignInStart = ActionWithPayload<USER_ACTION_TYPES.GOOGLE_SIGN_
 export type EmailSignInStart = ActionWithPayload<USER_ACTION_TYPES.EMAIL_SIGN_IN_START, { email: string, password: string, showToast: Function }>
 export type SignInSuccess = ActionWithPayload<USER_ACTION_TYPES.SIGN_IN_SUCCESS, UserData>
 export type SignInFailed = ActionWithPayload<USER_ACTION_TYPES.SIGN_IN_FAILED, Error>
-export type SignUpStart = ActionWithPayload<USER_ACTION_TYPES.SIGN_UP_START, { email: string, password: string, displayName: string, navigate: Function }>
-export type SignUpSuccess = ActionWithPayload<USER_ACTION_TYPES.SIGN_UP_SUCCESS, { user: User, additionalDetails: AdditionalInformation }>
+export type SignUpStart = ActionWithPayload<USER_ACTION_TYPES.SIGN_UP_START, { email: string, password: string, displayName: string, showToast: Function }>
+export type SignUpSuccess = ActionWithPayload<USER_ACTION_TYPES.SIGN_UP_SUCCESS, { user: User, additionalDetails: AdditionalInformation, showToast: Function }>
 export type SignUpFailed = ActionWithPayload<USER_ACTION_TYPES.SIGN_UP_FAILED, Error>
 export type SignOutStart = ActionWithPayload<USER_ACTION_TYPES.SIGN_OUT_START, { navigate: Function, showToast: Function }>
 export type SignOutSuccess = Action<USER_ACTION_TYPES.SIGN_OUT_SUCCESS>
@@ -37,8 +37,8 @@ export const googleSignInStart = withMatcher((showToast: Function): GoogleSignIn
 export const emailSignInStart = withMatcher((email: string, password: string, showToast: Function): EmailSignInStart => createAction(USER_ACTION_TYPES.EMAIL_SIGN_IN_START, { email, password, showToast }))
 export const signInSuccess = withMatcher((user: UserData & { id: string}): SignInSuccess => createAction(USER_ACTION_TYPES.SIGN_IN_SUCCESS, user))
 export const signInFailed = withMatcher((error: Error): SignInFailed => createAction(USER_ACTION_TYPES.SIGN_IN_FAILED, error))
-export const signUpStart = withMatcher((email: string, password: string, displayName: string, navigate: Function): SignUpStart => createAction(USER_ACTION_TYPES.SIGN_UP_START, { email, password, displayName, navigate }))
-export const signUpSuccess = withMatcher((user: User, additionalDetails: AdditionalInformation): SignUpSuccess => createAction( USER_ACTION_TYPES.SIGN_UP_SUCCESS, { user, additionalDetails }))
+export const signUpStart = withMatcher((email: string, password: string, displayName: string, showToast: Function): SignUpStart => createAction(USER_ACTION_TYPES.SIGN_UP_START, { email, password, displayName, showToast }))
+export const signUpSuccess = withMatcher((user: User, additionalDetails: AdditionalInformation, showToast: Function): SignUpSuccess => createAction( USER_ACTION_TYPES.SIGN_UP_SUCCESS, { user, additionalDetails, showToast }))
 export const signUpFailed = withMatcher((error: Error): SignUpFailed => createAction( USER_ACTION_TYPES.SIGN_UP_FAILED, error ))
 export const signOutStart = withMatcher((navigate: Function, showToast: Function): SignOutStart => createAction( USER_ACTION_TYPES.SIGN_OUT_START, { navigate, showToast }))
 export const signOutSuccess = withMatcher((): SignOutSuccess => createAction( USER_ACTION_TYPES.SIGN_OUT_SUCCESS ))

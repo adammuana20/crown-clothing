@@ -3,6 +3,7 @@ import ReactDOM from "react-dom"
 import { FaCircleCheck } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 import { MdError } from "react-icons/md";
+import { IoIosWarning } from "react-icons/io";
 
 import { PopUpContainer, Message, IconMessageContainer, Line, ToastContainer, ToastWrapper } from "./PopUp.styles"
 import { Toast } from "../../../hooks/usePopup.hooks";
@@ -21,9 +22,11 @@ const PopUp: FC<PopUpProps> = ({ handleClose, toasts }) => {
                 <ToastWrapper key={toast.id} $top={((index + 1) * 70)}>
                     <ToastContainer>
                         <IconMessageContainer>
-                        { toast.type === 'success' ?
-                            <FaCircleCheck color={'#22bb33'} size={30} /> :
-                            <MdError color={'#bb2124'} size={30} />
+                        { toast.type === 'success'
+                            ? <FaCircleCheck color={'#22bb33'} size={30} />
+                            : toast.type === 'warning'
+                            ? <IoIosWarning color={'#f1c40f'} size={30} /> 
+                            : <MdError color={'#bb2124'} size={30} />
                         }
                         <Message>{toast.message}</Message>
                         </IconMessageContainer>

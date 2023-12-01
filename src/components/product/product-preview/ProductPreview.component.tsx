@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux";
 
 import { useToast } from "../../../contexts/Toast.context";
@@ -27,16 +27,19 @@ import {
     WishlistButtonContainer, 
     ProductInputContainer, 
 } from "./ProductPreview.styles";
+import { selectCurrentUser } from "../../../store/user/User.selector";
 
 const ProductPreview = () => {
     const params = useParams()
     const dispatch = useDispatch()
     const { category } = params
     const { showToast } = useToast()
+    const navigate = useNavigate()
     const categoriesMap = useSelector(selectCategoriesMap)
-    const [qty, setQty] = useState<string | number>(1)
     const isLoading = useSelector(selectAddingItemToCart)
+    const currentUser = useSelector(selectCurrentUser)
 
+    const [qty, setQty] = useState<string | number>(1)
     const productArr = Object.keys(categoriesMap).reduce((acc, title) => {
         const filteredProduct = categoriesMap[title].filter(product => product.id.toString() === params.id);
         return acc.concat(filteredProduct);
@@ -51,7 +54,7 @@ const ProductPreview = () => {
 
     const onChangeInput = (value: string | number) => {
         if(Number(value) >= 10) {
-            showToast('error', 'Up to 10 max input only!')
+            showToast('warning', 'Up to 10 max input only!')
             setQty(10);
             return
         }
@@ -68,7 +71,7 @@ const ProductPreview = () => {
 
     const addQtyHandler = () => {
         if(Number(qty) >= 10) {
-            showToast('error', 'Up to 10 max input only!')
+            showToast('warning', 'Up to 10 max input only!')
             setQty(10);
             return
         }
@@ -89,6 +92,11 @@ const ProductPreview = () => {
     const productElement = productArr.map((product) => 
     {   const { id, name, description, imageUrl, price } = product
         const addProductToCart = () => {
+            if(!currentUser) {
+                navigate('/sign-in')
+                showToast('error', 'You must login first!')
+                return
+            }
             dispatch(addItemsToCartStart(product, Number(qty), category, showToast))
         }
 

@@ -52,7 +52,11 @@ export const Message = styled.span`
 export const Line = styled.div<PopUpProps>`
     height: 5px;
     width: ${({ $progress }) => $progress}%;
-    background-color: ${({ $type }) => $type === 'success' ? '#22bb33' : '#bb2124'};
+    background-color: ${({ $type }) => $type === 'success' 
+                    ? '#22bb33' 
+                    : $type === 'warning' 
+                    ? '#f1c40f'
+                    : '#bb2124'};
     transition: width 1s linear;
     border-bottom-left-radius: .3rem;
     border-bottom-right-radius: .3rem;

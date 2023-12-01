@@ -53,6 +53,7 @@ const App = () => {
           <Route path='profile'  element={<Profile />} />
           <Route path='wishlist'  element={<Wishlist />} />
           <Route path='orders'  element={<Orders />} />
+          <Route path='checkout' element={<Checkout />} />
         </Route>
         <Route element={<PrivateRoute navigateToPath='sign-in' isAllowed={!!currentUser && !!currentUser.roles && currentUser.roles.includes('admin')}/>}>
           <Route path='product' element={<Product />}/>
@@ -61,8 +62,6 @@ const App = () => {
           <Route path='sign-in'  element={<SignIn />} />
           <Route path='sign-up'  element={<SignUp />} />
         </Route>
-
-        <Route path='checkout' element={<Checkout />} />
         <Route path='*' element={<NotFound />} />
       </Route>
     )

@@ -1,7 +1,6 @@
 import { useState, FormEvent, ChangeEvent } from 'react'
 import { AuthError, AuthErrorCodes } from 'firebase/auth'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
 
 import FormInput from '../../form-input/FormInput.component'
 import Button from '../../button/Button.component'
@@ -10,6 +9,7 @@ import { selectSignUpIsLoading } from '../../../store/user/User.selector'
 
 import { SignUpContainer } from './SignUpForm.styles'
 import { alreadyLoggedIn } from '../../../utils/loaders/Loaders.utils'
+import { useToast } from '../../../contexts/Toast.context'
 
 
 export async function loader(currentUser: Object) {
@@ -27,8 +27,8 @@ const SignUpForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields)
     const { displayName, email, password, confirmPassword } = formFields
     const dispatch = useDispatch()
-    const navigate = useNavigate()
     const isLoading = useSelector(selectSignUpIsLoading)
+    const { showToast } = useToast()
 
     const resetFormFields = () => {
         setFormFields(defaultFormFields)
@@ -45,11 +45,11 @@ const SignUpForm = () => {
         e.preventDefault()
 
         if(password !== confirmPassword) {
-            alert('Password Did not match');
+            showToast('error', 'Password did not match!')
             return
         }
 
-        dispatch(signUpStart(email, password, displayName, navigate))
+        dispatch(signUpStart(email, password, displayName, showToast))
         resetFormFields()
     }
 

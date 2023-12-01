@@ -30,7 +30,7 @@ const ChangePassword = () => {
         e.preventDefault()
 
         if(newPassword !== confirmNewPassword) {
-            showToast('error', 'Password did not match')
+            showToast('warning', 'Password did not match')
             return
         }
 

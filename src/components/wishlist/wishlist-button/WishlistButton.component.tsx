@@ -1,13 +1,15 @@
-import { useState, FC, useEffect } from "react";
+import { useState, FC } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import { clearWishlistErrorMessage, createWishlistItemStart, removeWishlistItemStart } from "../../../store/wishlist/Wishlist.action";
-import { selectWishlist, selectWishlistError } from "../../../store/wishlist/Wishlist.selector";
+import { createWishlistItemStart, removeWishlistItemStart } from "../../../store/wishlist/Wishlist.action";
+import { selectWishlist } from "../../../store/wishlist/Wishlist.selector";
 
 import { CategoryItem } from "../../../store/categories/Category.types";
 
 import { WishlistItemButton, StyledOutlineHeart, StyledFillHeart } from "./WishlistButton.styles";
 import { useToast } from "../../../contexts/Toast.context";
+import { selectCurrentUser } from "../../../store/user/User.selector";
 
 
 type WishlistButtonProps = {
@@ -23,23 +25,23 @@ export type WishlistProduct = {
 
 const WishlistButton: FC<WishlistButtonProps> = ({ product, category = '' }) => {
     const { id } = product;
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const { showToast } = useToast()
+    const currentUser = useSelector(selectCurrentUser)
 
     const myWishlist = useSelector(selectWishlist)
-    const wishlistError = useSelector(selectWishlistError)
     const [isLoading, setIsLoading] = useState<boolean>(false)
-
-    useEffect(() => {
-        if(wishlistError) {
-            showToast('error', wishlistError.message)
-            dispatch(clearWishlistErrorMessage())
-        }
-    }, [isLoading])
 
     const isProductInWishlist = myWishlist?.some((wishlistItem: WishlistProduct) => wishlistItem.item.id  === id)
     
     const handleWishlistChange = () => {
+        if(!currentUser) {
+            navigate('/sign-in')
+            showToast('error', 'You must login first!')
+            return
+        }
+
         if(isProductInWishlist) {
             setIsLoading(true)
             dispatch(removeWishlistItemStart(product, setIsLoading, showToast))
