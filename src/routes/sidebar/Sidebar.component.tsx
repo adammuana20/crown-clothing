@@ -17,17 +17,18 @@ import {
     MobileNavlink, 
     SidebarTitleContainer,
 } from "./Sidebar.styles";
+import { useToast } from "../../contexts/Toast.context";
 
 type SidebarProps = {
     isMenuOpen: boolean;
     onMenuClose: () => void;
-    showToast: (type: string, message: string) => void;
 }
 
-const Sidebar: FC<SidebarProps> = ({ isMenuOpen, onMenuClose, showToast }) => {
+const Sidebar: FC<SidebarProps> = ({ isMenuOpen, onMenuClose }) => {
     const dispatch = useDispatch()
     const currentUser = useSelector(selectCurrentUser)
     const navigate = useNavigate()
+    const { showToast } = useToast()
 
     const loginPage = () => {
         onMenuClose()

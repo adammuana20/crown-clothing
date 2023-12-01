@@ -6,10 +6,7 @@ import { selectUpdatingUserPassword, selectUpdatingUserInfo } from "../../../sto
 import FormInput from "../../form-input/FormInput.component"
 import Button from "../../button/Button.component"
 import { updateUserPasswordStart } from "../../../store/user/User.action"
-
-type ChangePasswordProps = {
-    showToast: (type: string, message: string) => void;
-}
+import { useToast } from "../../../contexts/Toast.context"
 
 const defaultFormFields = {
     oldPassword: '',
@@ -17,12 +14,13 @@ const defaultFormFields = {
     confirmNewPassword: '',
 }
 
-const ChangePassword: FC<ChangePasswordProps> = ({ showToast }) => {
+const ChangePassword = () => {
     const [password, setPassword] = useState(defaultFormFields)
     const { oldPassword, newPassword, confirmNewPassword } = password
     const dispatch = useDispatch()
     const isUpdatingUserPassword = useSelector(selectUpdatingUserPassword)
     const isUpdatingUserInfo = useSelector(selectUpdatingUserInfo)
+    const { showToast } = useToast()
 
     const resetFormFields = () => {
         setPassword(defaultFormFields)

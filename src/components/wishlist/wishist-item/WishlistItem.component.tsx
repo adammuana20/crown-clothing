@@ -6,14 +6,15 @@ import { WishlistProduct } from "../wishlist-button/WishlistButton.component"
 import { removeWishlistItemStart } from "../../../store/wishlist/Wishlist.action"
 
 import { WishlistItemContainer, WishlistItemLink, ImageContainer, WishlistImage, WishlistContentContainer, RemoveButton, Price } from "./WishlistItem.styles"
+import { useToast } from "../../../contexts/Toast.context"
 
 type WishlistItemProps = {
     wishlistItem: WishlistProduct
-    showToast: (type: string, message: string) => void;
 }
 
-const WishlistItem: FC<WishlistItemProps> = ({ wishlistItem, showToast }) => {
+const WishlistItem: FC<WishlistItemProps> = ({ wishlistItem }) => {
     const dispatch = useDispatch()
+    const { showToast } = useToast()
 
     const { id, name, imageUrl, price } = wishlistItem.item
     const { category, item } = wishlistItem

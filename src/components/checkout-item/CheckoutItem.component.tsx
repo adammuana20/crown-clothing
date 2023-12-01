@@ -1,5 +1,5 @@
-import { useDispatch } from 'react-redux'
 import { FC, useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 import ProductInputQuantity from '../product/product-input-quantity/ProductInputQuantity.component'
 
@@ -7,15 +7,17 @@ import { CartItem as TCartItem } from '../../store/cart/Cart.types'
 
 import { CheckoutItemContainer, ImageContainer, BaseSpan, ProductInputContainer, RemoveItem, ProductDetailsContainer, ProductLink } from './CheckoutItem.styles'
 import { removeItemFromCartStart, updateQtyItemFromCartStart } from '../../store/cart/Cart.action'
+import { useToast } from '../../contexts/Toast.context'
+
 // import { addItemToCart, removeItemFromCart, clearItemFromCart } from '../../store/cart/Cart.action'
 
 type CheckoutItemProps = {
     cartItem: TCartItem;
-    showToast: (type: string, message: string) => void;
 }
 
-const CheckoutItem: FC<CheckoutItemProps> = ({ cartItem, showToast }) => {
+const CheckoutItem: FC<CheckoutItemProps> = ({ cartItem }) => {
     const dispatch = useDispatch()
+    const { showToast } = useToast()
 
     const { name, imageUrl, quantity, price, id, category } = cartItem
 
@@ -24,7 +26,7 @@ const CheckoutItem: FC<CheckoutItemProps> = ({ cartItem, showToast }) => {
 
     const onChangeInput = (value: string | number) => {
         if(Number(value) > 10) {
-            console.log('error', 'Ops up to 10 max only');
+            showToast('warning', 'Up to 10 max input only')
             setQty(10);
             return
         }

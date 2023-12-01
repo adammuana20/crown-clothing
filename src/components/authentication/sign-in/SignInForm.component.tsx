@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import Button, { BUTTON_TYPE_CLASSES } from '../../button/Button.component'
 import FormInput from '../../form-input/FormInput.component'
+import { useToast } from '../../../contexts/Toast.context'
 
 import { googleSignInStart, emailSignInStart } from '../../../store/user/User.action'
 import { selectEmailSignInIsLoading, selectGoogleSignInIsLoading, selectEmailSignInButton, selectGoogleSignInButton, } from '../../../store/user/User.selector'
@@ -10,20 +11,12 @@ import { selectEmailSignInIsLoading, selectGoogleSignInIsLoading, selectEmailSig
 import { SignInContainer, ButtonsContainer } from './SignInForm.styles'
 
 
-// export async function loader(currentUser: Object) {
-//     return await alreadyLoggedIn(currentUser)
-// }
-
 const defaultFormFields = {
     email: '',
     password: ''
 }
 
-type SignInFormProps = {
-    showToast: (type: string, message: string) => void;
-}
-
-const SignInForm: FC<SignInFormProps> = ({ showToast }) => {
+const SignInForm = () => {
     const [signInForm, setSignInForm] = useState(defaultFormFields)
     const { email, password } = signInForm
     const emailSignInIsLoading = useSelector(selectEmailSignInIsLoading)
@@ -31,6 +24,7 @@ const SignInForm: FC<SignInFormProps> = ({ showToast }) => {
     const emailSignInButton = useSelector(selectEmailSignInButton)
     const googleSignInButton = useSelector(selectGoogleSignInButton)
     const dispatch = useDispatch()
+    const { showToast } = useToast()
 
     const resetFormFields = () => {
         setSignInForm(defaultFormFields)

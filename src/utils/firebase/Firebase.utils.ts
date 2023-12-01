@@ -277,7 +277,7 @@ export const createProductDocumentFromCategory = async (product: CategoryItem, c
 export const createWishlistDocumentToUser = async(item: CategoryItem, category: string) => {
     const userID = auth.currentUser?.uid;
 
-    if(!userID) throw new Error('No user is logged in')
+    if(!userID) throw new Error('You must log in first!')
 
     const wishlistDocRef = doc(db, 'wishlists', userID);
     const wishlistSnapshot = await getDoc(wishlistDocRef);
@@ -382,7 +382,7 @@ export const getCartItemsAndDocuments = async() => {
 export const createCartDocumentOfUser = async(product: CategoryItem, quantity: number, category: string) => {
     const userID = auth.currentUser?.uid;
 
-    if(!userID) throw new Error('User is not logged in')
+    if(!userID) throw new Error('You must log in first!')
 
     const cartDocRef = doc(db, 'carts', userID);
     const cartSnapshot = await getDoc(cartDocRef);

@@ -12,13 +12,13 @@ import { UserData } from "../../../utils/firebase/Firebase.utils"
 import { capitalizeFirstLetter } from "../../../utils/helpers/Helpers.utils"
 
 import { ImageContainer, ImageWrapper, Name, ChangePhotoButtonContainer, ChangePhotoButton, ImageUrl } from "./EditProfile.styles"
+import { useToast } from "../../../contexts/Toast.context"
 
 type EditProfileProps = {
     currentUser: UserData | null
-    showToast: (type: string, message: string) => void;
 }
 
-const EditProfile: FC<EditProfileProps> = ({ currentUser, showToast }) => {
+const EditProfile: FC<EditProfileProps> = ({ currentUser }) => {
     const defaultFormFields = {
         displayName: currentUser?.displayName || '',
         email: currentUser?.email || '',
@@ -32,12 +32,12 @@ const EditProfile: FC<EditProfileProps> = ({ currentUser, showToast }) => {
     const dispatch = useDispatch()
     const isUpdatingUserInfo = useSelector(selectUpdatingUserInfo)
     const isUpdatingUserPassword = useSelector(selectUpdatingUserPassword)
+    const { showToast } = useToast()
     
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         dispatch(updateUserInfoStart(displayName, email, imageUrl, selectedImage, showToast))
-        
     }
 
     const imageChange = (file: Blob) => {

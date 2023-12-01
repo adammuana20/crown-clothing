@@ -7,12 +7,12 @@ import { selectWishlist, selectWishlistError } from "../../../store/wishlist/Wis
 import { CategoryItem } from "../../../store/categories/Category.types";
 
 import { WishlistItemButton, StyledOutlineHeart, StyledFillHeart } from "./WishlistButton.styles";
+import { useToast } from "../../../contexts/Toast.context";
 
 
 type WishlistButtonProps = {
     product: CategoryItem;
     category?: string;
-    showToast: (type: string, message: string) => void;
 }
 
 export type WishlistProduct = {
@@ -21,9 +21,10 @@ export type WishlistProduct = {
     category: string;
 }
 
-const WishlistButton: FC<WishlistButtonProps> = ({ product, category = '', showToast }) => {
+const WishlistButton: FC<WishlistButtonProps> = ({ product, category = '' }) => {
     const { id } = product;
     const dispatch = useDispatch()
+    const { showToast } = useToast()
 
     const myWishlist = useSelector(selectWishlist)
     const wishlistError = useSelector(selectWishlistError)
