@@ -15,9 +15,10 @@ import { ImageContainer, ImageWrapper, Name, ChangePhotoButtonContainer, ChangeP
 
 type EditProfileProps = {
     currentUser: UserData | null
+    showToast: (type: string, message: string) => void;
 }
 
-const EditProfile: FC<EditProfileProps> = ({ currentUser }) => {
+const EditProfile: FC<EditProfileProps> = ({ currentUser, showToast }) => {
     const defaultFormFields = {
         displayName: currentUser?.displayName || '',
         email: currentUser?.email || '',
@@ -35,7 +36,7 @@ const EditProfile: FC<EditProfileProps> = ({ currentUser }) => {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        dispatch(updateUserInfoStart(displayName, email, imageUrl, selectedImage))
+        dispatch(updateUserInfoStart(displayName, email, imageUrl, selectedImage, showToast))
         
     }
 

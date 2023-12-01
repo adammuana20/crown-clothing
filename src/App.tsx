@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from 'react-router-dom'
 
 import Spinner from './components/spinner/Spinner.component'
+import PopUp from './components/ui/popup/PopUp.component'
 
+import { usePopup } from './hooks/usePopup.hooks'
 import { checkUserSession } from './store/user/User.action'
 import { selectCurrentUser, selectUserIsLoading } from './store/user/User.selector'
 import { fetchCategoriesStart } from './store/categories/Category.action'
@@ -29,6 +31,7 @@ const App = () => {
   const dispatch = useDispatch()
   const currentUser = useSelector(selectCurrentUser)
   const checkingUserSession = useSelector(selectUserIsLoading)
+  const { showToast, handleClose, toasts }  = usePopup()
   
   useEffect(() => {
     dispatch(checkUserSession())
@@ -59,7 +62,7 @@ const App = () => {
           <Route path='product' element={<Product />}/>
         </Route>
         <Route element={<PrivateRoute navigateToPath='/' isAllowed={!currentUser}/>}>
-          <Route path='sign-in'  element={<SignIn />} />
+          <Route path='sign-in'  element={<SignIn showToast={showToast} />} />
           <Route path='sign-up'  element={<SignUp />} />
         </Route>
 
@@ -73,7 +76,12 @@ const App = () => {
     <Suspense fallback={<Spinner />}>
       <GlobalStyle />
       { checkingUserSession ? <Spinner />
-        : <RouterProvider router={router} />
+        : (
+          <>
+            <RouterProvider router={router} />
+            <PopUp handleClose={handleClose} toasts={toasts} />
+          </>
+        )
       }
     </Suspense>
   );

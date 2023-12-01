@@ -11,7 +11,8 @@ import {
     updateQtyItemFromCartStart, 
     updateQtyItemFromCartSuccess, 
     updateQtyItemFromCartFailed, 
-    clearCartErrorMessage
+    clearCartErrorMessage,
+    removeItemFromCartFailed
 } from "./Cart.action";
 
 export type CartState = {
@@ -95,6 +96,13 @@ export const cartReducer = (state = CART_INITIAL_STATE, action: AnyAction): Cart
         return {
             ...state,
             updatingQtyFromCart: false,
+            error: action.payload,
+        }
+    }
+
+    if(removeItemFromCartFailed.match(action)) {
+        return {
+            ...state,
             error: action.payload,
         }
     }
