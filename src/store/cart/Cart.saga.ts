@@ -40,11 +40,12 @@ export function* setCartItems({payload: { product, qty, category, showToast }}: 
     }
 }
 
-export function* updateItemFromCart({payload: { productID, qty, setIsUpdating }}: UpdateQtyItemFromCartStart) {
+export function* updateItemFromCart({payload: { productID, qty, setIsUpdating, showToast }}: UpdateQtyItemFromCartStart) {
     try {
         yield* call(updateQtyItemToCartFromUserDocument, productID, qty)
         yield* put(updateQtyItemFromCartSuccess())
         yield* put(fetchCartItemsStart())
+        showToast('success', 'Quantity Updated!')
     } catch(error) {
         yield* put(updateQtyItemFromCartFailed(error as Error))
     } finally {
@@ -52,13 +53,16 @@ export function* updateItemFromCart({payload: { productID, qty, setIsUpdating }}
     }
 }
 
-export function* removeItemFromCart({payload: { productID }}: RemoveItemFromCartStart) {
+export function* removeItemFromCart({payload: { productID, showToast, setIsUpdating }}: RemoveItemFromCartStart) {
     try {
         yield* call(removeItemFromCartOfUser, productID)
         yield* put(removeItemFromCartSuccess())
         yield* put(fetchCartItemsStart())
+        showToast('success', 'Item removed from Cart!')
     } catch(error) {
         yield* put(removeItemFromCartFailed(error as Error))
+    } finally {
+        yield* call(setIsUpdating, false)
     }
 }
 

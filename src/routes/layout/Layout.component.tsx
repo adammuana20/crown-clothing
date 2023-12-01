@@ -7,6 +7,7 @@ import Header from '../header/Header.component'
 import DesktopMenu from '../desktop-menu/DesktopMenu.component'
 import MobileMenu from '../mobile-menu/MobileMenu.component'
 import Footer from '../footer/Footer.component'
+import { usePopup } from '../../hooks/usePopup.hooks'
 
 import { selectUserError } from "../../store/user/User.selector"
 
@@ -15,34 +16,39 @@ import { selectProductError } from "../../store/categories/Category.selector"
 import { clearProductErrorMessage } from '../../store/categories/Category.action'
 
 import { HeaderWrapper, HeaderContainer, OutletContainer, OutletMain } from './Layout.styles'
+import PopUp from '../../components/ui/popup/PopUp.component'
 
 const Layout = () => {
     const dispatch = useDispatch()
     const location = useLocation()
-    const userErrorMessage = useSelector(selectUserError)
+    const { showToast, handleClose, toasts }  = usePopup()
+    const userError = useSelector(selectUserError)
     const productErrorMessage = useSelector(selectProductError)
 
     const isSliderPage = location.pathname === '/'
 
     useEffect(() => {
-        if(userErrorMessage) {
-          dispatch(clearUserErrorMessage())
+        window.scrollTo(0, 0);
+    }, [location.pathname])
+
+    useEffect(() => {
+        if(userError) {
+            showToast('error', userError.message)
+            dispatch(clearUserErrorMessage())
         }
-    
+        
         if(productErrorMessage) {
           dispatch(clearProductErrorMessage())
         }
-
-        window.scrollTo(0, 0);
-    }, [location.pathname])
+    }, [userError])
 
     return (
         <>
             <HeaderWrapper>
                 <HeaderContainer>
                     <Header />
-                    <DesktopMenu />
-                    <MobileMenu />
+                    <DesktopMenu showToast={showToast} />
+                    <MobileMenu showToast={showToast} />
                 </HeaderContainer>
             </HeaderWrapper>
             <OutletMain>
@@ -51,6 +57,7 @@ const Layout = () => {
                 </OutletContainer>
             </OutletMain>
             <Footer />
+            <PopUp handleClose={handleClose} toasts={toasts} />
         </>
     )
 }

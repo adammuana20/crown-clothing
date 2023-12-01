@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import FormInput from '../../form-input/FormInput.component'
 import Button from '../../button/Button.component'
 import { signUpStart } from '../../../store/user/User.action'
-import { selectUserError, selectSignUpIsLoading } from '../../../store/user/User.selector'
+import { selectSignUpIsLoading } from '../../../store/user/User.selector'
 
 import { SignUpContainer } from './SignUpForm.styles'
 import { alreadyLoggedIn } from '../../../utils/loaders/Loaders.utils'
@@ -27,7 +27,6 @@ const SignUpForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields)
     const { displayName, email, password, confirmPassword } = formFields
     const dispatch = useDispatch()
-    const error = useSelector(selectUserError)
     const navigate = useNavigate()
     const isLoading = useSelector(selectSignUpIsLoading)
 
@@ -51,22 +50,13 @@ const SignUpForm = () => {
         }
 
         dispatch(signUpStart(email, password, displayName, navigate))
-
-        if(!error) {
-            resetFormFields()
-        }
-            // console.log('Form Submitted');
-            
-            //const userDocRef = await createUserDocumentFromEmailAndPassword(form, displayName);
+        resetFormFields()
     }
 
     return (
         <SignUpContainer>
             <h2>Don't have an account?</h2>
             <span>Sign Up with your email and password</span>
-            { error &&
-                <p>{error.message}</p>
-            }
             <form onSubmit={handleSubmit}>
                 <FormInput
                     label='Display Name'

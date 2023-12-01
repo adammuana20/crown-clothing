@@ -132,7 +132,10 @@ export const createUserDocumentFromAuth = async (userAuth: User, additionalInfor
 
 export const updateUserProfileFromDocument = async (displayName: string, email: string, imageFile: string, selectedIamge: string)=> {
     const userID = auth.currentUser?.uid;
-    if(!userID) return    
+
+    if(!userID) {
+        throw new Error('No user is currently signed in');
+    }   
 
     const userDocRef = doc(db, 'users', userID)
     const userSnapshot = await getDoc(userDocRef)
@@ -148,26 +151,22 @@ export const updateUserProfileFromDocument = async (displayName: string, email: 
                 email,
                 imageUrl,
             })
-            return true;
         } else {
             await updateDoc(userDocRef, {
                 displayName,
                 email,
             })
-            return true;
         }
-    } catch(err) {
-        console.log('Failed updating profie: ',err);
-        
+    } catch(error) {
+        throw new Error('Failed to update Info!', error as Error)
     }
 }
 
 export const updateUserPasswordFromDocument = async (oldPassword: string, newPassword: string) => {
-    const user = auth.currentUser;    
+    const user = auth.currentUser;
     
     if(!user) {
-        console.error('No user is currently signed in');
-        return;
+        throw new Error('No user is currently signed in');
     }
 
     try {
@@ -176,10 +175,9 @@ export const updateUserPasswordFromDocument = async (oldPassword: string, newPas
 
             await reauthenticateWithCredential(user, credential)
             await updatePassword(user, newPassword)
-            console.log('Password updated successfully');
         }
     } catch(error) {
-        throw new Error('Error updating password:', error as Error)
+        throw new Error('Failed updating password!', error as Error)
     }
 }
 
@@ -453,6 +451,11 @@ export const updateQtyItemToCartFromUserDocument = async(productID: string, quan
             
             //FIND THE CART ITEM TO ADD
             const existingCartItem = cartData.cart.find((cartItem: CartItem) => cartItem.id === productID);
+
+            if(existingCartItem.quantity === quantity) {
+                throw new Error("Can't update same Quantity!")
+            }
+            
             
             if(existingCartItem !== undefined) {
                 const updatedCartItems = cartData.cart.map((cartItem: CartItem) => cartItem.id === productID 
@@ -464,7 +467,7 @@ export const updateQtyItemToCartFromUserDocument = async(productID: string, quan
                 })                
             }
         } catch(error) {
-            throw new Error('Error updating QTY to cart', error as Error)
+            throw new Error("Can't update same Quantity!", error as Error)
         }
     }
 }
@@ -482,13 +485,19 @@ export const removeItemFromCartOfUser = async(productID: string) => {
         try {
             const cartData = cartSnapshot.data()
 
-            const updatedCartItems = cartData.cart.filter((cartItem: CartItem) => cartItem.id !== productID)
+            const existingCartItem = cartData.cart.find((cartItem: CartItem) => cartItem.id === productID)
 
-            await setDoc(cartDocRef, {
-                cart: updatedCartItems
-            })
+            if(existingCartItem){
+                const updatedCartItems = cartData.cart.filter((cartItem: CartItem) => cartItem.id !== productID)
+
+                await setDoc(cartDocRef, {
+                    cart: updatedCartItems
+                })
+            } else {
+                throw new Error('Item already removed!')
+            }
         } catch(error) {
-            console.error('Failed to remove item form cart', error)
+            throw new Error('Item already removed!', error as Error)
         }
     }
 }

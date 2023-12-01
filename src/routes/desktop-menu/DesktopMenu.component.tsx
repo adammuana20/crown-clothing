@@ -1,5 +1,5 @@
 
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux"
 
@@ -17,7 +17,11 @@ import { FaRegUser } from "react-icons/fa";
 import { NavLinks, DesktopNavLink, UserIcon, UserTextContainer, MenuDropdownContainer, LogoutButton } from './DesktopMenu.styles'
 import { SidebarNavLinkContainer } from '../sidebar/Sidebar.styles'
 
-const DesktopMenu = () => {
+type DesktopMenuProps = {
+    showToast: (type: string, message: string) => void;
+}
+
+const DesktopMenu: FC<DesktopMenuProps> = ({ showToast }) => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const currentUser = useSelector(selectCurrentUser)
@@ -30,7 +34,7 @@ const DesktopMenu = () => {
     };
 
     const signOutUser = () => {
-        dispatch(signOutStart(navigate))
+        dispatch(signOutStart(navigate, showToast))
     }
 
     useEffect(() => {

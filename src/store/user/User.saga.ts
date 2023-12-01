@@ -22,22 +22,32 @@ export function* getSnapshotFromUserAuth(userAuth: User, additionalInformation?:
     }
 }
 
-export function* updateUserInfo({payload: { displayName, email, imageFile, selectedIamge }}: UpdateUserInfoStart) {
+export function* updateUserInfo({payload: { displayName, email, imageFile, selectedIamge, showToast }}: UpdateUserInfoStart) {
     try {
         yield* call(updateUserProfileFromDocument, displayName, email, imageFile, selectedIamge)
         yield* put(updateUserInfoSuccess())
         yield* put(fetchUpdatedUserInfoStart())
+        showToast('success', 'User Profile Updated!')
     } catch(error) {
         yield* put(updateUserInfoFailed(error as Error))
     }
 }
 
-export function* updateUserPassword({payload: { oldPassword, newPassword }}: UpdateUserPasswordStart) {
+export function* updateUserPassword({payload: { oldPassword, newPassword, showToast }}: UpdateUserPasswordStart) {
     try {
         yield* call(updateUserPasswordFromDocument, oldPassword, newPassword)
         yield* put(updateUserPasswordSuccess())
+        showToast('success', 'Password Changed!')
     } catch(error) {
-        yield* put(updateUserPasswordFailed(error as Error))
+        if(error instanceof Error && 'code' in error) {
+            const firebaseError = error as { code: string }
+            if(firebaseError.code === "auth/wrong-password") {
+                const errorMessage = new Error("Incorrect Password!")                
+                yield* put(updateUserPasswordFailed(errorMessage as Error))
+            } else {
+                yield* put(updateUserPasswordFailed(error as Error))
+            }
+        }
     }
 }
 
@@ -66,11 +76,11 @@ export function* isUserAuthenticated() {
     }
 }
 
-export function* signInWithGoogle({payload: { navigate }}: GoogleSignInStart) {
+export function* signInWithGoogle({payload: { showToast }}: GoogleSignInStart) {
     try {
         const { user } = yield* call(signInWithGooglePopup)
         yield* call(getSnapshotFromUserAuth, user)
-        navigate('/', { replace: true })
+        showToast('success', 'Signed In!')
     } catch(error) {
         if(error instanceof Error && 'code' in error) {
             const firebaseError = error as { code: string }
@@ -84,14 +94,14 @@ export function* signInWithGoogle({payload: { navigate }}: GoogleSignInStart) {
     }
 }
 
-export function* signInWithEmail({ payload: { email, password, navigate }}: EmailSignInStart) {
+export function* signInWithEmail({ payload: { email, password, showToast }}: EmailSignInStart) {
     try {
         const userCredential = yield* call(signInAuthUserWithEmailAndPassword, email, password)
 
         if(userCredential) {
             const { user } = userCredential
             yield* call(getSnapshotFromUserAuth, user)
-            navigate('/', { replace: true })
+            showToast('success', 'Signed In!')
         }
     } catch (error) {
         if (error instanceof Error && 'code' in error) {
@@ -140,13 +150,14 @@ export function* signUp({ payload: { email, password, displayName, navigate }}: 
     }
 }
 
-export function* signOut({payload: { navigate }}: SignOutStart) {
-    try {   
+export function* signOut({payload: { navigate, showToast }}: SignOutStart) {
+    try {
         yield* call(signOutUser)
         yield* put(signOutSuccess())
         yield* put(fetchWishlistStart())
         yield* put(fetchCartItemsStart())
         navigate('sign-in', { replace: true })
+        showToast('success', 'Signed Out!')
     } catch(error) {
         yield* put(signOutFailed(error as Error))
     }

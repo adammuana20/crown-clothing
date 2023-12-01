@@ -3,14 +3,12 @@ import { useDispatch, useSelector } from "react-redux"
 
 import { selectUpdatingUserPassword, selectUpdatingUserInfo } from "../../../store/user/User.selector"
 
-import { UserData } from "../../../utils/firebase/Firebase.utils"
-
 import FormInput from "../../form-input/FormInput.component"
 import Button from "../../button/Button.component"
 import { updateUserPasswordStart } from "../../../store/user/User.action"
 
 type ChangePasswordProps = {
-    currentUser: UserData | null
+    showToast: (type: string, message: string) => void;
 }
 
 const defaultFormFields = {
@@ -19,7 +17,7 @@ const defaultFormFields = {
     confirmNewPassword: '',
 }
 
-const ChangePassword: FC<ChangePasswordProps> = ({ currentUser }) => {
+const ChangePassword: FC<ChangePasswordProps> = ({ showToast }) => {
     const [password, setPassword] = useState(defaultFormFields)
     const { oldPassword, newPassword, confirmNewPassword } = password
     const dispatch = useDispatch()
@@ -34,10 +32,11 @@ const ChangePassword: FC<ChangePasswordProps> = ({ currentUser }) => {
         e.preventDefault()
 
         if(newPassword !== confirmNewPassword) {
-            return alert('Password did not match')
+            showToast('error', 'Password did not match')
+            return
         }
 
-        dispatch(updateUserPasswordStart(oldPassword, newPassword))
+        dispatch(updateUserPasswordStart(oldPassword, newPassword, showToast))
         resetFormFields()
     }
 

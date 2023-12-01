@@ -11,9 +11,10 @@ import { removeItemFromCartStart, updateQtyItemFromCartStart } from '../../store
 
 type CheckoutItemProps = {
     cartItem: TCartItem;
+    showToast: (type: string, message: string) => void;
 }
 
-const CheckoutItem: FC<CheckoutItemProps> = ({ cartItem }) => {
+const CheckoutItem: FC<CheckoutItemProps> = ({ cartItem, showToast }) => {
     const dispatch = useDispatch()
 
     const { name, imageUrl, quantity, price, id, category } = cartItem
@@ -34,30 +35,30 @@ const CheckoutItem: FC<CheckoutItemProps> = ({ cartItem }) => {
         if(!value) {
             setIsUpdating(true)
             setQty(quantity)
-            dispatch(updateQtyItemFromCartStart(id, quantity, setIsUpdating))
+            dispatch(updateQtyItemFromCartStart(id, quantity, setIsUpdating, showToast))
             return
         } else if(Number(value) === 0) {
             setIsUpdating(true)
             setQty(quantity)
-            dispatch(updateQtyItemFromCartStart(id, quantity, setIsUpdating))
+            dispatch(updateQtyItemFromCartStart(id, quantity, setIsUpdating, showToast))
             return
         }
 
         setIsUpdating(true)
-        dispatch(updateQtyItemFromCartStart(id, Number(qty), setIsUpdating))
+        dispatch(updateQtyItemFromCartStart(id, Number(qty), setIsUpdating, showToast))
     }
 
     const addQtyHandler = () => {
         const newQuantity = Number(qty) + 1
 
         if(Number(qty) >= 10) {
-            console.log('error', 'Ops up to 10 max only');
+            showToast('warning', 'Up to 10 max input only')
             setQty(10);
             return
         }
 
         setIsUpdating(true)
-        dispatch(updateQtyItemFromCartStart(id, newQuantity, setIsUpdating))
+        dispatch(updateQtyItemFromCartStart(id, newQuantity, setIsUpdating, showToast))
         setQty(newQuantity);
     }
 
@@ -65,18 +66,18 @@ const CheckoutItem: FC<CheckoutItemProps> = ({ cartItem }) => {
         const newQuantity = Number(qty) - 1
 
         if(Number(qty) <= 1) {
-            console.log('error', 'Ops up to 1 minimum only');
             setQty(1);
             return
         }
 
         setIsUpdating(true)
-        dispatch(updateQtyItemFromCartStart(id, newQuantity, setIsUpdating))
+        dispatch(updateQtyItemFromCartStart(id, newQuantity, setIsUpdating, showToast))
         setQty(newQuantity);
     }
     
     const clearItemHandler = () => {
-        dispatch(removeItemFromCartStart(id))
+        setIsUpdating(true)
+        dispatch(removeItemFromCartStart(id, setIsUpdating, showToast))
     }
 
     return (

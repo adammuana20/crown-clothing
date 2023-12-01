@@ -21,9 +21,10 @@ import {
 type SidebarProps = {
     isMenuOpen: boolean;
     onMenuClose: () => void;
+    showToast: (type: string, message: string) => void;
 }
 
-const Sidebar: FC<SidebarProps> = ({ isMenuOpen, onMenuClose }) => {
+const Sidebar: FC<SidebarProps> = ({ isMenuOpen, onMenuClose, showToast }) => {
     const dispatch = useDispatch()
     const currentUser = useSelector(selectCurrentUser)
     const navigate = useNavigate()
@@ -35,7 +36,7 @@ const Sidebar: FC<SidebarProps> = ({ isMenuOpen, onMenuClose }) => {
 
     const signOutUser = () => {
         onMenuClose()
-        dispatch(signOutStart(navigate))
+        dispatch(signOutStart(navigate, showToast))
     }
 
     return (
