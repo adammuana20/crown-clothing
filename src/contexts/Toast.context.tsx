@@ -1,15 +1,22 @@
-import { useEffect, useState } from "react";
+import { createContext, FC, ReactNode, useState, useContext } from 'react'
+import PopUp from '../components/ui/popup/PopUp.component';
+
 
 export type Toast = {
-  id: number;
-  message: string;
-  type: string;
-  countdown: number;
+    id: number;
+    message: string;
+    type: string;
+    countdown: number;
 };
 
-  
+type ToastContextProps = {
+    showToast: (type: string, message: string) => void;
+}
 
-export const usePopup = () => {
+// AS THE ACTUAL VALUE YOU WANT TO ACCESS
+export const ToastContext = createContext<ToastContextProps | undefined>(undefined)
+
+export const ToastProvider: FC<{children: ReactNode}> = ({ children }) => {
     const [toasts, setToasts] = useState<Toast[]>([])
 
     function showToast(type: string, message: string) {
@@ -43,5 +50,18 @@ export const usePopup = () => {
         setToasts((prevToasts) => prevToasts.filter((t) => t.id !== id));
     };
 
-    return { showToast, handleClose, toasts }
+    const value: ToastContextProps = { showToast }
+
+    return <ToastContext.Provider value={value}>
+                <PopUp handleClose={handleClose} toasts={toasts} />
+                { children }
+            </ToastContext.Provider>
 }
+
+export const useToast = () => {
+    const context = useContext(ToastContext);
+    if (!context) {
+      throw new Error('useToast must be used within ToastProvider');
+    }
+    return context;
+};

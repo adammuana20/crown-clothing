@@ -11,10 +11,9 @@ import { ButtonContainer } from "../../../routes/category/Category.styles"
 type RelatedProductsProps = {
     category: string;
     catID: string | undefined;
-    showToast: (type: string, message: string) => void;
 }
 
-const RelatedProducts: FC<RelatedProductsProps> = ({ category, catID, showToast }) => {
+const RelatedProducts: FC<RelatedProductsProps> = ({ category, catID }) => {
     const categoriesMap = useSelector(selectCategoriesMap)
     const [limit, setLimit] = useState(8)    
 
@@ -32,7 +31,7 @@ const RelatedProducts: FC<RelatedProductsProps> = ({ category, catID, showToast 
                     { relatedProductsArr
                         .filter((_, idx) => idx < limit)
                         .map((product) =>
-                            <ProductCard product={product} categoryTitle={category} key={product.id} showToast={showToast} />
+                            <ProductCard product={product} categoryTitle={category} key={product.id} />
                         )
                     }
                 </RelatedProductsContainer>

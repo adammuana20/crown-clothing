@@ -16,14 +16,13 @@ import { FaRegUser } from "react-icons/fa";
 
 import { NavLinks, DesktopNavLink, UserIcon, UserTextContainer, MenuDropdownContainer, LogoutButton } from './DesktopMenu.styles'
 import { SidebarNavLinkContainer } from '../sidebar/Sidebar.styles'
+import { useToast } from '../../contexts/Toast.context'
 
-type DesktopMenuProps = {
-    showToast: (type: string, message: string) => void;
-}
 
-const DesktopMenu: FC<DesktopMenuProps> = ({ showToast }) => {
+const DesktopMenu = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const { showToast } = useToast()
     const currentUser = useSelector(selectCurrentUser)
 
     const [isOpenMenuDropdown, setIsOpenMenuDropdown] = useState(false);

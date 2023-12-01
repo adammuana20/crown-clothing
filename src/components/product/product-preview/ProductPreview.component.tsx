@@ -2,21 +2,22 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux";
 
-import { addItemsToCartStart, clearCartErrorMessage } from "../../../store/cart/Cart.action";
-import { usePopup } from "../../../hooks/usePopup.hooks";
+import { useToast } from "../../../contexts/Toast.context";
 
-import { selectAddingItemToCart, selectCartError } from "../../../store/cart/Cart.selector"
+import { addItemsToCartStart } from "../../../store/cart/Cart.action";
+
+import { selectAddingItemToCart } from "../../../store/cart/Cart.selector"
 
 import Button from "../../button/Button.component";
 import MobileBottomMenu from "../../../routes/mobile-bottom-menu/MobileBottomMenu.component";
 import WishlistButton from "../../wishlist/wishlist-button/WishlistButton.component";
-import PopUp from "../../ui/popup/PopUp.component";
 import ProductInputQuantity from "../product-input-quantity/ProductInputQuantity.component";
 import RelatedProducts from "../related-products/RelatedProducts.component";
 
 import { selectCategoriesMap } from "../../../store/categories/Category.selector";
 
 import { CategoryItem } from "../../../store/categories/Category.types";
+
 
 import { 
     ProductPreviewContainer, 
@@ -31,11 +32,10 @@ const ProductPreview = () => {
     const params = useParams()
     const dispatch = useDispatch()
     const { category } = params
-    const { showToast, handleClose, toasts } = usePopup()
+    const { showToast } = useToast()
     const categoriesMap = useSelector(selectCategoriesMap)
     const [qty, setQty] = useState<string | number>(1)
     const isLoading = useSelector(selectAddingItemToCart)
-    const cartError = useSelector(selectCartError)
 
     const productArr = Object.keys(categoriesMap).reduce((acc, title) => {
         const filteredProduct = categoriesMap[title].filter(product => product.id.toString() === params.id);
@@ -46,21 +46,12 @@ const ProductPreview = () => {
     useEffect(() => {
         setQty(1)
     }, [params.id])
-
-    useEffect(() => {
-        if(cartError) {
-            showToast('error', cartError.message)
-            dispatch(clearCartErrorMessage())
-        }
-    }, [cartError])
     
     if(!category) return <h2>Product not found</h2>
 
-  
-
     const onChangeInput = (value: string | number) => {
         if(Number(value) >= 10) {
-            console.log('error', 'Ops up to 10 max only');
+            showToast('error', 'Up to 10 max input only!')
             setQty(10);
             return
         }
@@ -77,7 +68,7 @@ const ProductPreview = () => {
 
     const addQtyHandler = () => {
         if(Number(qty) >= 10) {
-            console.log('error', 'Ops up to 10 max only');
+            showToast('error', 'Up to 10 max input only!')
             setQty(10);
             return
         }
@@ -87,7 +78,6 @@ const ProductPreview = () => {
 
     const decQtyHandler = () => {
         if(Number(qty) <= 1) {
-            console.log('error', 'Ops up to 1 minimum only');
             setQty(1);
             return
         }
@@ -110,7 +100,7 @@ const ProductPreview = () => {
                 <ProductInfo>
                     <WishlistButtonContainer>
                         <h2>{name}</h2>
-                        <WishlistButton product={product} category={category} showToast={showToast} />
+                        <WishlistButton product={product} category={category} />
                     </WishlistButtonContainer>
                     <p>{description}</p>
                     <p>${price}</p>
@@ -129,8 +119,7 @@ const ProductPreview = () => {
             {productElement.length > 0 ? (
                 <>
                     {productElement}
-                    <RelatedProducts category={category} catID={params.id} showToast={showToast} />
-                    <PopUp handleClose={handleClose} toasts={toasts} />
+                    <RelatedProducts category={category} catID={params.id} />
                 </>
                 ) : (
                     <h2>Product not found!</h2>

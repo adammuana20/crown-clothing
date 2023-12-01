@@ -1,18 +1,14 @@
-import { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import CheckoutItem from '../../components/checkout-item/CheckoutItem.component'
 import PaymentForm from '../../components/payment-form/PaymentForm.component'
 import MobileBottomMenu from '../mobile-bottom-menu/MobileBottomMenu.component'
-import PopUp from '../../components/ui/popup/PopUp.component'
-
-import { usePopup } from '../../hooks/usePopup.hooks'
-import { selectCartItems, selectCartTotalPrice, selectCartError } from '../../store/cart/Cart.selector'
+import { selectCartItems, selectCartTotalPrice } from '../../store/cart/Cart.selector'
 
 import { CheckoutContainer, CheckOutHeader, HeaderBlock, Total } from './Checkout.styles'
 import { CheckoutEmptyMessage, GoBackToShop } from './Checkout.styles'
-import { clearCartErrorMessage } from '../../store/cart/Cart.action'
+
 
 
 
@@ -20,20 +16,10 @@ const Checkout = () => {
     const cartItems = useSelector(selectCartItems)
     const cartTotalPrice = useSelector(selectCartTotalPrice)
     const navigate = useNavigate()
-    const dispatch = useDispatch()
-    const { showToast, handleClose, toasts } = usePopup()
-    const cartError = useSelector(selectCartError)
 
     const handleNavigate = () => {
         navigate('/shop');
     };
-
-    useEffect(() => {
-        if(cartError) {
-            showToast('error', cartError.message)
-            dispatch(clearCartErrorMessage())
-        }
-    }, [cartError])
 
     return (
         <>
@@ -59,7 +45,7 @@ const Checkout = () => {
                         </CheckOutHeader>
                         {
                             cartItems.map(( cartItem ) => (
-                                <CheckoutItem key={cartItem.id} cartItem={cartItem} showToast={showToast} />
+                                <CheckoutItem key={cartItem.id} cartItem={cartItem} />
                             ))
                         }
                         <Total>Sub Total: ${cartTotalPrice}</Total>
@@ -67,7 +53,6 @@ const Checkout = () => {
                     </CheckoutContainer>
                 )
             }
-            <PopUp handleClose={handleClose} toasts={toasts} />
             <MobileBottomMenu />
         </>
     )

@@ -3,9 +3,7 @@ import { useSelector } from 'react-redux';
 
 import DirectoryItem from '../directory-item/DirectoryItem.component';
 import MobileBottomMenu from '../../../routes/mobile-bottom-menu/MobileBottomMenu.component';
-import PopUp from '../../ui/popup/PopUp.component';
 
-import { usePopup } from '../../../hooks/usePopup.hooks';
 import { selectCategories, selectCategoriesMap } from '../../../store/categories/Category.selector';
 
 import { DirectoryContainer, CategoriesContainer, CategoriesWrapper, ProductsContainer, ProductsWrapper } from './Directory.styles'
@@ -18,7 +16,6 @@ import Button from '../../button/Button.component';
 const Directory = () => {
     const categories = useSelector(selectCategories)
     const categoriesMap = useSelector(selectCategoriesMap)
-    const { showToast, handleClose, toasts } = usePopup()
     const combinedProductsWithCategory = Object.keys(categoriesMap).reduce((acc, title) => {
         const products = categoriesMap[title].map(product => ({ product, title }));
         return acc.concat(products);
@@ -49,7 +46,7 @@ const Directory = () => {
                         { combinedProductsWithCategory
                             .filter((_, idx) => idx < limit)
                             .map((productWithCategory) => (
-                                <ProductCard key={productWithCategory.product.id} product={productWithCategory.product} categoryTitle={productWithCategory.title} showToast={showToast}  />
+                                <ProductCard key={productWithCategory.product.id} product={productWithCategory.product} categoryTitle={productWithCategory.title} />
                             ))
                         }
                     </ProductsContainer>
@@ -61,7 +58,6 @@ const Directory = () => {
                     }
                 </ButtonContainer>
             </DirectoryContainer>
-            <PopUp handleClose={handleClose} toasts={toasts} />
             <MobileBottomMenu />
         </>
     )
