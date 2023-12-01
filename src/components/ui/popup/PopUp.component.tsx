@@ -1,12 +1,12 @@
 import { FC } from "react"
 import ReactDOM from "react-dom"
 import { FaCircleCheck } from "react-icons/fa6";
-import { IoClose } from "react-icons/io5";
 import { MdError } from "react-icons/md";
 import { IoIosWarning } from "react-icons/io";
-
-import { PopUpContainer, Message, IconMessageContainer, Line, ToastContainer, ToastWrapper } from "./PopUp.styles"
 import { Toast } from "../../../hooks/usePopup.hooks";
+
+import { PopUpContainer, Message, IconMessageContainer, Line, ToastContainer, ToastWrapper, IoCloseStyle } from "./PopUp.styles"
+
 
 type PopUpProps = {
     handleClose: (id: number) => void;
@@ -30,7 +30,7 @@ const PopUp: FC<PopUpProps> = ({ handleClose, toasts }) => {
                         }
                         <Message>{toast.message}</Message>
                         </IconMessageContainer>
-                        <IoClose color={'#aaaaaa'} size={20} onClick={() => handleClose(toast.id)} />
+                        <IoCloseStyle color={'#aaaaaa'} size={20} onClick={() => handleClose(toast.id)} />
                     </ToastContainer>
                     <Line $progress={(toast.countdown / 3) * 100} $type={toast.type} />
                 </ToastWrapper>

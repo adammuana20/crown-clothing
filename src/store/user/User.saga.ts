@@ -8,6 +8,7 @@ import { signInSuccess, checkUserSessionComplete, signInFailed, signUpSuccess, s
 import { getCurrentUser, createUserDocumentFromAuth, signInWithGooglePopup, signInAuthUserWithEmailAndPassword, createAuthUserWithEmailAndPassword, signOutUser, AdditionalInformation, getAuthUserProviderID, updateUserProfileFromDocument, getUpdatedUserInfo, updateUserPasswordFromDocument } from '../../utils/firebase/Firebase.utils'
 import { fetchWishlistStart } from '../wishlist/Wishlist.action'
 import { fetchCartItemsStart } from '../cart/Cart.action'
+import { fetchOrdersStart } from '../orders/Orders.action'
  
 export function* getSnapshotFromUserAuth(userAuth: User, additionalInformation?: AdditionalInformation) {
     try {
@@ -157,6 +158,7 @@ export function* signOut({payload: { navigate, showToast }}: SignOutStart) {
         yield* put(signOutSuccess())
         yield* put(fetchWishlistStart())
         yield* put(fetchCartItemsStart())
+        yield* put(fetchOrdersStart())
         navigate('sign-in', { replace: true })
         showToast('success', 'Signed Out!')
     } catch(error) {

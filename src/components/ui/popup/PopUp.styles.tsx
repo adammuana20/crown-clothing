@@ -1,23 +1,11 @@
 import styled from "styled-components";
+import { IoClose } from "react-icons/io5";
 
 type PopUpProps = {
     $progress?: number;
     $top?: number;
     $type?: string;
 }
-
-// export const PopUpContainer = styled.div`
-//     position: fixed;
-//     bottom: 5rem;
-//     right: 2rem;
-//     /* transform: translate(-50%, -50%); */
-//     width: 20rem;
-//     background: #fff;
-//     z-index: 10;
-//     border-radius: .3rem;
-//     flex-direction: column;
-//     box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.3);
-// `
 
 export const PopUpContainer = styled.div`
   position: fixed;
@@ -72,3 +60,7 @@ export const ToastWrapper = styled.div<PopUpProps>`
     border-radius: .3rem;
     box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.3);
 `;
+
+export const IoCloseStyle = styled(IoClose)`
+    cursor: pointer;
+`
