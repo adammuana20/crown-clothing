@@ -10,6 +10,7 @@ import { selectCurrentUser } from '../../store/user/User.selector'
 
 import { PaymentFormContainer, FormContainer, PaymentButton } from "./PaymentForm.styles";
 import { createOrderStart } from "../../store/orders/Orders.action";
+import { useToast } from "../../contexts/Toast.context";
 
 const isValidCardElement = (card: StripeCardElement | null): card is StripeCardElement => card !== null
 
@@ -21,6 +22,7 @@ const PaymentForm = () => {
     const cartItems = useSelector(selectCartItems)
     const amount = useSelector(selectCartTotalPrice)
     const currentUser = useSelector(selectCurrentUser)
+    const { showToast } = useToast()
 
     const [isProcessingPayment, setIsProcessingPayment] = useState(false)
 
@@ -59,13 +61,11 @@ const PaymentForm = () => {
 
         setIsProcessingPayment(false)
 
-        if(paymentResult.error) {
-            alert(paymentResult.error.message)
+        if(paymentResult.error && paymentResult.error.message) {
+            showToast('error', paymentResult.error.message)
         } else {
-            if(paymentResult.paymentIntent.status === 'succeeded') {
-                dispatch(createOrderStart('card', cartItems, amount ))
-                alert('Payment Successful')
-                navigate('/orders')
+            if(paymentResult.paymentIntent && paymentResult.paymentIntent.status === 'succeeded') {
+                dispatch(createOrderStart('card', cartItems, amount, showToast, navigate))
             }
         }
     }

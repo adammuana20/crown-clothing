@@ -1,5 +1,5 @@
 import { AnyAction } from "redux";
-import { createOrderFailed, createOrderStart, createOrderSuccess, fetchOrdersFailed, fetchOrdersStart, fetchOrdersSuccess } from "./Orders.action";
+import { clearOrdersErrorMessage, createOrderFailed, createOrderStart, createOrderSuccess, fetchOrdersFailed, fetchOrdersStart, fetchOrdersSuccess } from "./Orders.action";
 import { Order } from "./Orders.types";
 
 
@@ -37,6 +37,7 @@ export const orderReducer = (state = ORDER_INITIAL_STATE, action: AnyAction): Or
         return {
             ...state,
             creatingNewOrder: false,
+            error: action.payload
         }
     }
 
@@ -60,6 +61,13 @@ export const orderReducer = (state = ORDER_INITIAL_STATE, action: AnyAction): Or
             ...state,
             fetchingOrders: false,
             error: action.payload,
+        }
+    }
+
+    if(clearOrdersErrorMessage.match(action)) {
+        return {
+            ...state,
+            error: null,
         }
     }
 

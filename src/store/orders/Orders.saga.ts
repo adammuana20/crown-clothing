@@ -4,13 +4,15 @@ import { CreateOrderStart, createOrderFailed, createOrderSuccess, fetchOrdersFai
 import { clearCartItemsOfUserAfterOrder, createOrderDocumentOfUser, getOrdersAndDocuments } from "../../utils/firebase/Firebase.utils"
 import { fetchCartItemsStart } from "../cart/Cart.action"
 
-export function* createOrder({payload: { paymentMethod, cartItems, amount }}: CreateOrderStart) {
+export function* createOrder({payload: { paymentMethod, cartItems, amount, showToast, navigate }}: CreateOrderStart) {
     try {
         yield* call(createOrderDocumentOfUser, paymentMethod, cartItems, amount)
         yield* call(clearCartItemsOfUserAfterOrder)
         yield* put(createOrderSuccess())
         yield* put(fetchCartItemsStart())
         yield* put(fetchOrdersStart())
+        navigate('/orders')
+        showToast('success', 'Payment Successful!')
     } catch(error) {
         yield* put(createOrderFailed(error as Error))
     }

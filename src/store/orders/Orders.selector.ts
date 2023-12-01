@@ -9,3 +9,8 @@ export const selectOrdersItem = createSelector(
     [selectOrdersReducer],
     (orders) => orders.orders
 )
+
+export const selectOrdersError = createSelector(
+    [selectOrdersReducer],
+    (orders) => orders.error
+)

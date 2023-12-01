@@ -17,6 +17,9 @@ import { clearProductErrorMessage } from '../../store/categories/Category.action
 import { selectCartError } from '../../store/cart/Cart.selector'
 import { clearCartErrorMessage } from '../../store/cart/Cart.action'
 
+import { selectOrdersError } from '../../store/orders/Orders.selector'
+import { clearOrdersErrorMessage } from '../../store/orders/Orders.action'
+
 import { selectWishlistError } from '../../store/wishlist/Wishlist.selector'
 import { clearWishlistErrorMessage } from '../../store/wishlist/Wishlist.action'
 
@@ -31,6 +34,7 @@ const Layout = () => {
     const productError = useSelector(selectProductError)
     const cartError = useSelector(selectCartError)
     const wishlistError = useSelector(selectWishlistError)
+    const ordersError = useSelector(selectOrdersError)
 
     const isSliderPage = location.pathname === '/'
 
@@ -59,7 +63,12 @@ const Layout = () => {
             dispatch(clearCartErrorMessage())
         }
 
-    }, [userError, cartError, wishlistError, productError])
+        if(ordersError) {
+            showToast('error', ordersError.message)
+            dispatch(clearOrdersErrorMessage())
+        }
+
+    }, [userError, cartError, wishlistError, productError, ordersError])
 
     return (
         <>
