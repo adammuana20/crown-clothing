@@ -65,7 +65,8 @@ const ChangePassword = () => {
                         onChange:handleChange,
                         name:'newPassword',
                         value:newPassword,
-                        required:true
+                        minLength:6,
+                        required:true,
                     }}
                 />
                 <FormInput
@@ -75,7 +76,8 @@ const ChangePassword = () => {
                         onChange:handleChange,
                         name:'confirmNewPassword',
                         value:confirmNewPassword,
-                        required:true
+                        minLength:6,
+                        required:true,
                     }}
                 />
                 <Button isLoading={isUpdatingUserPassword} isDisabled={isUpdatingUserInfo} >Save Password</Button>

@@ -1,4 +1,4 @@
-import { takeLatest, all, call, put } from 'typed-redux-saga/macro'
+import { takeLatest, all, call, put, delay } from 'typed-redux-saga/macro'
 import { User } from 'firebase/auth'
 
 import { USER_ACTION_TYPES } from './User.types'
@@ -129,8 +129,9 @@ export function* signInWithEmail({ payload: { email, password, showToast }}: Ema
 export function* signInAfterSignUp({payload: { user, additionalDetails, showToast }}: SignUpSuccess) {
     yield* call(getSnapshotFromUserAuth, user, additionalDetails)
     showToast('success', 'Signed In!')
+    yield* delay(1000)
+    showToast('warning', 'Kindly refresh the page again to avoid issues!')
 }
-
 
 export function* signUp({ payload: { email, password, displayName, showToast }}: SignUpStart) {
     try {
