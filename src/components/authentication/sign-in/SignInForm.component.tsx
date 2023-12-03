@@ -6,9 +6,10 @@ import FormInput from '../../form-input/FormInput.component'
 import { useToast } from '../../../contexts/Toast.context'
 
 import { googleSignInStart, emailSignInStart } from '../../../store/user/User.action'
-import { selectEmailSignInIsLoading, selectGoogleSignInIsLoading, selectEmailSignInButton, selectGoogleSignInButton, } from '../../../store/user/User.selector'
+import { selectEmailSignInIsLoading, selectGoogleSignInIsLoading, selectEmailSignInButton, selectGoogleSignInButton } from '../../../store/user/User.selector'
 
-import { SignInContainer, ButtonsContainer } from './SignInForm.styles'
+import { SignInContainer, ButtonsContainer, NewAccountButton } from './SignInForm.styles'
+import { useNavigate } from 'react-router-dom'
 
 
 const defaultFormFields = {
@@ -25,6 +26,7 @@ const SignInForm = () => {
     const googleSignInButton = useSelector(selectGoogleSignInButton)
     const dispatch = useDispatch()
     const { showToast } = useToast()
+    const navigate = useNavigate()
 
     const resetFormFields = () => {
         setSignInForm(defaultFormFields)
@@ -45,6 +47,10 @@ const SignInForm = () => {
 
         dispatch(emailSignInStart(email, password, showToast))
         resetFormFields()
+    }
+
+    const createNewAccount = () => {
+        navigate('/sign-up')
     }
     
 
@@ -76,9 +82,11 @@ const SignInForm = () => {
                 <ButtonsContainer>
                     <Button isLoading={emailSignInIsLoading} isDisabled={emailSignInButton} type='submit'>Sign In</Button>
                     <Button isLoading={googleSignInIsLoading} isDisabled={googleSignInButton} type='button' buttonType={BUTTON_TYPE_CLASSES.google} onClick={signInWithGoogle}>
-                    Google Sign In
+                        Google Sign In
                     </Button>
                 </ButtonsContainer>
+                <hr></hr>
+                <NewAccountButton type='button' buttonType={BUTTON_TYPE_CLASSES.inverted} isDisabled={emailSignInButton || googleSignInButton} onClick={createNewAccount} >Create an account</NewAccountButton>
             </form>
         </SignInContainer>
     )

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const OrdersContainer = styled.div`
-    
+    margin-bottom: 2rem;
 `
 
 export const OrderTotalContainer = styled.div`
@@ -16,4 +16,14 @@ export const OrderTotalText = styled.span`
 
 export const OrderTotal = styled.span`
 
+`
+
+export const DateIDContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+`
+
+export const OrderID = styled.span`
+    font-weight: bold;
 `

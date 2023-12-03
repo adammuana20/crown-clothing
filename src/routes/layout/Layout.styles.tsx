@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 type LayoutProps = {
-  $isSliderPage: boolean
+  $isSliderPage: boolean;
 }
 
 export const HeaderWrapper = styled.header`
@@ -18,7 +18,7 @@ export const HeaderContainer = styled.div`
   justify-content: space-between;
   height: 70px;
   align-items: center;
-  max-width: 1250px;
+  max-width: 1440px;
   padding: 0 1rem;
 
   @media only screen and (max-width: 800px) {

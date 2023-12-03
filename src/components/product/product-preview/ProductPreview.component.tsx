@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom"
+import { useParams, useNavigate, Link } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux";
 
 import { useToast } from "../../../contexts/Toast.context";
@@ -25,7 +25,9 @@ import {
     ProductInfo, 
     ImageContainer, 
     WishlistButtonContainer, 
-    ProductInputContainer, 
+    ProductInputContainer,
+    ItemPreview,
+    GoBackLink,
 } from "./ProductPreview.styles";
 import { selectCurrentUser } from "../../../store/user/User.selector";
 
@@ -102,21 +104,26 @@ const ProductPreview = () => {
 
         return (
             <ProductPreviewContainer key={id}>
-                <ImageContainer>
-                    <ProductImage src={imageUrl} alt={name} />
-                </ImageContainer>
-                <ProductInfo>
-                    <WishlistButtonContainer>
-                        <h2>{name}</h2>
-                        <WishlistButton product={product} category={category} />
-                    </WishlistButtonContainer>
-                    <p>{description}</p>
-                    <p>${price}</p>
-                    <ProductInputContainer>
-                        <ProductInputQuantity value={qty} onChangeQty={onChangeInput} onChangeBlur={onChangeBlur} addQtyHandler={addQtyHandler} decQtyHandler={decQtyHandler} />
-                    </ProductInputContainer>
-                    <Button onClick={addProductToCart} isLoading={isLoading}>Add to cart</Button>
-                </ProductInfo>
+                <GoBackLink to='..'>
+                    &lt; &lt; Go Back
+                </GoBackLink>
+                <ItemPreview>
+                    <ImageContainer>
+                        <ProductImage src={imageUrl} alt={name} />
+                    </ImageContainer>
+                    <ProductInfo>
+                        <WishlistButtonContainer>
+                            <h2>{name}</h2>
+                            <WishlistButton product={product} category={category} />
+                        </WishlistButtonContainer>
+                        <p>{description}</p>
+                        <p>${price}</p>
+                        <ProductInputContainer>
+                            <ProductInputQuantity value={qty} onChangeQty={onChangeInput} onChangeBlur={onChangeBlur} addQtyHandler={addQtyHandler} decQtyHandler={decQtyHandler} />
+                        </ProductInputContainer>
+                        <Button onClick={addProductToCart} isLoading={isLoading}>Add to cart</Button>
+                    </ProductInfo>
+                </ItemPreview>
             </ProductPreviewContainer>
         )
     })
