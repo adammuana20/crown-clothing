@@ -20,7 +20,6 @@ export const GlobalStyle = createGlobalStyle`
   
   a {
     text-decoration: none;
-    text-transform: uppercase;
     color: black;
     font-size: 1.2rem;
   }

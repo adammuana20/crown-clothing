@@ -1,7 +1,7 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const ProductPreviewContainer = styled.div`
-    display: flex;
     margin: 20px 0 80px;
 `
 
@@ -29,4 +29,20 @@ export const WishlistButtonContainer = styled.div`
 
 export const ProductInputContainer = styled.div`
     padding-bottom: 2rem;
+`
+
+export const ItemPreview = styled.div`
+    display: flex;
+    margin-top: 3rem;
+`
+
+export const GoBackLink = styled(Link)`
+    margin-left: -130px;
+    text-transform: none;
+
+    &:hover {
+        font-weight: bold;
+        text-decoration: underline;
+        text-underline-offset: 0.2rem;
+    }
 `
