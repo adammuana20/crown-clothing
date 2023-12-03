@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { IoClose } from "react-icons/io5";
 
 type PopUpProps = {
@@ -6,6 +6,15 @@ type PopUpProps = {
     $top?: number;
     $type?: string;
 }
+
+const slideInAnimation = keyframes`
+  from {
+    transform: translateX(100%); /* Initial position, off-screen to the right */
+  }
+  to {
+    transform: translateX(0); /* Final position, fully visible */
+  }
+`;
 
 export const PopUpContainer = styled.div`
   position: fixed;
@@ -54,11 +63,11 @@ export const ToastWrapper = styled.div<PopUpProps>`
     position: fixed;
     bottom: ${({ $top }) => `${$top}px`};
     right: 2rem;
-    /* transform: translate(-50%, -50%); */
     width: 20rem;
     background: #fff;
     border-radius: .3rem;
     box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.3);
+    animation: ${slideInAnimation} 0.4s ease-in-out;
 `;
 
 export const IoCloseStyle = styled(IoClose)`

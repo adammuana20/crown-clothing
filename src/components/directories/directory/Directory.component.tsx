@@ -3,14 +3,14 @@ import { useSelector } from 'react-redux';
 
 import DirectoryItem from '../directory-item/DirectoryItem.component';
 import MobileBottomMenu from '../../../routes/mobile-bottom-menu/MobileBottomMenu.component';
+import Slider from '../slider/Slider.component';
+import ProductCard from '../../product/product-card/ProductCard.component';
+import Button from '../../button/Button.component';
 
 import { selectCategories, selectCategoriesMap } from '../../../store/categories/Category.selector';
 
-import { DirectoryContainer, CategoriesContainer, CategoriesWrapper, ProductsContainer, ProductsWrapper } from './Directory.styles'
-import Slider from '../slider/Slider.component';
-import ProductCard from '../../product/product-card/ProductCard.component';
+import { DirectoryContainer, CategoriesContainer, CategoriesWrapper, ProductsContainer, ProductsWrapper, SliderContainer } from './Directory.styles'
 import { ButtonContainer } from '../../../routes/category/Category.styles';
-import Button from '../../button/Button.component';
 
 
 const Directory = () => {
@@ -21,7 +21,12 @@ const Directory = () => {
         return acc.concat(products);
     }, [] as any[]);
 
-    const imageUrls = categories.map((category) => category.imageUrl)
+    const sliders = categories.map((category) => ({
+        imageUrl: category.imageUrl,
+        title: category.title
+      }))
+    
+    
     const [limit, setLimit] = useState(8)
 
     const loadmore = () => {
@@ -31,7 +36,9 @@ const Directory = () => {
     return (
         <>
             <DirectoryContainer>
-                <Slider imageUrls={imageUrls} />
+                <SliderContainer>
+                    <Slider sliders={sliders} />
+                </SliderContainer>
                 <CategoriesWrapper>
                     <h2>Categories</h2>
                     <CategoriesContainer>
