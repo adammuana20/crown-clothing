@@ -1,6 +1,7 @@
 import { useEffect, lazy, Suspense } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from 'react-router-dom'
+import styled from 'styled-components'
 
 import Spinner from './components/spinner/Spinner.component'
 import { checkUserSession } from './store/user/User.action'
@@ -68,12 +69,14 @@ const App = () => {
   )
 
   return (
-    <Suspense fallback={<Spinner />}>
+    <>
       <GlobalStyle />
-      { checkingUserSession ? <Spinner />
-        : <RouterProvider router={router} />
-      }
-    </Suspense>
+      <Suspense fallback={<Spinner />}>
+        { checkingUserSession ? <Spinner />
+          : <RouterProvider router={router} />
+        }
+      </Suspense>
+    </>
   );
 }
 
