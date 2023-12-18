@@ -19,12 +19,21 @@ export const SignInContainer = styled.div`
     &:last-child() button {
         width: 100%;
     }
+
+    @media only screen and (max-width: 550px) {
+        width: 100%;
+    }
 `
 
 export const ButtonsContainer = styled.div`
     display: flex;
-    justify-content: space-between;
     margin-bottom: 1rem;
+    justify-content: space-between;
+
+    @media only screen and (max-width: 550px) {
+        flex-direction: column;
+        gap: .5rem;
+    }
 `
 
 export const NewAccountButton = styled(Button)`

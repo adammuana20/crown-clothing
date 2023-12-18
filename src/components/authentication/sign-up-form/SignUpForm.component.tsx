@@ -3,11 +3,10 @@ import { AuthError, AuthErrorCodes } from 'firebase/auth'
 import { useDispatch, useSelector } from 'react-redux'
 
 import FormInput from '../../form-input/FormInput.component'
-import Button from '../../button/Button.component'
 import { signUpStart } from '../../../store/user/User.action'
 import { selectSignUpIsLoading } from '../../../store/user/User.selector'
 
-import { SignUpContainer } from './SignUpForm.styles'
+import { SignUpContainer, SignUpBtn, BtnContainer } from './SignUpForm.styles'
 import { alreadyLoggedIn } from '../../../utils/loaders/Loaders.utils'
 import { useToast } from '../../../contexts/Toast.context'
 
@@ -101,7 +100,9 @@ const SignUpForm = () => {
                     }}
 
                 />
-                <Button isLoading={isLoading} type='submit'>Sign Up</Button>
+                <BtnContainer>
+                    <SignUpBtn isLoading={isLoading} type='submit'>Sign Up</SignUpBtn>
+                </BtnContainer>
             </form>
         </SignUpContainer>
     )
