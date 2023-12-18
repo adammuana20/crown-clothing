@@ -8,6 +8,7 @@ export const ThemeContainer = styled.div`
 
     @media only screen and (max-width: 800px) {
         bottom: 5.5rem;
+        right: 1.2rem;
     }
 `
 
@@ -31,11 +32,3 @@ export const TooltipBtn = styled.button`
     &.dark-mode {
     }
 `
-
-// .top-tooltip {
-//     top: 1.5rem;
-// }
-
-// .bottom-tooltip {
-//     bottom: 1.2rem;
-// }
