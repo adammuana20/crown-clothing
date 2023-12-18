@@ -12,51 +12,49 @@ const MobileBottomMenu = () => {
     const cartCount = useSelector(selectCartCount)
 
     return (
-        <>
-            <BottomMenu>
-                <ListContainer>
-                    <BottomMenuNavLink 
-                        to='/'
-                    >
-                        <IconStyles>
-                           <FiHome />
-                        </IconStyles>
-                        Home
-                    </BottomMenuNavLink>
-                </ListContainer>
-                <ListContainer>
-                    <BottomMenuNavLink 
-                        to='/shop'
-                    >
-                        <IconStyles>
-                            <BsShop />
-                        </IconStyles>
-                        Shop
-                    </BottomMenuNavLink>
-                </ListContainer>
-                <ListContainer>
-                    <BottomMenuNavLink 
-                        to='/checkout'
-                    >
-                        <IconStyles>
-                            <IoCartOutline />
-                            <MobileItemCount>{cartCount}</MobileItemCount>
-                        </IconStyles>
-                        Cart
-                    </BottomMenuNavLink>
-                </ListContainer>
-                <ListContainer>
-                    <BottomMenuNavLink 
-                        to='/profile'
-                    >
-                        <IconStyles>
-                            <FiUser />
-                        </IconStyles>
-                        Profile
-                    </BottomMenuNavLink>
-                </ListContainer>
-            </BottomMenu>
-        </>
+        <BottomMenu>
+            <ListContainer>
+                <BottomMenuNavLink 
+                    to='/'
+                >
+                    <IconStyles>
+                        <FiHome />
+                    </IconStyles>
+                    Home
+                </BottomMenuNavLink>
+            </ListContainer>
+            <ListContainer>
+                <BottomMenuNavLink 
+                    to='/shop'
+                >
+                    <IconStyles>
+                        <BsShop />
+                    </IconStyles>
+                    Shop
+                </BottomMenuNavLink>
+            </ListContainer>
+            <ListContainer>
+                <BottomMenuNavLink 
+                    to='/checkout'
+                >
+                    <IconStyles>
+                        <IoCartOutline />
+                        <MobileItemCount>{cartCount}</MobileItemCount>
+                    </IconStyles>
+                    Cart
+                </BottomMenuNavLink>
+            </ListContainer>
+            <ListContainer>
+                <BottomMenuNavLink 
+                    to='/profile'
+                >
+                    <IconStyles>
+                        <FiUser />
+                    </IconStyles>
+                    Profile
+                </BottomMenuNavLink>
+            </ListContainer>
+        </BottomMenu>
     )
 }
 

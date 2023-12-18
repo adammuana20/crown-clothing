@@ -38,7 +38,7 @@ export const ProductLink = styled(Link)`
   margin-bottom: 5px;
 
   &:hover {
-    background-color: black;
+    background-color: var(--background-color);
 
     img {
       opacity: 0.8;
@@ -51,6 +51,7 @@ export const Footer = styled.div`
   font-size: 1.2rem;
   display: flex;
   flex-direction: column;
+  color: var(--color-text-primary);
 `
 
 export const Price = styled.span`

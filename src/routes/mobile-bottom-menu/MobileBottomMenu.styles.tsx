@@ -15,7 +15,7 @@ export const BottomMenu = styled.div`
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: #fff;
+    background-color: var(--background);
     z-index: 9;
     padding: .6rem;
     display: flex;

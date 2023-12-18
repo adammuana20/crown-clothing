@@ -11,7 +11,7 @@ import { UserData } from "../../../utils/firebase/Firebase.utils"
 
 import { capitalizeFirstLetter } from "../../../utils/helpers/Helpers.utils"
 
-import { ImageContainer, ImageWrapper, Name, ChangePhotoButtonContainer, ChangePhotoButton, ImageUrl } from "./EditProfile.styles"
+import { ImageContainer, ImageWrapper, Name, ChangePhotoButtonContainer, ChangePhotoButton, ImageUrl, ProfileContainer } from "./EditProfile.styles"
 import { useToast } from "../../../contexts/Toast.context"
 
 type EditProfileProps = {
@@ -64,7 +64,7 @@ const EditProfile: FC<EditProfileProps> = ({ currentUser }) => {
 
 
     return (
-        <>
+        <ProfileContainer>
             <h2>My Profile</h2>
             <form onSubmit={handleSubmit}>
                 <ImageWrapper>
@@ -109,7 +109,7 @@ const EditProfile: FC<EditProfileProps> = ({ currentUser }) => {
                 />
                 <Button isDisabled={isUpdatingUserPassword || disableButton} isLoading={isUpdatingUserInfo}>Save Profile</Button>
             </form>
-        </>
+        </ProfileContainer>
     )
 }
 

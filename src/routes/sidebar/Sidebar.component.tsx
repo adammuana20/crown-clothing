@@ -42,7 +42,7 @@ const Sidebar: FC<SidebarProps> = ({ isMenuOpen, onMenuClose }) => {
 
     return (
         <>  
-                <SidebarContainer $isMenuOpen={isMenuOpen}>
+            <SidebarContainer $isMenuOpen={isMenuOpen}>
                 <SidebarNavLinkContainer>
                     <MobileNavlink 
                             to='/'
@@ -85,7 +85,7 @@ const Sidebar: FC<SidebarProps> = ({ isMenuOpen, onMenuClose }) => {
                         <LogoutButton onClick={loginPage} >Login</LogoutButton>
                     </SidebarNavLinkContainer>
                 )}
-                </SidebarContainer>
+            </SidebarContainer>
 
             { isMenuOpen && (
                 <SidebarOverlay onClick={onMenuClose}/>

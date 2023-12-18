@@ -13,11 +13,12 @@ export const CartDropdownContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px;
-  border: 1px solid black;
-  background-color: white;
+  border: 1px solid rgba(0,0,0, .1);
+  background-color: var(--background-light);
   top: 56px;
   right: 0;
   z-index: 5;
+  color: var(--color-text-primary);
 
   ${BaseButton},
   ${GoogleSignInButton},

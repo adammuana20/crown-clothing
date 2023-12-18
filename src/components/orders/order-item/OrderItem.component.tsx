@@ -2,7 +2,7 @@ import { FC } from "react"
 
 import { CartItem } from "../../../store/cart/Cart.types"
 
-import { ItemContainer, ProductNameQtyContainer, ItemDetailsContainer, ItemLink } from "./OrderItem.styles"
+import { ItemContainer, ProductNameQtyContainer, ItemDetailsContainer, ItemLink, Price } from "./OrderItem.styles"
 import { ImageContainer } from "../../checkout-item/CheckoutItem.styles"
 
 
@@ -28,7 +28,7 @@ const OrderItem: FC<OrderItemProps> = ({ item }) => {
                     </ItemLink>
                     <span>x{quantity}</span>
                 </ProductNameQtyContainer>
-                <p>${total}</p>
+                <Price>${total}</Price>
             </ItemDetailsContainer>
         </ItemContainer>
     )

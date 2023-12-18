@@ -8,7 +8,7 @@ import DesktopMenu from '../desktop-menu/DesktopMenu.component'
 import MobileMenu from '../mobile-menu/MobileMenu.component'
 import Footer from '../footer/Footer.component'
 
-import { selectUserError } from "../../store/user/User.selector"
+import { selectUserError, selectCurrentUser } from "../../store/user/User.selector"
 import { useToast } from '../../contexts/Toast.context'
 
 import { clearUserErrorMessage } from "../../store/user/User.action"
@@ -24,6 +24,7 @@ import { selectWishlistError } from '../../store/wishlist/Wishlist.selector'
 import { clearWishlistErrorMessage } from '../../store/wishlist/Wishlist.action'
 
 import { HeaderWrapper, HeaderContainer, OutletContainer, OutletMain } from './Layout.styles'
+import ThemeSwitch from '../../components/theme-switch/ThemeSwitch.component'
 
 
 const Layout = () => {
@@ -35,6 +36,7 @@ const Layout = () => {
     const cartError = useSelector(selectCartError)
     const wishlistError = useSelector(selectWishlistError)
     const ordersError = useSelector(selectOrdersError)
+    const currentUser = useSelector(selectCurrentUser)
 
     const isSliderPage = location.pathname === '/'
 
@@ -73,6 +75,7 @@ const Layout = () => {
     return (
         <>
             <HeaderWrapper>
+                { currentUser && <ThemeSwitch />}
                 <HeaderContainer>
                     <Header />
                     <DesktopMenu />

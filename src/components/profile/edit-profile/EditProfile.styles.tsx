@@ -5,6 +5,10 @@ type EditProfilePropsImageUrl = {
     $selectedImageUrl: string;
 }
 
+export const ProfileContainer = styled.div`
+    color: var(--color-dark);
+`
+
 export const ImageWrapper = styled.div`
     display: flex;
     align-items: center;
@@ -30,8 +34,8 @@ export const ImageUrl = styled.div<EditProfilePropsImageUrl>`
 `
 
 export const Name = styled.div`
-    background-color: black;
-    color: #eee;
+    background-color: var(--color-dark);
+    color: var(--color-light);
     width: 6rem;
     height: 6rem;
     border-radius: 50%;

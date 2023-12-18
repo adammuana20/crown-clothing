@@ -1,11 +1,12 @@
 import styled from "styled-components";
+import { FaCartShopping } from "react-icons/fa6";
 
-import { ReactComponent as ShoppingSVG } from '../../../assets/shopping-cart-icon.svg'
 
-export const ShoppingIcon = styled(ShoppingSVG)`
+export const ShoppingIcon = styled(FaCartShopping)`
   width: 27px;
   height: 27px;
   cursor: pointer;
+  color: var(--color-text-primary);
 `
 
 export const CartIconContainer = styled.div`

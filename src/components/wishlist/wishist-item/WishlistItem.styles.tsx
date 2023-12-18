@@ -47,6 +47,7 @@ export const Price = styled.p`
     font-size: 1.2rem;
     font-weight: 700;
     margin: 20px 0 40px;
+    color: red;
 `
 
 export const WishlistContentContainer = styled.div`

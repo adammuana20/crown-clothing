@@ -29,7 +29,7 @@ const DesktopMenu = () => {
     const dropdownRef = useRef<HTMLLIElement>(null);
 
     const handleMenuDropDown = () => {
-        setIsOpenMenuDropdown(!isOpenMenuDropdown);
+        setIsOpenMenuDropdown(!isOpenMenuDropdown)
     };
 
     const signOutUser = () => {
@@ -68,6 +68,7 @@ const DesktopMenu = () => {
                                 role="button"
                                 tabIndex={-1}
                                 onClick={handleMenuDropDown}
+                                aria-expanded={isOpenMenuDropdown ? true : false}
                             >
                                 <UserTextContainer>
                                     { currentUser.imageUrl ? 

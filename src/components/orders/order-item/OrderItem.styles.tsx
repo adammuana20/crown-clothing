@@ -21,6 +21,11 @@ export const ItemDetailsContainer = styled(ProductDetailsContainer)`
     padding: 0 15px;
 `
 
+export const Price = styled.p`
+    font-weight: bolder;
+    color: red;
+`
+
 export const ProductNameQtyContainer = styled.div`
     display: flex;
     flex-direction: column;

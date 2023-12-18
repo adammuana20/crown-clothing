@@ -4,6 +4,10 @@ export const FooterContainer = styled.footer`
     background-color: black;
     color: #fff;
     padding: 15px 100px;
+
+    @media only screen and (max-width: 800px) {
+        display: none;
+    }
 `
 
 export const FooterContent = styled.div`

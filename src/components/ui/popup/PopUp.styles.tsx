@@ -24,7 +24,6 @@ export const PopUpContainer = styled.div`
   align-items: flex-start;
   justify-content: center;
   z-index: 10;
-  transition: left 0.5s ease-in-out;
 `;
 
 export const ToastContainer = styled.div`
