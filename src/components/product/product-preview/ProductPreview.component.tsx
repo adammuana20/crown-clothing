@@ -28,6 +28,7 @@ import {
     ProductInputContainer,
     ItemPreview,
     GoBackLink,
+    Price,
 } from "./ProductPreview.styles";
 import { selectCurrentUser } from "../../../store/user/User.selector";
 
@@ -117,7 +118,7 @@ const ProductPreview = () => {
                             <WishlistButton product={product} category={category} />
                         </WishlistButtonContainer>
                         <p>{description}</p>
-                        <p>${price}</p>
+                        <Price>${price}</Price>
                         <ProductInputContainer>
                             <ProductInputQuantity value={qty} onChangeQty={onChangeInput} onChangeBlur={onChangeBlur} addQtyHandler={addQtyHandler} decQtyHandler={decQtyHandler} />
                         </ProductInputContainer>

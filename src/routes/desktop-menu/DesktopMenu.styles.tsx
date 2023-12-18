@@ -37,7 +37,6 @@ export const DesktopNavLink = styled(NavLink)`
 `
 
 export const UserIcon = styled.div`
-    color: #eee;
     width: 2.8rem;
     height: 2.8rem;
     border-radius: 50%;
@@ -54,8 +53,8 @@ export const UserIcon = styled.div`
 `
 
 export const UserTextContainer = styled.div`
-    background-color: black;
-    color: #eee;
+    background-color: var(--color-dark);
+    color: var(--color-light);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -70,16 +69,17 @@ export const UserTextContainer = styled.div`
 
 export const MenuDropdownContainer = styled.div`
     width: 14rem;
-    border: 1px solid black;
     position: absolute;
+    border-radius: .5rem;
     top: 100%;
     right: 0;
     margin-top: .7rem;
-    background-color: white;
-    z-index: 1;
+    background-color: var(--background-light);
+    z-index: 1;    
+    border: 1px solid rgba(0,0,0, .1);
     
     ${DesktopNavLink}:not(:last-child) {
-        border-bottom: 1px solid black;
+        border-bottom: 1px solid #ccc;
     }
 
     ${DesktopNavLink} {

@@ -6,7 +6,7 @@ const mainColor = 'black'
 const shrinkLabelStyles = css`
   top: -18px;
   font-size: 12px;
-  color: ${mainColor};
+  color: var(--color-dark);
 `
 
 type FormInputLabelProps = {
@@ -14,7 +14,7 @@ type FormInputLabelProps = {
 }
 
 export const FormInputLabel = styled.label<FormInputLabelProps>`
-  color: ${subColor};
+  color: #000;
   font-size: 16px;
   font-weight: normal;
   position: absolute;
@@ -44,6 +44,8 @@ export const Input = styled.input`
     border-bottom: none;
     background-color: transparent;
     cursor: pointer;
+    border-top-right-radius: 1.3rem;
+    border-bottom-right-radius: 1.3rem;
   }
 
   &[type='search'] + ${FormInputLabel} {

@@ -8,16 +8,12 @@ const MobileMenu = () => {
     const [isOpenSideBar, setIsOpenSideBar] = useState(false);
 
     return (
-        <>
-            {
-                <MobileMenuContainer>
-                    <MobileButton onClick={() => setIsOpenSideBar(!isOpenSideBar)}>
-                        <FiMenu />
-                    </MobileButton>
-                    <Sidebar isMenuOpen={isOpenSideBar} onMenuClose={() => setIsOpenSideBar(false)} />
-                </MobileMenuContainer>
-            }
-        </>
+        <MobileMenuContainer>
+            <MobileButton onClick={() => setIsOpenSideBar(!isOpenSideBar)}>
+                <FiMenu />
+            </MobileButton>
+            <Sidebar isMenuOpen={isOpenSideBar} onMenuClose={() => setIsOpenSideBar(false)} />
+        </MobileMenuContainer>
     )
 }
 

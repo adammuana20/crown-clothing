@@ -6,11 +6,13 @@ import { WishlistProduct } from "../wishlist-button/WishlistButton.component"
 
 import { selectWishlist } from "../../../store/wishlist/Wishlist.selector"
 
+import { WishlistContainer } from "./WishlistItems.styles"
+
 const WishlistItems = () => {
     const myWishlist = useSelector(selectWishlist)
     
     return (
-        <>
+        <WishlistContainer>
             { myWishlist.length === 0 ?
                <h2>No wishlist</h2> :
                 <>
@@ -23,7 +25,7 @@ const WishlistItems = () => {
                 </>
             }
             <MobileBottomMenu/>
-        </>
+        </WishlistContainer>
     )
 }
 

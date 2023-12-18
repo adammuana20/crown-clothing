@@ -15,7 +15,8 @@ export const OrderTotalText = styled.span`
 `
 
 export const OrderTotal = styled.span`
-
+    color: red;
+    font-weight: bolder;
 `
 
 export const DateIDContainer = styled.div`

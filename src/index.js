@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Elements } from '@stripe/react-stripe-js'
 import { ToastProvider } from './contexts/Toast.context';
+import { ThemeProvider } from './contexts/Theme.context';
 
 import App from './App';
 import { store, persistor } from './store/Store';
@@ -18,11 +19,13 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <ToastProvider>
-          <Elements stripe={stripePromise}>
-            <App />
-          </Elements>
-        </ToastProvider>
+        <ThemeProvider>
+          <ToastProvider>
+            <Elements stripe={stripePromise}>
+              <App />
+            </Elements>
+          </ToastProvider>
+        </ThemeProvider>
       </PersistGate>
     </Provider>
   </React.StrictMode>

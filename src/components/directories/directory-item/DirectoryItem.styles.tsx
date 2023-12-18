@@ -20,7 +20,7 @@ export const Body = styled.div`
     align-items: center;
     justify-content: center;
     border: 1px solid black;
-    background-color: white;
+    background-color: var(--background);
     opacity: 0.7;
     position: absolute;
 
@@ -28,11 +28,12 @@ export const Body = styled.div`
         font-weight: bold;
         margin: 0 6px 0;
         font-size: 1.3rem;
-        color: #4a4a4a;
+        color: var(--color-text-primary);
         text-transform: uppercase;
     }
 
     p {
+        color: var(--color-text-primary);
         font-weight: lighter;
         font-size: 1rem;
     }

@@ -8,6 +8,8 @@ import Button from "../../button/Button.component"
 import { updateUserPasswordStart } from "../../../store/user/User.action"
 import { useToast } from "../../../contexts/Toast.context"
 
+import { ProfilePasswordContainer } from "./ChangePassword.styles"
+
 const defaultFormFields = {
     oldPassword: '',
     newPassword: '',
@@ -45,7 +47,7 @@ const ChangePassword = () => {
     }
 
     return (
-        <>
+        <ProfilePasswordContainer>
             <h2>Change Password</h2>
             <form onSubmit={handleSubmit}>
                 <FormInput
@@ -82,7 +84,7 @@ const ChangePassword = () => {
                 />
                 <Button isLoading={isUpdatingUserPassword} isDisabled={isUpdatingUserInfo} >Save Password</Button>
             </form>
-        </>
+        </ProfilePasswordContainer>
     )
 }
 

@@ -12,7 +12,7 @@ export const ProductInputQuantityContainer = styled.div`
 `
 
 export const ButtonContainer = styled.div`
-    background-color: #f1f3f5;
+    background-color: var(--background-light);
     border: 1px solid transparent;
     width: 2.6rem;
     height: 2.3rem;

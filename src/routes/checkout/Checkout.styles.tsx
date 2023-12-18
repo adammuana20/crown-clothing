@@ -6,6 +6,7 @@ export const CheckoutContainer = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 0 0 0 30px;
+  color: var(--color-dark);
 `
 
 export const CheckOutHeader = styled.div`

@@ -5,7 +5,7 @@ export const SearchResultContainer = styled.div`
     position: absolute;
     top: 55px;
     width: 100%;
-    background-color: white;
+    background-color: var(--background-light);
     z-index: 1;
     max-height: 300px;
     overflow-y: auto;
@@ -38,4 +38,5 @@ export const NoResult = styled.div`
     align-items: center;
     padding-left: 10px;
     font-weight: bold;
+    color: var(--color-dark);
 `

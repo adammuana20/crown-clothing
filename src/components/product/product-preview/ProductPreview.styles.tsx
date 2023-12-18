@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 export const ProductPreviewContainer = styled.div`
     margin: 20px 0 80px;
+    color: var(--color-text-primary);
 `
 
 export const ImageContainer = styled.div`
@@ -19,6 +20,11 @@ export const ProductImage = styled.img`
 export const ProductInfo = styled.div`
     flex-basis: 60%;
     margin-left: 40px;
+`
+
+export const Price = styled.p`
+    color: red;
+    font-weight: bolder;
 `
 
 export const WishlistButtonContainer = styled.div`

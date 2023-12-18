@@ -23,11 +23,12 @@ export const SidebarContainer = styled.div<SidebarContainerProps>`
     position: fixed;
     top: 0;
     right: 0;
-    background-color: #fff;
+    background-color: var(--background);
     height: 100%;
     z-index: 100;
     transform: translateX(100%);
     transition: transform .3s ease;
+    color: var(--color-dark);
 
     ${({$isMenuOpen}) => $isMenuOpen && isMenuOpenStyles}
 `

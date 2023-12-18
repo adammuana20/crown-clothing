@@ -32,6 +32,8 @@ export const ImageContainer = styled.div`
 export const BaseSpan = styled.span`
   width: 26%;
   text-align: center;
+  color: red;
+  font-weight: bolder;
 `
 
 export const ProductInputContainer = styled.div`

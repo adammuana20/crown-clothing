@@ -15,6 +15,7 @@ export const CategoriesWrapper = styled.div`
     flex-direction: column;
     max-width: 1250px;
     margin: 3rem auto;
+    color: var(--color-text-primary);
 `
 
 export const CategoriesContainer = styled.div`
@@ -29,6 +30,7 @@ export const ProductsWrapper = styled.div`
     max-width: 1250px;
     margin: 0 auto;
     flex-direction: column;
+    color: var(--color-text-primary);
 `
 
 export const ProductsContainer = styled.div`
