@@ -25,7 +25,7 @@ import {
     ProductInfo, 
     ImageContainer, 
     WishlistButtonContainer, 
-    ProductInputContainer,
+    QtyBtnContainer,
     ItemPreview,
     GoBackLink,
     Price,
@@ -117,12 +117,12 @@ const ProductPreview = () => {
                             <h2>{name}</h2>
                             <WishlistButton product={product} category={category} />
                         </WishlistButtonContainer>
-                        <p>{description}</p>
                         <Price>${price}</Price>
-                        <ProductInputContainer>
+                        <p>{description}</p>
+                        <QtyBtnContainer>
                             <ProductInputQuantity value={qty} onChangeQty={onChangeInput} onChangeBlur={onChangeBlur} addQtyHandler={addQtyHandler} decQtyHandler={decQtyHandler} />
-                        </ProductInputContainer>
-                        <Button onClick={addProductToCart} isLoading={isLoading}>Add to cart</Button>
+                            <Button onClick={addProductToCart} isLoading={isLoading}>Add to cart</Button>
+                        </QtyBtnContainer>
                     </ProductInfo>
                 </ItemPreview>
             </ProductPreviewContainer>

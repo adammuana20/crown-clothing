@@ -10,6 +10,7 @@ type WishlistItemContainerProps = {
 export const WishlistItemContainer = styled.div<WishlistItemContainerProps>`
     display: flex;
     padding: 20px 10px;
+    text-align: start;
 
     &:not(:last-child) {
         border-bottom: 1px solid #efefef;

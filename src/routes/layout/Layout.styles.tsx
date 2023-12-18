@@ -39,6 +39,7 @@ export const OutletContainer = styled.div<LayoutProps>`
   padding: ${({ $isSliderPage }) => ($isSliderPage ? '0' : '2rem 1rem 0')};
 
   @media only screen and (max-width: 800px) {
-    padding: ${({ $isSliderPage }) => ($isSliderPage ? '0' : '2rem 1rem 4rem')};
+    padding: ${({ $isSliderPage }) => ($isSliderPage ? '0 0 4rem' : '2rem 1rem 4rem')};
+    text-align: center;
   }
 `
