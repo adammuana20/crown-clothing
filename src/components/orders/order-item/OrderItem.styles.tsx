@@ -20,6 +20,10 @@ export const ItemLink = styled(Link)`
 export const ItemDetailsContainer = styled(ProductDetailsContainer)`
     justify-content: space-between;
     padding: 0 15px;
+
+    @media only screen and (max-width: 800px) {
+        justify-content: unset;
+    }
 `
 
 export const Price = styled.p`

@@ -1,4 +1,6 @@
 import { useEffect, useContext, createContext, useState, FC, ReactNode } from "react";
+import { useToast } from "./Toast.context";
+import { capitalizeEachWord } from "../utils/helpers/Helpers.utils";
 
 type Theme = 'light' | 'dark';
 
@@ -17,6 +19,7 @@ export const ThemeContext = createContext<ThemeContextProps | null>(null);
 
 export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
     const [theme, setTheme] = useState<Theme>('light')
+    const { showToast} = useToast()
 
     const toggleTheme = () => {
         const newTheme = theme === 'light' ? 'dark' : 'light';
@@ -25,6 +28,7 @@ export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
         window.localStorage.setItem(THEME_STORAGE_KEY, newTheme)
         document.body.classList.remove(theme);
         document.body.classList.add(newTheme);
+        showToast('success', `${capitalizeEachWord(newTheme)} mode`);
     }
 
     useEffect(() => {

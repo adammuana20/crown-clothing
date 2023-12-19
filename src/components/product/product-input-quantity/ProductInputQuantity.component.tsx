@@ -34,11 +34,11 @@ const ProductInputQuantity: FC<ProductInputQuantityProps> = ({ value, onChangeQt
 
     return(
         <ProductInputQuantityContainer>
-            <ButtonContainer onClick={decQtyHandler}>
+            <ButtonContainer onClick={decQtyHandler} aria-label="minus-button">
                 <FiMinus />
             </ButtonContainer>
             <input type='text' name='qty' value={value} onChange={handleChangeQty} onBlur={handleChangeBlur} onKeyPress={handleKeyPress}  />
-            <ButtonContainer onClick={addQtyHandler}>
+            <ButtonContainer onClick={addQtyHandler} aria-label="add-button">
                 <FiPlus />
             </ButtonContainer>
         </ProductInputQuantityContainer>

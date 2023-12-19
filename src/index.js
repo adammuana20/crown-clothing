@@ -19,13 +19,13 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <ThemeProvider>
-          <ToastProvider>
+        <ToastProvider>
+          <ThemeProvider>
             <Elements stripe={stripePromise}>
               <App />
             </Elements>
-          </ToastProvider>
-        </ThemeProvider>
+          </ThemeProvider>
+        </ToastProvider>
       </PersistGate>
     </Provider>
   </React.StrictMode>

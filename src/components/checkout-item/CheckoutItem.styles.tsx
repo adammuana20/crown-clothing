@@ -57,7 +57,15 @@ export const BaseSpan = styled.span`
 
   @media only screen and (max-width: 800px) {
     width: 100%;
-    text-align: start;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 3rem;
+    gap: .5rem;
+  }
+
+  @media only screen and (max-width: 550px) {
+    padding-right: 0;
+    justify-content: flex-start;
   }
 `
 
@@ -81,7 +89,13 @@ export const RemoveItem = styled.div`
 
   @media only screen and (max-width: 800px) {
     width: 100%;
+    text-align: end;
+    padding-right: 3rem;
+  }
+
+  @media only screen and (max-width: 550px) {
     text-align: start;
+    padding-right: 0;
   }
 `
 
@@ -92,7 +106,6 @@ export const ProductLink = styled(Link)`
   @media only screen and (max-width: 800px) {
     width: 100%;
     text-align: start;
-
   }
 `
 
@@ -118,5 +131,14 @@ export const ProductDetailsContainer = styled.div`
     ${ProductLink} {
       padding-left: 0;
     }
+  }
+`
+
+export const SpanTitle = styled.span`
+  display: none;
+
+  @media only screen and (max-width: 800px) {
+    display: block;
+    color: var(--color-dark);
   }
 `

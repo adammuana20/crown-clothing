@@ -19,7 +19,7 @@ const PopUp: FC<PopUpProps> = ({ handleClose, toasts }) => {
         ReactDOM.createPortal(
             <PopUpContainer>
             {toasts.map((toast, index) => (
-                <ToastWrapper key={toast.id} $top={((index + 1) * 70)}>
+                <ToastWrapper key={toast.id} $top={((index + 1) * 82)}>
                     <ToastContainer>
                         <IconMessageContainer>
                         { toast.type === 'success'
