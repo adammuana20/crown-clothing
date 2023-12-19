@@ -31,6 +31,8 @@ export const ToastContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     padding: 0 1rem;
+    background-color: var(--background-light);
+    color: var(--color-dark);
 `
 
 export const IconMessageContainer = styled.div`
@@ -39,7 +41,6 @@ export const IconMessageContainer = styled.div`
 `
 
 export const Message = styled.span`
-    color: #000;
     font-size: 1rem;
     font-weight: 600;
     padding: 1rem .6rem;
@@ -67,6 +68,10 @@ export const ToastWrapper = styled.div<PopUpProps>`
     border-radius: .3rem;
     box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.3);
     animation: ${slideInAnimation} 0.4s ease-in-out;
+
+    @media only screen and (max-width: 800px) {
+      right: 1.2rem;
+    }
 `;
 
 export const IoCloseStyle = styled(IoClose)`

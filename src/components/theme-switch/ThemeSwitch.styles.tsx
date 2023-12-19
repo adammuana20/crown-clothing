@@ -7,8 +7,8 @@ export const ThemeContainer = styled.div`
     bottom: 1.5rem;
 
     @media only screen and (max-width: 800px) {
-        bottom: 5.5rem;
-        right: 1.2rem;
+        top: 5rem;
+        right: 1.4rem;
     }
 `
 

@@ -5,7 +5,7 @@ import ProductInputQuantity from '../product/product-input-quantity/ProductInput
 
 import { CartItem as TCartItem } from '../../store/cart/Cart.types'
 
-import { CheckoutItemContainer, ImageContainer, BaseSpan, ProductInputContainer, RemoveItem, ProductDetailsContainer, ProductLink } from './CheckoutItem.styles'
+import { CheckoutItemContainer, ImageContainer, BaseSpan, ProductInputContainer, RemoveItem, ProductDetailsContainer, ProductLink, SpanTitle } from './CheckoutItem.styles'
 import { removeItemFromCartStart, updateQtyItemFromCartStart } from '../../store/cart/Cart.action'
 import { useToast } from '../../contexts/Toast.context'
 
@@ -95,9 +95,9 @@ const CheckoutItem: FC<CheckoutItemProps> = ({ cartItem }) => {
                 <ProductInputContainer>
                     <ProductInputQuantity value={qty} onChangeQty={onChangeInput} onChangeBlur={onChangeBlur} addQtyHandler={addQtyHandler} decQtyHandler={decQtyHandler} />
                 </ProductInputContainer>
-                <BaseSpan>${price}</BaseSpan>
-                <BaseSpan>${quantity * price}</BaseSpan>
-                <RemoveItem onClick={clearItemHandler}>Delete</RemoveItem>
+                <BaseSpan><SpanTitle>Price:</SpanTitle>${price}</BaseSpan>
+                <BaseSpan><SpanTitle>Total:</SpanTitle>${quantity * price}</BaseSpan>
+                <RemoveItem onClick={clearItemHandler} aria-label='button'>Delete</RemoveItem>
             </ProductDetailsContainer>
         </CheckoutItemContainer>
     )

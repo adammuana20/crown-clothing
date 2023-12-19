@@ -45,6 +45,7 @@ export const Total = styled.span`
 `
 
 export const CheckoutEmptyMessage = styled.span`
+  color: var(--color-dark);
   font-size: 30px;
   margin: 50px auto;
 `
