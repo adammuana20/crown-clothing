@@ -73,7 +73,7 @@ export const MenuDropdownContainer = styled.div`
     border-radius: .5rem;
     top: 100%;
     right: 0;
-    margin-top: .7rem;
+    margin-top: .5rem;
     background-color: var(--background-light);
     z-index: 1;    
     border: 1px solid rgba(0,0,0, .1);
