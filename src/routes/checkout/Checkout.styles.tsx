@@ -2,11 +2,14 @@ import styled from "styled-components";
 
 export const CheckoutContainer = styled.div`
   min-height: 90vh;
+  color: var(--color-dark);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin: 0 0 0 30px;
-  color: var(--color-dark);
+
+  h2 {
+    margin-bottom: 1.5rem;
+  }
+
 `
 
 export const CheckOutHeader = styled.div`
@@ -14,6 +17,10 @@ export const CheckOutHeader = styled.div`
   padding: 10px 0;
   display: flex;
   border-bottom: 1px solid darkgrey;
+
+  @media only screen and (max-width: 800px) {
+    display: none;
+  }
 `
 
 export const HeaderBlock = styled.div`

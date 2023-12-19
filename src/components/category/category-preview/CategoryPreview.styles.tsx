@@ -5,7 +5,6 @@ export const CategoryPreviewContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 2rem;
-  margin-top: 1rem;
 
   h2 {
     margin-bottom: 1.5rem;

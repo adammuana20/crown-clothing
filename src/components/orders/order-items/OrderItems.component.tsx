@@ -4,6 +4,7 @@ import { Order } from "../../../store/orders/Orders.types"
 
 import { OrdersContainer, OrderTotal, OrderTotalContainer, OrderTotalText, DateIDContainer, OrderID } from "./OrderItems.styles"
 import OrderItem from "../order-item/OrderItem.component"
+import MobileBottomMenu from "../../../routes/mobile-bottom-menu/MobileBottomMenu.component"
 
 type OrderItemsProps = {
     myOrders: Order
@@ -19,20 +20,23 @@ const OrderItems: FC<OrderItemsProps> = ({ myOrders }) => {
     const orderDate = jsDate.toLocaleDateString()
 
     return (
-        <OrdersContainer>
-            <DateIDContainer>
-                <span>Date Ordered: {orderDate}</span>
-                <span>Order ID: <OrderID>{id}</OrderID></span>
-            </DateIDContainer>
-            { myOrders.items.map((item) => (
-                    <OrderItem item={item} key={item.id}/>
-                ))
-            }
-            <OrderTotalContainer>
-                <OrderTotalText>Order Total: </OrderTotalText>
-                <OrderTotal>${total}</OrderTotal>
-            </OrderTotalContainer>
-        </OrdersContainer>
+        <>
+            <OrdersContainer>
+                <DateIDContainer>
+                    <span>Date Ordered: {orderDate}</span>
+                    <span>Order ID: <OrderID>{id}</OrderID></span>
+                </DateIDContainer>
+                { myOrders.items.map((item) => (
+                        <OrderItem item={item} key={item.id}/>
+                    ))
+                }
+                <OrderTotalContainer>
+                    <OrderTotalText>Order Total: </OrderTotalText>
+                    <OrderTotal>${total}</OrderTotal>
+                </OrderTotalContainer>
+            </OrdersContainer>
+            <MobileBottomMenu />
+        </>
     )
 }
 

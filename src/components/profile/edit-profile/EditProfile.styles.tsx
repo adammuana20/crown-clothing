@@ -7,6 +7,10 @@ type EditProfilePropsImageUrl = {
 
 export const ProfileContainer = styled.div`
     color: var(--color-dark);
+
+    h2 {
+        margin-bottom: 1.5rem;
+    }
 `
 
 export const ImageWrapper = styled.div`

@@ -26,6 +26,7 @@ const Checkout = () => {
             { cartItems.length < 1 ? (<CheckoutEmptyMessage>Your cart is empty! <GoBackToShop onClick={handleNavigate}>Continue shopping</GoBackToShop>.</CheckoutEmptyMessage>)
                 : (
                     <CheckoutContainer>
+                        <h2>My Cart</h2>
                         <CheckOutHeader>
                             <HeaderBlock>
                                 <span>Product</span>
