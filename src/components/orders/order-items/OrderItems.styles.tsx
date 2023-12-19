@@ -23,6 +23,12 @@ export const DateIDContainer = styled.div`
     display: flex;
     justify-content: space-between;
     padding-bottom: 1rem;
+    text-align: start;
+
+    @media only screen and (max-width: 650px) {
+        flex-direction: column;
+        gap: .5rem;
+    }
 `
 
 export const OrderID = styled.span`

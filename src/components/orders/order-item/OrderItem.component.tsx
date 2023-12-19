@@ -2,8 +2,7 @@ import { FC } from "react"
 
 import { CartItem } from "../../../store/cart/Cart.types"
 
-import { ItemContainer, ProductNameQtyContainer, ItemDetailsContainer, ItemLink, Price } from "./OrderItem.styles"
-import { ImageContainer } from "../../checkout-item/CheckoutItem.styles"
+import { ItemContainer, ProductNameQtyContainer, ItemDetailsContainer, ItemLink, Price, ImageContainer } from "./OrderItem.styles"
 
 
 type OrderItemProps = {

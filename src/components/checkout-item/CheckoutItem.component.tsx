@@ -97,7 +97,7 @@ const CheckoutItem: FC<CheckoutItemProps> = ({ cartItem }) => {
                 </ProductInputContainer>
                 <BaseSpan>${price}</BaseSpan>
                 <BaseSpan>${quantity * price}</BaseSpan>
-                <RemoveItem onClick={clearItemHandler}>&#10005;</RemoveItem>
+                <RemoveItem onClick={clearItemHandler}>Delete</RemoveItem>
             </ProductDetailsContainer>
         </CheckoutItemContainer>
     )

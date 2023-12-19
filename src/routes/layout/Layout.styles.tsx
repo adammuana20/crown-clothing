@@ -1,4 +1,5 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
+import { ButtonContainer } from '../category/Category.styles'
 
 type LayoutProps = {
   $isSliderPage: boolean;
@@ -41,5 +42,7 @@ export const OutletContainer = styled.div<LayoutProps>`
   @media only screen and (max-width: 800px) {
     padding: ${({ $isSliderPage }) => ($isSliderPage ? '0 0 4rem' : '2rem 1rem 4rem')};
     text-align: center;
+
+    ${({ $isSliderPage }) => $isSliderPage ? css`${ButtonContainer} { padding-inline: 1rem; }` : ''}
   }
 `

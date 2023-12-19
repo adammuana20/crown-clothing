@@ -6,6 +6,7 @@ import { ProductDetailsContainer } from "../../checkout-item/CheckoutItem.styles
 export const ItemContainer = styled.div`
     display: flex;
     padding: 15px 0;
+    text-align: start;
 `
 
 export const ItemLink = styled(Link)`
@@ -29,4 +30,11 @@ export const Price = styled.p`
 export const ProductNameQtyContainer = styled.div`
     display: flex;
     flex-direction: column;
+`
+
+export const ImageContainer = styled.div`
+    img {
+      width: 150px;
+      height: 150px;
+    }
 `
