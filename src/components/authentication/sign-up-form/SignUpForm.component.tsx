@@ -7,13 +7,8 @@ import { signUpStart } from '../../../store/user/User.action'
 import { selectSignUpIsLoading } from '../../../store/user/User.selector'
 
 import { SignUpContainer, SignUpBtn, BtnContainer } from './SignUpForm.styles'
-import { alreadyLoggedIn } from '../../../utils/loaders/Loaders.utils'
 import { useToast } from '../../../contexts/Toast.context'
 
-
-export async function loader(currentUser: Object) {
-    return await alreadyLoggedIn(currentUser)
-}
 
 const defaultFormFields = {
     displayName: '',
