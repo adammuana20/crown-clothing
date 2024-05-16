@@ -6,16 +6,6 @@ export const DirectoryContainer = styled.div`
     }
 `
 
-export const SliderContainer = styled.div`
-    width: 100%;
-    height: 35rem;
-    position: relative;
-
-    @media only screen and (max-width: 800px) {
-        height: 25rem;
-    }
-`
-
 export const CategoriesWrapper = styled.div`
     display: flex;
     flex-direction: column;

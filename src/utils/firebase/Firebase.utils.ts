@@ -25,7 +25,6 @@ import {
     query,
     getDocs,
     QueryDocumentSnapshot,
-    updateDoc,
 } from 'firebase/firestore'
 
 import { getStorage, ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
@@ -57,7 +56,7 @@ export const auth = getAuth()
 export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider)
 export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider)
 
-export const db = getFirestore()
+export const db = getFirestore(firebaseApp)
 export const storage = getStorage()
 
 export type ObjectToAdd = {
@@ -141,24 +140,43 @@ export const updateUserProfileFromDocument = async (displayName: string, email: 
     const userSnapshot = await getDoc(userDocRef)
 
     if(!userSnapshot.exists()) return
-
-    try {
-        if(selectedIamge) {
-            const imageUrl = await uploadImageToStorage(imageFile)
+    console.log(imageFile);
+    
+    // try {
+    //     if(selectedIamge) {
+    //         const imageUrl = await uploadImageToStorage(imageFile)
             
-            await updateDoc(userDocRef, {
-                displayName,
-                email,
-                imageUrl,
-            })
-        } else {
-            await updateDoc(userDocRef, {
-                displayName,
-                email,
-            })
-        }
-    } catch(error) {
-        throw new Error('Failed to update Info!', error as Error)
+    //         await updateDoc(userDocRef, {
+    //             displayName,
+    //             email,
+    //             imageUrl,
+    //         })
+    //     } else {
+    //         await updateDoc(userDocRef, {
+    //             displayName,
+    //             email,
+    //         })
+    //     }
+    // } catch(error) {
+    //     throw new Error('Failed to update Info!', error as Error)
+    // }
+}
+
+//ADD PRODUCT TO FIREBASE
+export const uploadImageToStorage = async (image: string) => {
+    const imgs = ref(storage, `images/${v4()}`)
+    
+    try {
+
+    const blob = new Blob([image], { type: 'image/jpeg' });
+    const uploadImage = await uploadBytesResumable(imgs, blob)
+    
+    const imageUrl = await getDownloadURL(uploadImage.ref)
+
+    return imageUrl
+    } catch(err) {
+        console.log('Error', err);
+        
     }
 }
 
@@ -227,24 +245,6 @@ export const getUpdatedUserInfo = async() => {
     return userSnapshot as QueryDocumentSnapshot<UserData>
 }
 
-
-//ADD PRODUCT TO FIREBASE
-export const uploadImageToStorage = async (image: string) => {
-    const imgs = ref(storage, `images/${v4()}`)
-    
-    try {
-
-    const blob = new Blob([image], { type: 'image/jpeg' });
-    const uploadImage = await uploadBytesResumable(imgs, blob)
-    
-    const imageUrl = await getDownloadURL(uploadImage.ref)
-
-    return imageUrl
-    } catch(err) {
-        console.log('Error', err);
-        
-    }
-}
 
 export const createProductDocumentFromCategory = async (product: CategoryItem, categoryTitle: string) => {
     if(!auth) return

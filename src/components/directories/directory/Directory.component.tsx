@@ -9,7 +9,7 @@ import Button from '../../button/Button.component';
 
 import { selectCategories, selectCategoriesMap } from '../../../store/categories/Category.selector';
 
-import { DirectoryContainer, CategoriesContainer, CategoriesWrapper, ProductsContainer, ProductsWrapper, SliderContainer } from './Directory.styles'
+import { DirectoryContainer, CategoriesContainer, CategoriesWrapper, ProductsContainer, ProductsWrapper } from './Directory.styles'
 import { ButtonContainer } from '../../../routes/category/Category.styles';
 
 
@@ -19,13 +19,7 @@ const Directory = () => {
     const combinedProductsWithCategory = Object.keys(categoriesMap).reduce((acc, title) => {
         const products = categoriesMap[title].map(product => ({ product, title }));
         return acc.concat(products);
-    }, [] as any[]);
-
-    const sliders = categories.map((category) => ({
-        imageUrl: category.imageUrl,
-        title: category.title
-      }))
-    
+    }, [] as any[]);    
     
     const [limit, setLimit] = useState(8)
 
@@ -36,9 +30,7 @@ const Directory = () => {
     return (
         <>
             <DirectoryContainer>
-                <SliderContainer>
-                    <Slider sliders={sliders} />
-                </SliderContainer>
+                <Slider />
                 <CategoriesWrapper>
                     <h2>Categories</h2>
                     <CategoriesContainer>
