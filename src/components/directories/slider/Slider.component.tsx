@@ -24,13 +24,13 @@ const Slider = () => {
             }}
         >
             <SwiperSlide>
-                <ImgSlider src={slider1} alt={'slider-1'} />
-            </SwiperSlide>
-            <SwiperSlide>
                 <ImgSlider src={slider2} alt={'slider-2'} />
             </SwiperSlide>
             <SwiperSlide>
                 <ImgSlider src={slider3} alt={'slider-3'} />
+            </SwiperSlide>
+            <SwiperSlide>
+                <ImgSlider src={slider1} alt={'slider-1'} />
             </SwiperSlide>
         </SwiperContainer>
     )
